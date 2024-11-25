@@ -1,4 +1,4 @@
-import LandDetailsForm from "./components/LandDetailsForm";
+import LandDetailsForm from "../components/LandDetailsForm";
 
 export default function Home() {
   return (
