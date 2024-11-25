@@ -13,7 +13,7 @@ import { PropertyDetailsDialog } from "./dialogs/PropertyDetailsDialog";
 import { WitnessesDialog } from "./dialogs/WitnessesDialog";
 import { z } from "zod";
 import { MOUPreview } from "./MOUPreview";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";

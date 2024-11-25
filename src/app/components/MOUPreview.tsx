@@ -5,8 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useLanguage } from "@/contexts/LanguageContext";
-import html2pdf from 'html2pdf.js';
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import React from 'react';
 
 interface MOUPreviewProps {
@@ -18,30 +17,30 @@ export function MOUPreview({ data }: MOUPreviewProps) {
   const { messages } = useLanguage();
   const contentRef = React.useRef<HTMLDivElement>(null);
   
-  const handleDownloadPDF = () => {
-    if (contentRef.current) {
-      const opt = {
-        margin: [0.5, 0.5, 0.5, 0.5],
-        filename: 'MOU_Document.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { 
-          scale: 1.5,
-          letterRendering: true,
-          useCORS: true,
-          logging: true,
-          scrollY: -window.scrollY
-        },
-        jsPDF: { 
-          unit: 'in', 
-          format: 'a4', 
-          orientation: 'portrait',
-          compress: true
-        }
-      };
+  // const handleDownloadPDF = () => {
+  //   if (contentRef.current) {
+  //     const opt = {
+  //       margin: [0.5, 0.5, 0.5, 0.5],
+  //       filename: 'MOU_Document.pdf',
+  //       image: { type: 'jpeg', quality: 0.98 },
+  //       html2canvas: { 
+  //         scale: 1.5,
+  //         letterRendering: true,
+  //         useCORS: true,
+  //         logging: true,
+  //         scrollY: -window.scrollY
+  //       },
+  //       jsPDF: { 
+  //         unit: 'in', 
+  //         format: 'a4', 
+  //         orientation: 'portrait',
+  //         compress: true
+  //       }
+  //     };
       
-      html2pdf().set(opt).from(contentRef.current).save();
-    }
-  };
+  //     html2pdf().set(opt).from(contentRef.current).save();
+  //   }
+  // };
 
   const currentDate = new Date().toLocaleDateString('en-US', {
     year: 'numeric',
@@ -52,12 +51,12 @@ export function MOUPreview({ data }: MOUPreviewProps) {
   return (
     <ScrollArea className="h-full">
       <div className="p-4">
-        <Button 
+        {/* <Button 
           onClick={handleDownloadPDF}
           className="mb-4"
         >
           Download PDF
-        </Button>
+        </Button> */}
         <div ref={contentRef} className="prose max-w-none dark:prose-invert bg-white p-6 rounded-lg print:p-0 print:shadow-none" style={{ maxWidth: '210mm' }}>
           <CardContent className="space-y-4">
             <p className="text-muted-foreground">
