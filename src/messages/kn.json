@@ -1,0 +1,103 @@
+{
+  "form": {
+    "title": "ಭೂಮಿ ನೋಂದಣಿ ಫಾರ್ಮ್",
+    "description": "ನಿಮ್ಮ MOU ದಾಖಲೆಯನ್ನು ರಚಿಸಲು ವಿವರಗಳನ್ನು ಭರ್ತಿ ಮಾಡಿ",
+    "progress": "ಎಲ್ಲಾ ವಿಭಾಗಗಳನ್ನು ಪೂರ್ಣಗೊಳಿಸಿ",
+    "sections": {
+      "bank": {
+        "title": "ಬ್ಯಾಂಕ್ ಮಾಹಿತಿ",
+        "description": "ವಹಿವಾಟುಗಳಿಗಾಗಿ ನಿಮ್ಮ ಬ್ಯಾಂಕ್ ಖಾತೆ ವಿವರಗಳನ್ನು ಸೇರಿಸಿ",
+        "fields": {
+          "accountNumber": "ಖಾತೆ ಸಂಖ್ಯೆ",
+          "accountHolder": "ಖಾತೆದಾರರ ಹೆಸರು",
+          "bank": "ಬ್ಯಾಂಕ್",
+          "branch": "ಶಾಖೆ",
+          "dateCreated": "ರಚಿಸಿದ ದಿನಾಂಕ",
+          "ifscCode": "IFSC ಕೋಡ್",
+          "swiftCode": "SWIFT ಕೋಡ್",
+          "membershipNumber": "ಸದಸ್ಯತ್ವ ಸಂಖ್ಯೆ"
+        }
+      },
+      "landowners": {
+        "title": "ಭೂ ಮಾಲೀಕರ ವಿವರಗಳು",
+        "description": "ಭೂ ಮಾಲೀಕರ ಬಗ್ಗೆ ಮಾಹಿತಿ ಸೇರಿಸಿ",
+        "fields": {
+          "name": "ಹೆಸರು",
+          "aadhar": "ಆಧಾರ್",
+          "mobile": "ಮೊಬೈಲ್",
+          "email": "ಇಮೇಲ್"
+        }
+      },
+      "property": {
+        "title": "ಆಸ್ತಿ ಮಾಹಿತಿ",
+        "description": "ಆಸ್ತಿಗಳ ಬಗ್ಗೆ ವಿವರಗಳನ್ನು ಸೇರಿಸಿ",
+        "fields": {
+          "itemName": "ವಸ್ತುವಿನ ಹೆಸರು",
+          "cropDetails": "ಬೆಳೆ ವಿವರಗಳು",
+          "totalArea": "ಒಟ್ಟು ವಿಸ್ತೀರ್ಣ",
+          "surveyNumbers": "ಸರ್ವೆ ಸಂಖ್ಯೆಗಳು",
+          "location": "ಸ್ಥಳ"
+        }
+      },
+      "witnesses": {
+        "title": "ಸಾಕ್ಷಿದಾರರ ಮಾಹಿತಿ",
+        "description": "ಸಾಕ್ಷಿದಾರರ ವಿವರಗಳನ್ನು ಸೇರಿಸಿ",
+        "fields": {
+          "name": "ಹೆಸರು",
+          "address": "ವಿಳಾಸ",
+          "note": "ಟಿಪ್ಪಣಿ",
+          "date": "ದಿನಾಂಕ"
+        }
+      }
+    },
+    "buttons": {
+      "save": "ಉಳಿಸಿ",
+      "addMore": "ಇನ್ನಷ್ಟು ಸೇರಿಸಿ",
+      "generate": "MOU ದಾಖಲೆಯನ್ನು ರಚಿಸಿ",
+      "incomplete": "ದಯವಿಟ್ಟು ಎಲ್ಲಾ ವಿಭಾಗಗಳನ್ನು ಪೂರ್ಣಗೊಳಿಸಿ"
+    }
+  },
+  "preview": {
+    "title": "ದಾಖಲೆ ಪೂರ್ವವೀಕ್ಷಣೆ",
+    "description": "ನಿಮ್ಮ MOU ದಾಖಲೆಯ ನೈಜ-ಸಮಯದ ಪೂರ್ವವೀಕ್ಷಣೆ",
+    "badge": "ಲೈವ್ ಪ್ರಿವ್ಯೂ",
+    "landowners": {
+      "title": "ಭೂ ಮಾಲೀಕರು",
+      "noLandowners": "ಇನ್ನೂ ಯಾವುದೇ ಭೂ ಮಾಲೀಕರನ್ನು ಸೇರಿಸಲಾಗಿಲ್ಲ.",
+      "addLandowners": "ಭೂ ಮಾಲೀಕರ ವಿವರಗಳನ್ನು ಸೇರಿಸಲು \"ಭೂ ಮಾಲೀಕರನ್ನು ಸೇರಿಸಿ\" ಬಟನ್ ಕ್ಲಿಕ್ ಮಾಡಿ.",
+      "badge": "ಭೂ ಮಾಲೀಕ",
+      "date": "ದಿನಾಂಕ",
+      "email": "ಇಮೇಲ್",
+      "mobile": "ಮೊಬೈಲ್",
+      "aadhar": "ಆಧಾರ್",
+      "signature": "ಸಹಿ"
+    },
+    "propertyDetails": {
+      "title": "ಆಸ್ತಿ ವಿವರಗಳು",
+      "noProperties": "ಇನ್ನೂ ಯಾವುದೇ ಆಸ್ತಿಗಳನ್ನು ಸೇರಿಸಲಾಗಿಲ್ಲ.",
+      "addPropertyDetails": "ಆಸ್ತಿ ಮಾಹಿತಿಯನ್ನು ಸೇರಿಸಲು \"ಆಸ್ತಿ ವಿವರಗಳನ್ನು ಸೇರಿಸಿ\" ಬಟನ್ ಕ್ಲಿಕ್ ಮಾಡಿ.",
+      "badge": "ಆಸ್ತಿ",
+      "cropDetails": "ಬೆಳೆ ವಿವರಗಳು",
+      "totalArea": "ಒಟ್ಟು ವಿಸ್ತೀರ್ಣ",
+      "surveyNumbers": "ಸರ್ವೆ ಸಂಖ್ಯೆಗಳು",
+      "location": "ಸ್ಥಳ"
+    },
+    "bankDetails": {
+      "title": "ಬ್ಯಾಂಕ್ ವಿವರಗಳು",
+      "accountHolder": "ಖಾತೆದಾರರ ಹೆಸರು",
+      "accountNumber": "ಖಾತೆ ಸಂಖ್ಯೆ",
+      "bank": "ಬ್ಯಾಂಕ್",
+      "branch": "ಶಾಖೆ",
+      "ifscCode": "IFSC ಕೋಡ್",
+      "swiftCode": "SWIFT ಕೋಡ್"
+    },
+    "signatures": {
+      "title": "ಸಹಿಗಳು",
+      "noSignatures": "ಯಾವುದೇ ಸಹಿಗಳು ಲಭ್ಯವಿಲ್ಲ.",
+      "addLandownersAndWitnesses": "ಸಹಿಗಳನ್ನು ಪ್ರದರ್ಶಿಸಲು ಭೂ ಮಾಲೀಕರು ಮತ್ತು ಸಾಕ್ಷಿದಾರರನ್ನು ಸೇರಿಸಿ.",
+      "landownerBadge": "ಭೂ ಮಾಲೀಕ",
+      "witnessBadge": "ಸಾಕ್ಷಿದಾರ"
+    },
+    "aksmvbsMembershipNumber": "AKSMVBS ಸದಸ್ಯತ್ವ ಸಂಖ್ಯೆ"
+  }
+}
