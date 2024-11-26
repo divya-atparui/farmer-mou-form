@@ -8,20 +8,34 @@ interface JsonDataViewProps {
 }
 
 const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
-  if (!data) return null;
+  // Helper function to render value or underline
+  const renderValue = (value: any) => {
+    if (!data || value === null || value === undefined || value === "") {
+      return <span className="inline-block w-32 h-0.5 bg-gray-300">_______</span>;
+    }
+    return value;
+  };
+
+  const emptyLandOwner = { id: null, landownerName: null, email: null, mobile: null, aadhar: null, address: null, date: null };
+  const emptyProperty = { id: null, itemName: null, location: null, cropDetails: null, totalArea: null, surveyNumbers: null };
+  const emptyWitness = { id: null, name: null, address: null, note: null, date: null };
+
+  const landOwners = data?.landOwners || [emptyLandOwner];
+  const propertyDetails = data?.propertyDetails || [emptyProperty];
+  const witnesses = data?.witnesses || [emptyWitness, emptyWitness];
 
   return (
     <ScrollArea className="h-full w-full">
       <div className="space-y-6 p-4">
         {/* Basic Information */}
-        <Card>
+        <Card className="border-2 drop-shadow-lg border-gray-400">
           <CardHeader className="hidden" />
           <CardTitle className="hidden" />
           <CardContent>
             <div className="text-xl p-4 space-y-4">
               <div>
                 This Memorandum of Understanding (&quot;MoU&quot;) is entered
-                into as of <span className="font-bold">{data.dateCreated}</span>{" "}
+                into as of <span className="font-bold">{renderValue(data?.dateCreated)}</span>{" "}
                 (&quot;Effective Date&quot;) by and between{" "}
                 <span className="font-bold">
                   **Aurigraph DLT Corporation,**
@@ -57,17 +71,17 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
               <div className="text-center text-2xl font-bold py-3">AND</div>
               <div>
                 The Landowner or Grower or farmer is{" "}
-                <span className="font-bold">{data.accountHolder}</span>, bearing{" "}
+                <span className="font-bold">{renderValue(data?.accountHolder)}</span>, bearing{" "}
                 <span className="font-bold">
                   Addhar No
-                  {data.landOwners[0].aadhar}
+                  {renderValue(data?.landOwners[0]?.aadhar)}
                 </span>{" "}
                 as ID{" "}
                 <span className="font-bold">
-                  {data.landOwners[0].landownerName}
+                  {renderValue(data?.landOwners[0]?.landownerName)}
                 </span>
                 , residing at{" "}
-                <span className="font-bold">{data.landOwners[0].address}</span>
+                <span className="font-bold">{renderValue(data?.landOwners[0]?.address)}</span>
                 ,hereafter referred to as (&quot;Landowner&quot;) is having own
                 land/field or farming activities or field in the Aurigraph
                 proposed carbon project
@@ -76,14 +90,14 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
           </CardContent>
         </Card>
 
-        <div className="text-4xl font-bold py-3 m-4">1. Purpose</div>
+        <div className="text-2xl sm:text-4xl font-bold py-3 m-4">1. Purpose</div>
 
-        <Card>
+        <Card className="border-2 drop-shadow-lg border-gray-400">
           <CardHeader className="hidden" />
           <CardTitle className="hidden" />
 
           <CardContent>
-            <div className="p-4 space-y-4 text-lg">
+            <div className="p-4 space-y-4 text-base sm:text-lg">
               <ol className="list-inside  space-y-2">
                 <li>
                   a. The purpose of this MoU is to establish the framework for
@@ -102,14 +116,14 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
             </div>
           </CardContent>
         </Card>
-        <div className="text-4xl font-bold py-3 m-4">
+        <div className="text-2xl sm:text-4xl font-bold py-3 m-4">
           2. Properties Under Construction
         </div>
         <Card>
           <CardHeader className="hidden" />
           <CardTitle className="hidden" />
           <CardContent>
-            <div className="p-4 space-y-4 text-lg">
+            <div className="p-4 space-y-4 text-base sm:text-lg">
               <p className="font-bold">
                 All properties under this MoU will be included in Appendix with
                 the property and ownership details
@@ -156,7 +170,7 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
           </CardContent>
         </Card>
 
-        <div className="text-4xl font-bold py-3 ">
+        <div className="text-2xl sm:text-4xl font-bold py-3 ">
           3. Terms of Collaboration with AKSMVBS
         </div>
 
@@ -164,7 +178,7 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
           <CardHeader className="hidden" />
           <CardTitle className="hidden" />
           <CardContent>
-            <div className="p-4 space-y-4 text-lg">
+            <div className="p-4 space-y-4 text-base sm:text-lg">
               <ol className="list-inside space-y-2">
                 <li>
                   a. AKSMVBS will be the liaison between the farmers and
@@ -202,12 +216,12 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
           </CardContent>
         </Card>
 
-        <div className="text-4xl font-bold py-3 ">3.1. Aurigraph</div>
+        <div className="text-2xl sm:text-4xl font-bold py-3 ">3.1. Aurigraph</div>
         <Card>
           <CardHeader className="hidden" />
           <CardTitle className="hidden" />
           <CardContent>
-            <div className="p-4 space-y-4 text-lg">
+            <div className="p-4 space-y-4 text-base sm:text-lg">
               <ol className="list-inside space-y-2">
                 <li>
                   a. Aurigraph will obtain all compliances and approvals from
@@ -241,13 +255,13 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
             </div>
           </CardContent>
         </Card>
-        <div className="text-4xl font-bold py-3 ">4. Landowner</div>
+        <div className="text-2xl sm:text-4xl font-bold py-3 ">4. Landowner</div>
 
         <Card>
           <CardHeader className="hidden" />
           <CardTitle className="hidden" />
           <CardContent>
-            <div className="p-4 space-y-4 text-lg">
+            <div className="p-4 space-y-4 text-base sm:text-lg">
               <ol className="list-inside space-y-2">
                 <li>
                   a. Landowner expressly hereby provides his/her consent and
@@ -356,14 +370,14 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
             </div>
           </CardContent>
         </Card>
-        <div className="text-4xl font-bold py-3 ">
+        <div className="text-2xl sm:text-4xl font-bold py-3 ">
           5. Revenue Sharing and Payment Terms
         </div>
         <Card>
           <CardHeader className="hidden" />
           <CardTitle className="hidden" />
           <CardContent>
-            <div className="p-4 space-y-4 text-lg">
+            <div className="p-4 space-y-4 text-base sm:text-lg">
               <ol className="list-inside space-y-2">
                 <li>
                   a. Aurigraph will share 50 % (Fifty percent) of the revenues
@@ -380,14 +394,14 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
             </div>
           </CardContent>
         </Card>
-        <div className="text-4xl font-bold py-3 ">
+        <div className="text-2xl sm:text-4xl font-bold py-3 ">
           6. Monitoring and Verification
         </div>
         <Card>
           <CardHeader className="hidden" />
           <CardTitle className="hidden" />
           <CardContent>
-            <div className="p-4 space-y-4 text-lg">
+            <div className="p-4 space-y-4 text-base sm:text-lg">
               <ol className="list-inside space-y-2">
                 <li>
                   a.AKSMVBS and Landowner shall participate in monitoring and
@@ -418,14 +432,14 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
             </div>
           </CardContent>
         </Card>
-        <div className="text-4xl font-bold py-3 ">
+        <div className="text-2xl sm:text-4xl font-bold py-3 ">
           7. Carbon Credit Sequestration
         </div>
         <Card>
           <CardHeader className="hidden" />
           <CardTitle className="hidden" />
           <CardContent>
-            <div className="p-4 space-y-4 text-lg">
+            <div className="p-4 space-y-4 text-base sm:text-lg">
               <ol className="list-inside space-y-2">
                 <li>
                   a. Upon successful assessment, both parties agree to
@@ -445,12 +459,12 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
           </CardContent>
         </Card>
 
-        <div className="text-4xl font-bold py-3 ">8. Governing Law</div>
+        <div className="text-2xl sm:text-4xl font-bold py-3 ">8. Governing Law</div>
         <Card>
           <CardHeader className="hidden" />
           <CardTitle className="hidden" />
           <CardContent>
-            <div className="p-4 space-y-4 text-lg">
+            <div className="p-4 space-y-4 text-base sm:text-lg">
               <ol className="list-inside space-y-2">
                 <li>
                   This MoU shall be governed by and construed in accordance with
@@ -460,12 +474,12 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
             </div>
           </CardContent>
         </Card>
-        <div className="text-4xl font-bold py-3 ">9. Amendments</div>
+        <div className="text-2xl sm:text-4xl font-bold py-3 ">9. Amendments</div>
         <Card>
           <CardHeader className="hidden" />
           <CardTitle className="hidden" />
           <CardContent>
-            <div className="p-4 space-y-4 text-lg">
+            <div className="p-4 space-y-4 text-base sm:text-lg">
               <ol className="list-inside space-y-2">
                 <li>
                   Any amendments to this MoU must be made in writing and signed
@@ -480,48 +494,48 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle>Basic Information</CardTitle>
-              <Badge variant="outline">ID: {data.id}</Badge>
+              <Badge variant="outline">ID: {renderValue(data?.id)}</Badge>
             </div>
           </CardHeader>
           <CardContent className="grid grid-cols-2 gap-4">
             <div>
               <p className="text-sm font-medium">Account Holder</p>
               <p className="text-sm text-muted-foreground">
-                {data.accountHolder}
+                {renderValue(data?.accountHolder)}
               </p>
             </div>
             <div>
               <p className="text-sm font-medium">Account Number</p>
               <p className="text-sm text-muted-foreground">
-                {data.accountNumber}
+                {renderValue(data?.accountNumber)}
               </p>
             </div>
             <div>
               <p className="text-sm font-medium">Bank</p>
-              <p className="text-sm text-muted-foreground">{data.bank}</p>
+              <p className="text-sm text-muted-foreground">{renderValue(data?.bank)}</p>
             </div>
             <div>
               <p className="text-sm font-medium">Branch</p>
-              <p className="text-sm text-muted-foreground">{data.branch}</p>
+              <p className="text-sm text-muted-foreground">{renderValue(data?.branch)}</p>
             </div>
             <div>
               <p className="text-sm font-medium">IFSC Code</p>
-              <p className="text-sm text-muted-foreground">{data.ifscCode}</p>
+              <p className="text-sm text-muted-foreground">{renderValue(data?.ifscCode)}</p>
             </div>
             <div>
               <p className="text-sm font-medium">Swift Code</p>
-              <p className="text-sm text-muted-foreground">{data.swiftCode}</p>
+              <p className="text-sm text-muted-foreground">{renderValue(data?.swiftCode)}</p>
             </div>
             <div>
               <p className="text-sm font-medium">Membership Number</p>
               <p className="text-sm text-muted-foreground">
-                {data.aksmvbsMembershipNumber}
+                {renderValue(data?.aksmvbsMembershipNumber)}
               </p>
             </div>
             <div>
               <p className="text-sm font-medium">Date Created</p>
               <p className="text-sm text-muted-foreground">
-                {data.dateCreated}
+                {renderValue(data?.dateCreated)}
               </p>
             </div>
           </CardContent>
@@ -533,41 +547,41 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
             <CardTitle>Land Owners</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            {data.landOwners.map((owner, index) => (
+            {landOwners.map((owner, index) => (
               <div key={owner.id} className="rounded-lg border p-4">
                 <div className="flex items-center justify-between mb-2">
                   <h3 className="font-medium">Land Owner {index + 1}</h3>
-                  <Badge variant="outline">ID: {owner.id}</Badge>
+                  <Badge variant="outline">ID: {renderValue(owner.id)}</Badge>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <p className="text-sm font-medium">Name</p>
                     <p className="text-sm text-muted-foreground">
-                      {owner.landownerName}
+                      {renderValue(owner.landownerName)}
                     </p>
                   </div>
                   <div>
                     <p className="text-sm font-medium">Email</p>
                     <p className="text-sm text-muted-foreground">
-                      {owner.email}
+                      {renderValue(owner.email)}
                     </p>
                   </div>
                   <div>
                     <p className="text-sm font-medium">Mobile</p>
                     <p className="text-sm text-muted-foreground">
-                      {owner.mobile}
+                      {renderValue(owner.mobile)}
                     </p>
                   </div>
                   <div>
                     <p className="text-sm font-medium">Aadhar</p>
                     <p className="text-sm text-muted-foreground">
-                      {owner.aadhar}
+                      {renderValue(owner.aadhar)}
                     </p>
                   </div>
                   <div>
                     <p className="text-sm font-medium">Date</p>
                     <p className="text-sm text-muted-foreground">
-                      {owner.date}
+                      {renderValue(owner.date)}
                     </p>
                   </div>
                 </div>
@@ -575,120 +589,119 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
             ))}
           </CardContent>
         </Card>
+        <div className="text-2xl sm:text-4xl font-bold py-3 ">
+          Properties
+        </div>
 
         {/* Property Details */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Property Details</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {data.propertyDetails.map((property, index) => (
-              <div key={property.id} className="rounded-lg border p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="font-medium">Property {index + 1}</h3>
-                  <Badge variant="outline">ID: {property.id}</Badge>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          {propertyDetails.map((property, index) => (
+            <Card key={property.id}>
+              <CardHeader>
+                <CardTitle>Property {index + 1}</CardTitle>
+                <Badge variant="outline" className="ml-auto">
+                  ID: {renderValue(property.id)}
+                </Badge>
+              </CardHeader>
+              <CardContent className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-sm font-medium">Item Name</p>
+                  <p className="text-sm text-muted-foreground">
+                    {renderValue(property.itemName)}
+                  </p>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <p className="text-sm font-medium">Item Name</p>
-                    <p className="text-sm text-muted-foreground">
-                      {property.itemName}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">Location</p>
-                    <p className="text-sm text-muted-foreground">
-                      {property.location}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">Crop Details</p>
-                    <p className="text-sm text-muted-foreground">
-                      {property.cropDetails}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">Total Area</p>
-                    <p className="text-sm text-muted-foreground">
-                      {property.totalArea}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">Survey Numbers</p>
-                    <p className="text-sm text-muted-foreground">
-                      {property.surveyNumbers}
-                    </p>
-                  </div>
+                <div>
+                  <p className="text-sm font-medium">Location</p>
+                  <p className="text-sm text-muted-foreground">
+                    {renderValue(property.location)}
+                  </p>
                 </div>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
+                <div>
+                  <p className="text-sm font-medium">Crop Details</p>
+                  <p className="text-sm text-muted-foreground">
+                    {renderValue(property.cropDetails)}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm font-medium">Total Area</p>
+                  <p className="text-sm text-muted-foreground">
+                    {renderValue(property.totalArea)}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm font-medium">Survey Numbers</p>
+                  <p className="text-sm text-muted-foreground">
+                    {renderValue(property.surveyNumbers)}
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
 
         {/* Witnesses */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Witnesses</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {data.witnesses.map((witness, index) => (
-              <div key={witness.id} className="rounded-lg border p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <h3 className="font-medium">Witness {index + 1}</h3>
-                  <Badge variant="outline">ID: {witness.id}</Badge>
-                </div>
+        <div className="text-2xl sm:text-4xl font-bold py-3 ">
+          Witnesses
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {witnesses.map((witness, index) => (
+            <Card key={witness.id}>
+              <CardHeader>
+                <CardTitle>Witness {index + 1}</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <p className="text-sm font-medium">Name</p>
                     <p className="text-sm text-muted-foreground">
-                      {witness.name}
+                      {renderValue(witness.name)}
                     </p>
                   </div>
                   <div>
                     <p className="text-sm font-medium">Address</p>
                     <p className="text-sm text-muted-foreground">
-                      {witness.address}
+                      {renderValue(witness.address)}
                     </p>
                   </div>
                   <div>
                     <p className="text-sm font-medium">Note</p>
                     <p className="text-sm text-muted-foreground">
-                      {witness.note}
+                      {renderValue(witness.note)}
                     </p>
                   </div>
                   <div>
                     <p className="text-sm font-medium">Date</p>
                     <p className="text-sm text-muted-foreground">
-                      {witness.date}
+                      {renderValue(witness.date)}
                     </p>
                   </div>
                 </div>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
 
         {/* Signatures Section */}
-        <div className="text-4xl font-bold py-3">10. Signatures</div>
+        <div className="text-2xl sm:text-4xl font-bold py-3">10. Signatures</div>
         <Card>
           <CardContent>
             <div className="p-8 space-y-12">
               {/* Landowner Signatures */}
               <div className="space-y-8">
-                <h3 className="text-2xl font-semibold">Landowner Signatures</h3>
+                <h3 className="text-xl sm:text-2xl font-semibold">Landowner Signatures</h3>
                 <div className="grid grid-cols-2 gap-8">
-                  {data.landOwners.map((owner, index) => (
+                  {landOwners.map((owner, index) => (
                     <div key={owner.id} className="space-y-4">
                       <div className="h-32 border-2 border-dashed rounded-lg flex items-center justify-center">
                         <p className="text-muted-foreground">Signature Space</p>
                       </div>
-                      <div className="text-center space-y-1">
-                        <p className="font-medium">{owner.landownerName}</p>
+                      <div className="text-center text-base sm:text-lg space-y-1">
+                        <p className="font-medium">{renderValue(owner.landownerName)}</p>
                         <p className="text-sm text-muted-foreground">
                           Landowner {index + 1}
                         </p>
                         <p className="text-sm text-muted-foreground">
-                          Date: {owner.date}
+                          Date: {renderValue(owner.date)}
                         </p>
                       </div>
                     </div>
@@ -698,20 +711,20 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
 
               {/* Witness Signatures */}
               <div className="space-y-8">
-                <h3 className="text-2xl font-semibold">Witness Signatures</h3>
+                <h3 className="text-xl sm:text-2xl font-semibold">Witness Signatures</h3>
                 <div className="grid grid-cols-2 gap-8">
-                  {data.witnesses.map((witness, index) => (
+                  {witnesses.map((witness, index) => (
                     <div key={witness.id} className="space-y-4">
                       <div className="h-32 border-2 border-dashed rounded-lg flex items-center justify-center">
                         <p className="text-muted-foreground">Signature Space</p>
                       </div>
-                      <div className="text-center space-y-1">
-                        <p className="font-medium">{witness.name}</p>
+                      <div className="text-center text-base sm:text-lg space-y-1">
+                        <p className="font-medium">{renderValue(witness.name)}</p>
                         <p className="text-sm text-muted-foreground">
                           Witness {index + 1}
                         </p>
                         <p className="text-sm text-muted-foreground">
-                          Date: {witness.date}
+                          Date: {renderValue(witness.date)}
                         </p>
                       </div>
                     </div>
@@ -721,7 +734,7 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
 
               {/* Organization Signatures */}
               <div className="space-y-8">
-                <h3 className="text-2xl font-semibold">
+                <h3 className="text-xl sm:text-2xl font-semibold">
                   Organization Signatures
                 </h3>
                 <div className="grid grid-cols-2 gap-8">
@@ -730,7 +743,7 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
                     <div className="h-32 border-2 border-dashed rounded-lg flex items-center justify-center">
                       <p className="text-muted-foreground">Signature Space</p>
                     </div>
-                    <div className="text-center space-y-1">
+                    <div className="text-center text-base sm:text-lg space-y-1">
                       <p className="font-medium">
                         For Aurigraph DLT Corporation
                       </p>
@@ -738,7 +751,7 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
                         Authorized Signatory
                       </p>
                       <p className="text-sm text-muted-foreground">
-                        Date: {data.dateCreated}
+                        Date: {renderValue(data?.dateCreated)}
                       </p>
                     </div>
                   </div>
@@ -747,13 +760,13 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
                     <div className="h-32 border-2 border-dashed rounded-lg flex items-center justify-center">
                       <p className="text-muted-foreground">Signature Space</p>
                     </div>
-                    <div className="text-center space-y-1">
+                    <div className="text-center text-base sm:text-lg space-y-1">
                       <p className="font-medium">For AKSMVBS</p>
                       <p className="text-sm text-muted-foreground">
                         Authorized Signatory
                       </p>
                       <p className="text-sm text-muted-foreground">
-                        Date: {data.dateCreated}
+                        Date: {renderValue(data?.dateCreated)}
                       </p>
                     </div>
                   </div>

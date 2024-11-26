@@ -36,7 +36,7 @@ import { LanguageToggle } from "@/components/LanguageToggle";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePostLandDetails } from "@/api/form/use-post-land-details";
 import JsonDataView from "./JsonDataView";
-import { mockLandDetailsResponse } from "@/mocks/mockLandDetails";
+import JsonDataKannadaView from "./JsonDataKannadaView";
 
 // Define the type from the schema
 export type FormData = z.infer<typeof formSchema>;
@@ -89,10 +89,8 @@ export default function LandDetailsForm() {
 
   const { mutate: postLandDetails, isPending } = usePostLandDetails();
 
-  const [showJsonPreview, setShowJsonPreview] = useState(true);
-  const [jsonData, setJsonData] = useState<LandDetailsResponse | null>(
-    mockLandDetailsResponse
-  );
+  const [showJsonPreview, setShowJsonPreview] = useState(false);
+  const [jsonData, setJsonData] = useState<LandDetailsResponse | null>(null);
 
   function onSubmit(data: FormData) {
     postLandDetails(
@@ -175,26 +173,41 @@ export default function LandDetailsForm() {
     }
   };
 
+  const handlePrint = () => {
+    const printContent = document.getElementById("mou-content");
+    if (printContent) {
+      const originalContents = document.body.innerHTML;
+      document.body.innerHTML = printContent.innerHTML;
+      window.print();
+      document.body.innerHTML = originalContents;
+      window.location.reload(); // Reload to restore all event listeners
+    }
+  };
+
   return (
-    <div className="container mx-auto h-screen py-6">
-      <div className="flex gap-6 h-full">
+    <div className="container mx-auto px-4 py-6 min-h-screen">
+      <div className="flex flex-col lg:flex-row gap-6">
         {/* Form Section */}
-        <div className="w-[600px] flex flex-col gap-4">
+        <div className="w-full lg:w-[400px] flex flex-col gap-4">
           {/* Progress Card */}
           <Card className="flex-none">
             <CardHeader>
-              <div className="flex items-center justify-between mb-6">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
                 <div>
-                  <h1 className="text-2xl font-bold">{messages.form.title}</h1>
-                  <p className="text-muted-foreground">
+                  <h1 className="text-xl sm:text-2xl font-bold">
+                    {messages.form.title}
+                  </h1>
+                  <p className="text-sm text-muted-foreground">
                     {messages.form.description}
                   </p>
                 </div>
                 <LanguageToggle />
               </div>
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div>
-                  <CardTitle>Land Registration Form</CardTitle>
+                  <CardTitle className="text-lg sm:text-xl">
+                    Land Registration Form
+                  </CardTitle>
                   <CardDescription>
                     Fill in the details to generate your MOU document
                   </CardDescription>
@@ -211,6 +224,7 @@ export default function LandDetailsForm() {
                 <div className="grid grid-cols-2 gap-2">
                   <Badge
                     variant={isSectionComplete("bank") ? "default" : "outline"}
+                    className="text-xs sm:text-sm"
                   >
                     Bank Details
                   </Badge>
@@ -218,6 +232,7 @@ export default function LandDetailsForm() {
                     variant={
                       isSectionComplete("landowners") ? "default" : "outline"
                     }
+                    className="text-xs sm:text-sm"
                   >
                     Landowners
                   </Badge>
@@ -225,6 +240,7 @@ export default function LandDetailsForm() {
                     variant={
                       isSectionComplete("properties") ? "default" : "outline"
                     }
+                    className="text-xs sm:text-sm"
                   >
                     Properties
                   </Badge>
@@ -232,6 +248,7 @@ export default function LandDetailsForm() {
                     variant={
                       isSectionComplete("witnesses") ? "default" : "outline"
                     }
+                    className="text-xs sm:text-sm"
                   >
                     Witnesses
                   </Badge>
@@ -242,7 +259,7 @@ export default function LandDetailsForm() {
 
           {/* Form Content Card */}
           <Card className="flex-1">
-            <CardContent className="p-6">
+            <CardContent className="p-4 sm:p-6">
               <ScrollArea className="">
                 <Form {...form}>
                   <form
@@ -319,18 +336,22 @@ export default function LandDetailsForm() {
                 size="lg"
                 className="w-full"
                 onClick={form.handleSubmit(onSubmit)}
-                disabled={getProgress() < 100 || isPending}
+                disabled={getProgress() < 100 || isPending || jsonData !== null}
               >
-                {getProgress() < 100
+                {jsonData !== null
+                  ? "Completed"
+                  : getProgress() < 100
                   ? "Please Complete All Sections"
+                  : isPending
+                  ? "Generating..."
                   : "Generate MOU Document"}
               </Button>
             </CardContent>
           </Card>
         </div>
 
-        {/* Preview Section */}
-        <Card className="flex-1">
+        {/* Preview Section - Hidden on mobile, shown as dialog */}
+        <Card className="hidden lg:block flex-1">
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
               <div>
@@ -339,7 +360,13 @@ export default function LandDetailsForm() {
                   Real-time preview of your MOU document
                 </CardDescription>
               </div>
-              <Badge variant="secondary">Live Preview</Badge>
+              <Badge
+                onClick={() => setShowJsonPreview(true)}
+                variant="default"
+                className="cursor-pointer "
+              >
+                Live Preview
+              </Badge>
             </div>
           </CardHeader>
           <CardContent className="h-[calc(100vh-10rem)]">
@@ -348,15 +375,42 @@ export default function LandDetailsForm() {
         </Card>
       </div>
 
+      {/* Mobile Preview Button - Only shown on mobile */}
+      <div className="fixed bottom-4 right-4 lg:hidden ">
+        <Button
+          onClick={() => setShowJsonPreview(true)}
+          size="lg"
+          className="rounded-full shadow-lg"
+        >
+          {jsonData !== null ? "View MOU" : "Preview MOU"}
+        </Button>
+      </div>
+
       {/* JSON Preview Dialog */}
       <Dialog open={showJsonPreview} onOpenChange={setShowJsonPreview}>
-        <DialogContent className="sm:max-w-[1200px] sm:max-h-[600px] overflow-scroll">
-          <DialogHeader >
-            <DialogTitle className="text-center text-5xl">Memorandum of Understanding (MoU)</DialogTitle>
+        <DialogContent className="w-[calc(100vw-2rem)] sm:max-w-[1200px] h-[calc(100vh-4rem)] overflow-auto">
+          <DialogHeader>
+            <DialogTitle className="text-center text-xl sm:text-2xl">
+              Memorandum of Understanding (MoU)
+            </DialogTitle>
+            <div className="flex justify-end mt-4">
+              <Button
+                onClick={handlePrint}
+                variant="default"
+                className="text-sm sm:text-base"
+              >
+                Print MoU
+              </Button>
+            </div>
           </DialogHeader>
 
-            <JsonDataView data={jsonData} />
-    
+          <div id="mou-content" className="">
+            {messages.lang === "en" ? (
+              <JsonDataView data={jsonData} />
+            ) : (
+              <JsonDataKannadaView data={jsonData} />
+            )}
+          </div>
         </DialogContent>
       </Dialog>
     </div>
