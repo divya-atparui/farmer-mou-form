@@ -20,9 +20,9 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
           <CardContent>
             <div className="text-xl p-4 space-y-4">
               <div>
-                This Memorandum of Understanding ("MoU") is entered into as of{" "}
-                <span className="font-bold">{data.dateCreated}</span>{" "}
-                ("Effective Date") by and between{" "}
+                This Memorandum of Understanding (&quot;MoU&quot;) is entered
+                into as of <span className="font-bold">{data.dateCreated}</span>{" "}
+                (&quot;Effective Date&quot;) by and between{" "}
                 <span className="font-bold">
                   **Aurigraph DLT Corporation,**
                 </span>
@@ -119,7 +119,8 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
               </div>
               <ol className="list-inside space-y-2">
                 <li>
-                  a. This MoU shall be valid only if the enrolled
+                  <span className="font-bold">a. Validity Period:</span> This
+                  MoU shall be valid only if the enrolled
                   field/land/tree/farmers possess all the necessary and
                   eligibility requirement specified by Aurigraph from the
                   effective date. During this period, Aurigraph shall conduct a
@@ -127,21 +128,26 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
                   due diligence, detect and evaluation of the carbon pool
                   potential of proposed field/land/tree to finalize the
                   definitive agreement. The period between this MoU to
-                  definitive agreement would be up to 1 year depending upon the
+                  definitive agreement would be up to
+                  <span className="font-bold">1 year</span> depending upon the
                   extent of land under consideration and environmental
                   conditions.
                 </li>
                 <li>
-                  b. Unless terminated earlier, this agreement is valid until
-                  the life cycle of the project which is till 40 years while the
-                  crediting period will be till 40 years from the effective
+                  <span className="font-bold">b. Termination:</span> Unless
+                  terminated earlier, this agreement is valid until the life
+                  cycle of the project which is till
+                  <span className="font-bold">40 years</span> while the
+                  crediting period will be till
+                  <span className="font-bold">40 years</span> from the effective
                   date. The life cycle of the project would mean to include the
                   period starting the definitive agreement thru to issuance of
                   the carbon credit, realization and continuous monitoring of
-                  the available carbon credit for a period of 40 years.
+                  the available carbon credit for a period of
+                  <span className="font-bold">40 years</span>.
                 </li>
                 <li>
-                  c. Minimum plot size :
+                  <span className="font-bold">c. Minimum plot size:</span>
                   <span className="font-bold">1 acre</span>
                 </li>
               </ol>
@@ -274,13 +280,13 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
                 <li>
                   d.Whereas landowner offers to assign Carbon Credits or Green
                   Credits or Scope 3 emission reduction assets or other
-                  ecosystem benefits, collectively referred to as "Carbon
-                  Credits", produced by him/her through adoption of Aurigraph
-                  Carbon Markets to Aurigraph. Landowner declares and agrees to
-                  assign all legal rights to such Carbon Credits to Aurigraph
-                  only, including all the rights to issuances, forwarding, and
-                  sale of such Carbon Credits as issued units under any
-                  applicable standard.
+                  ecosystem benefits, collectively referred to as &quot;Carbon
+                  Credits&quot;, produced by him/her through adoption of
+                  Aurigraph Carbon Markets to Aurigraph. Landowner declares and
+                  agrees to assign all legal rights to such Carbon Credits to
+                  Aurigraph only, including all the rights to issuances,
+                  forwarding, and sale of such Carbon Credits as issued units
+                  under any applicable standard.
                 </li>
                 <li>
                   e. Landowner attests that he/she has not participated in the
@@ -296,10 +302,10 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
                   fields of the Land in the Aurigraph carbon project. Land
                   enrolment is subject to eligibility requirements as may be
                   established by Aurigraph at its discretion/ Project
-                  requirement. The landowner agrees to initially enrol _______
+                  requirement. The landowner agrees to initially enrol ________
                   hectares/acres of Land as provided in the section 10. This
                   agreement applies to all eligible and enrolled Land including
-                  future enrolments ("Land").
+                  future enrolments (&quot;Land&quot;).
                 </li>
                 <li>
                   g. Landowner further confirms possessing all legal rights
@@ -389,7 +395,7 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
                 </li>
                 <li>
                   b. Aurigraph shall conduct an initial assessment to determine
-                  the carbon harvest potential of the Landowner's property.
+                  the carbon harvest potential of the Landowner&apos;s property.
                 </li>
                 <li>
                   c. AKSMVBS and Aurigraph shall conduct a due diligence of the
@@ -424,7 +430,7 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
                 <li>
                   a. Upon successful assessment, both parties agree to
                   collaborate in the sequestering carbon credits from the
-                  Landowner's property.
+                  Landowner&apos;s property.
                 </li>
                 <li>
                   b. Aurigraph shall be responsible for implementing and
@@ -447,8 +453,8 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
             <div className="p-4 space-y-4 text-lg">
               <ol className="list-inside space-y-2">
                 <li>
-                  This MoU shall be governed by and construed in accordance
-                  with the laws of Bangalore, India.
+                  This MoU shall be governed by and construed in accordance with
+                  the laws of Bangalore, India.
                 </li>
               </ol>
             </div>
@@ -462,14 +468,14 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
             <div className="p-4 space-y-4 text-lg">
               <ol className="list-inside space-y-2">
                 <li>
-                  Any amendments to this MoU must be made in writing and
-                  signed by both parties.
+                  Any amendments to this MoU must be made in writing and signed
+                  by both parties.
                 </li>
               </ol>
             </div>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
@@ -659,6 +665,101 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
                 </div>
               </div>
             ))}
+          </CardContent>
+        </Card>
+
+        {/* Signatures Section */}
+        <div className="text-4xl font-bold py-3">10. Signatures</div>
+        <Card>
+          <CardContent>
+            <div className="p-8 space-y-12">
+              {/* Landowner Signatures */}
+              <div className="space-y-8">
+                <h3 className="text-2xl font-semibold">Landowner Signatures</h3>
+                <div className="grid grid-cols-2 gap-8">
+                  {data.landOwners.map((owner, index) => (
+                    <div key={owner.id} className="space-y-4">
+                      <div className="h-32 border-2 border-dashed rounded-lg flex items-center justify-center">
+                        <p className="text-muted-foreground">Signature Space</p>
+                      </div>
+                      <div className="text-center space-y-1">
+                        <p className="font-medium">{owner.landownerName}</p>
+                        <p className="text-sm text-muted-foreground">
+                          Landowner {index + 1}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          Date: {owner.date}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Witness Signatures */}
+              <div className="space-y-8">
+                <h3 className="text-2xl font-semibold">Witness Signatures</h3>
+                <div className="grid grid-cols-2 gap-8">
+                  {data.witnesses.map((witness, index) => (
+                    <div key={witness.id} className="space-y-4">
+                      <div className="h-32 border-2 border-dashed rounded-lg flex items-center justify-center">
+                        <p className="text-muted-foreground">Signature Space</p>
+                      </div>
+                      <div className="text-center space-y-1">
+                        <p className="font-medium">{witness.name}</p>
+                        <p className="text-sm text-muted-foreground">
+                          Witness {index + 1}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          Date: {witness.date}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Organization Signatures */}
+              <div className="space-y-8">
+                <h3 className="text-2xl font-semibold">
+                  Organization Signatures
+                </h3>
+                <div className="grid grid-cols-2 gap-8">
+                  {/* Aurigraph Signature */}
+                  <div className="space-y-4">
+                    <div className="h-32 border-2 border-dashed rounded-lg flex items-center justify-center">
+                      <p className="text-muted-foreground">Signature Space</p>
+                    </div>
+                    <div className="text-center space-y-1">
+                      <p className="font-medium">
+                        For Aurigraph DLT Corporation
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        Authorized Signatory
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        Date: {data.dateCreated}
+                      </p>
+                    </div>
+                  </div>
+                  {/* AKSMVBS Signature */}
+                  <div className="space-y-4">
+                    <div className="h-32 border-2 border-dashed rounded-lg flex items-center justify-center">
+                      <p className="text-muted-foreground">Signature Space</p>
+                    </div>
+                    <div className="text-center space-y-1">
+                      <p className="font-medium">For AKSMVBS</p>
+                      <p className="text-sm text-muted-foreground">
+                        Authorized Signatory
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        Date: {data.dateCreated}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>
