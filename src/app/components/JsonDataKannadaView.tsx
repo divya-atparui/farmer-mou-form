@@ -1,9 +1,14 @@
-import React from 'react'
+import React from "react";
 
-const JsonDataKannadaView = () => {
-  return (
-    <div>JsonDataKannadaView</div>
-  )
+interface JsonDataKannadaViewProps {
+  data: LandDetailsResponse | null;
 }
 
-export default JsonDataKannadaView
+const JsonDataKannadaView: React.FC<JsonDataKannadaViewProps> = ({ data }) => {
+  if (!data) {
+    return <div>No data</div>;
+  }
+  return <div>JsonDataKannadaView</div>;
+};
+
+export default JsonDataKannadaView;
