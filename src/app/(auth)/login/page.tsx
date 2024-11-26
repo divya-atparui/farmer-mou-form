@@ -17,6 +17,7 @@ import { usePostLogin } from "@/api/auth/use-post-login";
 import { loginSchema } from "@/app/types/schema";
 import type { z } from "zod";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -49,8 +50,9 @@ export default function LoginPage() {
     <div className="flex min-h-screen items-center justify-center">
       <div className="w-full max-w-md space-y-6 rounded-lg border p-6 shadow-lg">
         <div className="space-y-2 text-center">
-          <h1 className="text-3xl font-bold">Welcome Back</h1>
-          <p className="text-gray-500">Please sign in to continue</p>
+
+          <h1 className="text-3xl font-bold text-blue-500">Welcome Back</h1>
+          <p className="text-blue-500">Please sign in to continue</p>
         </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -83,6 +85,12 @@ export default function LoginPage() {
             <Button type="submit" className="w-full" disabled={isPending}>
               {isPending ? "Signing in..." : "Sign In"}
             </Button>
+            <p className="text-center text-sm">
+              Don&apos;t have an account?{" "}
+              <Link href="/register" className="text-blue-500 hover:underline">
+                Register
+              </Link>
+            </p>
           </form>
         </Form>
       </div>

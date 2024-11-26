@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -74,7 +73,7 @@ export function PropertyDetailsDialog({
           {messages.form.buttons.addMore}
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[800px]">
+      <DialogContent className="sm:max-w-[800px] max-w-[95vw] w-full">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-xl">
             <Home className="w-6 h-6" />
@@ -85,16 +84,16 @@ export function PropertyDetailsDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <Card className="max-h-[500px] overflow-y-auto">
-          <CardHeader className="flex flex-row items-center justify-between sticky top-0 bg-background z-10 pb-6 border-b">
-            <CardTitle className="flex items-center gap-2">
+        <div className="max-h-[500px] overflow-y-auto -mx-6">
+          <div className="sticky top-0 bg-background z-10 px-6 pb-4 border-b flex flex-row items-center justify-between">
+            <div className="flex items-center gap-2 font-semibold">
               <Building2 className="w-5 h-5" />
               Property Details
-            </CardTitle>
+            </div>
             <Button
               type="button"
-              variant="outline"
-              className="w-[120px]"
+              variant="default"
+              className="w-fit"
               onClick={() =>
                 appendProperty({
                   itemName: "",
@@ -108,15 +107,15 @@ export function PropertyDetailsDialog({
               <Plus className="mr-2 h-4 w-4" />
               Add Property
             </Button>
-          </CardHeader>
-          <CardContent className="space-y-6 pt-6">
+          </div>
+          <div className="space-y-6 p-6">
             {propertyFields.map((field, index) => (
               <div
                 key={field.id}
-                className="relative p-4 rounded-lg border bg-card"
+                className="relative p-2 sm:p-4 rounded-lg border bg-card"
               >
                 <div className="grid gap-4">
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <FormField
                       control={form.control}
                       name={`propertyDetails.${index}.itemName`}
@@ -144,7 +143,7 @@ export function PropertyDetailsDialog({
                       )}
                     />
                   </div>
-                  <div className="grid grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <FormField
                       control={form.control}
                       name={`propertyDetails.${index}.totalArea`}
@@ -214,14 +213,14 @@ export function PropertyDetailsDialog({
                 </Button>
               </div>
             ))}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
         <DialogFooter>
-          <div className="flex justify-between w-full">
+          <div className="flex flex-col sm:flex-row justify-between w-full gap-4">
             <Button
               type="button"
               variant="outline"
-              className="w-[120px]"
+              className="w-full sm:w-[120px]"
               onClick={() => {
                 appendProperty({
                   itemName: "",
@@ -234,7 +233,7 @@ export function PropertyDetailsDialog({
             >
               Add More
             </Button>
-            <Button type="button" className="w-[120px]" onClick={onSave}>
+            <Button type="button" className="w-full sm:w-[120px]" onClick={onSave}>
               {messages.form.buttons.save}
             </Button>
           </div>

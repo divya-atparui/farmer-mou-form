@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { usePostRegister } from "@/api/auth/use-post-register";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -66,8 +67,8 @@ export default function RegisterPage() {
     <div className="flex min-h-screen items-center justify-center">
       <div className="w-full max-w-md space-y-6 rounded-lg border p-6 shadow-lg">
         <div className="space-y-2 text-center">
-          <h1 className="text-3xl font-bold">Create an Account</h1>
-          <p className="text-gray-500">Enter your details to register</p>
+          <h1 className="text-3xl font-bold text-blue-500">Create an Account</h1>
+          <p className="text-blue-500">Enter your details to register</p>
         </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -113,6 +114,12 @@ export default function RegisterPage() {
             <Button type="submit" className="w-full" disabled={isPending}>
               {isPending ? "Registering..." : "Register"}
             </Button>
+            <p className="text-center text-sm mt-4">
+              Already have an account?{" "}
+              <Link href="/login" className="text-blue-500 hover:underline">
+                Login
+              </Link>
+            </p>
           </form>
         </Form>
       </div>

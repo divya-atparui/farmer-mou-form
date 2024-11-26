@@ -73,21 +73,21 @@ export function LandOwnersDialog({
           {messages.form.buttons.addMore}
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[800px]">
+      <DialogContent className="sm:max-w-[800px] w-[calc(100vw-2rem)] overflow-y-auto max-h-[calc(100vh-2rem)]">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-xl">
-            <Users className="w-6 h-6" />
+          <DialogTitle className="flex items-center gap-2 text-lg sm:text-xl">
+            <Users className="w-4 h-4 sm:w-6 sm:h-6" />
             {messages.form.sections.landowners.title}
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="text-sm">
             {messages.form.sections.landowners.description}
           </DialogDescription>
         </DialogHeader>
 
-        <Card className="max-h-[500px] overflow-y-auto">
-          <CardHeader className="flex flex-row items-center justify-between sticky top-0 bg-background z-10 pb-6 border-b">
-            <CardTitle className="flex items-center gap-2">
-              <UserPlus className="w-5 h-5" />
+        <Card className="max-h-[calc(100vh-16rem)] overflow-y-auto">
+          <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between sticky top-0 bg-background z-10 pb-6 border-b space-y-4 sm:space-y-0">
+            <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+              <UserPlus className="w-4 h-4 sm:w-5 sm:h-5" />
               Land Owners
             </CardTitle>
             <Button
@@ -104,6 +104,7 @@ export function LandOwnersDialog({
                   mobile: "",
                 })
               }
+              className="w-full sm:w-auto"
             >
               <Plus className="mr-2 h-4 w-4" />
               Add Land Owner
@@ -113,17 +114,17 @@ export function LandOwnersDialog({
             {landOwnerFields.map((field, index) => (
               <div key={field.id} className="relative p-4 rounded-lg border bg-card">
                 <div className="grid gap-4">
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <FormField
                       control={form.control}
                       name={`landOwners.${index}.landownerName`}
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>{messages.form.sections.landowners.fields.name}</FormLabel>
+                          <FormLabel className="text-sm">{messages.form.sections.landowners.fields.name}</FormLabel>
                           <FormControl>
-                            <Input {...field} />
+                            <Input className="text-sm" {...field} />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="text-xs" />
                         </FormItem>
                       )}
                     />
@@ -132,26 +133,26 @@ export function LandOwnersDialog({
                       name={`landOwners.${index}.signature`}
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Signature</FormLabel>
+                          <FormLabel className="text-sm">Signature</FormLabel>
                           <FormControl>
-                            <Input {...field} />
+                            <Input className="text-sm" {...field} />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="text-xs" />
                         </FormItem>
                       )}
                     />
                   </div>
-                  <div className="grid grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <FormField
                       control={form.control}
                       name={`landOwners.${index}.aadhar`}
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>{messages.form.sections.landowners.fields.aadhar}</FormLabel>
+                          <FormLabel className="text-sm">{messages.form.sections.landowners.fields.aadhar}</FormLabel>
                           <FormControl>
-                            <Input {...field} />
+                            <Input className="text-sm" {...field} />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="text-xs" />
                         </FormItem>
                       )}
                     />
@@ -160,11 +161,11 @@ export function LandOwnersDialog({
                       name={`landOwners.${index}.email`}
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>{messages.form.sections.landowners.fields.email}</FormLabel>
+                          <FormLabel className="text-sm">{messages.form.sections.landowners.fields.email}</FormLabel>
                           <FormControl>
-                            <Input type="email" {...field} />
+                            <Input className="text-sm" type="email" {...field} />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="text-xs" />
                         </FormItem>
                       )}
                     />
@@ -173,11 +174,11 @@ export function LandOwnersDialog({
                       name={`landOwners.${index}.mobile`}
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>{messages.form.sections.landowners.fields.mobile}</FormLabel>
+                          <FormLabel className="text-sm">{messages.form.sections.landowners.fields.mobile}</FormLabel>
                           <FormControl>
-                            <Input {...field} />
+                            <Input className="text-sm" {...field} />
                           </FormControl>
-                          <FormMessage />
+                          <FormMessage className="text-xs" />
                         </FormItem>
                       )}
                     />
@@ -208,12 +209,12 @@ export function LandOwnersDialog({
             ))}
           </CardContent>
         </Card>
-        <DialogFooter>
-          <div className="flex justify-between w-full">
+        <DialogFooter className="mt-4">
+          <div className="flex flex-col sm:flex-row justify-between w-full gap-4 sm:gap-0">
             <Button
               type="button"
               variant="outline"
-              className="w-[120px]"
+              className="w-full sm:w-[120px]"
               onClick={() => {
                 appendLandOwner({
                   landownerName: "",
@@ -225,7 +226,13 @@ export function LandOwnersDialog({
             >
               Add More
             </Button>
-            <Button type="button" onClick={onSave} className="w-[120px]">{messages.form.buttons.save}</Button>
+            <Button 
+              type="button" 
+              onClick={onSave} 
+              className="w-full sm:w-[120px]"
+            >
+              {messages.form.buttons.save}
+            </Button>
           </div>
         </DialogFooter>
       </DialogContent>

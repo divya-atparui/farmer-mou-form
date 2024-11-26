@@ -31,7 +31,6 @@ import {
 } from "@/components/ui/dialog";
 import { useState } from "react";
 
-import { LanguageToggle } from "@/components/LanguageToggle";
 
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePostLandDetails } from "@/api/form/use-post-land-details";
@@ -192,7 +191,7 @@ export default function LandDetailsForm() {
           {/* Progress Card */}
           <Card className="flex-none">
             <CardHeader>
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
+              <div className="flex flex-col sm:flex-col items-start sm:items-center justify-between mb-6 gap-4">
                 <div>
                   <h1 className="text-xl sm:text-2xl font-bold">
                     {messages.form.title}
@@ -201,21 +200,13 @@ export default function LandDetailsForm() {
                     {messages.form.description}
                   </p>
                 </div>
-                <LanguageToggle />
-              </div>
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <div>
-                  <CardTitle className="text-lg sm:text-xl">
-                    Land Registration Form
-                  </CardTitle>
-                  <CardDescription>
-                    Fill in the details to generate your MOU document
-                  </CardDescription>
+
+                
+            
                 </div>
-                <Badge variant="outline" className="h-8">
-                  {getProgress()}% Complete
-                </Badge>
               </div>
+             
             </CardHeader>
             <CardContent>
               <Progress value={getProgress()} className="mb-4" />
@@ -223,7 +214,7 @@ export default function LandDetailsForm() {
                 <p className="text-muted-foreground">Complete all sections:</p>
                 <div className="grid grid-cols-2 gap-2">
                   <Badge
-                    variant={isSectionComplete("bank") ? "default" : "outline"}
+                    variant={isSectionComplete("bank") ? "defualt" : "outline"}
                     className="text-xs sm:text-sm"
                   >
                     Bank Details

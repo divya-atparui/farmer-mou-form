@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -60,32 +59,32 @@ export function BankDetailsDialog({ form }: BankDetailsDialogProps) {
           {messages.form.buttons.save}
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[800px]">
+      <DialogContent className="sm:max-w-[800px] w-[calc(100vw-2rem)] overflow-y-auto max-h-[calc(100vh-2rem)]">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-xl">
-            <Building2 className="w-5 h-5" />
+          <DialogTitle className="flex items-center gap-2 text-lg sm:text-xl">
+            <Building2 className="w-4 h-4 sm:w-5 sm:h-5" />
             {messages.form.sections.bank.title}
           </DialogTitle>
-          <DialogDescription>
+          <DialogDescription className="text-sm">
             {messages.form.sections.bank.description}
           </DialogDescription>
         </DialogHeader>
-        <Card>
-          <CardHeader>
-            <CardTitle>{messages.form.sections.bank.title}</CardTitle>
-          </CardHeader>
-          <CardContent className="grid gap-6">
-            <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-6 -mx-6">
+          <div className="px-6 py-4 border-b">
+            <div className="text-base sm:text-lg font-semibold">{messages.form.sections.bank.title}</div>
+          </div>
+          <div className="px-6 grid gap-4 sm:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
                 name="accountNumber"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{messages.form.sections.bank.fields.accountNumber}</FormLabel>
+                    <FormLabel className="text-sm">{messages.form.sections.bank.fields.accountNumber}</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input className="text-sm" {...field} />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="text-xs" />
                   </FormItem>
                 )}
               />
@@ -94,27 +93,27 @@ export function BankDetailsDialog({ form }: BankDetailsDialogProps) {
                 name="accountHolder"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{messages.form.sections.bank.fields.accountHolder}</FormLabel>
+                    <FormLabel className="text-sm">{messages.form.sections.bank.fields.accountHolder}</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input className="text-sm" {...field} />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="text-xs" />
                   </FormItem>
                 )}
               />
             </div>
 
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <FormField
                 control={form.control}
                 name="bank"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{messages.form.sections.bank.fields.bank}</FormLabel>
+                    <FormLabel className="text-sm">{messages.form.sections.bank.fields.bank}</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input className="text-sm" {...field} />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="text-xs" />
                   </FormItem>
                 )}
               />
@@ -123,11 +122,11 @@ export function BankDetailsDialog({ form }: BankDetailsDialogProps) {
                 name="branch"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{messages.form.sections.bank.fields.branch}</FormLabel>
+                    <FormLabel className="text-sm">{messages.form.sections.bank.fields.branch}</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input className="text-sm" {...field} />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="text-xs" />
                   </FormItem>
                 )}
               />
@@ -136,27 +135,27 @@ export function BankDetailsDialog({ form }: BankDetailsDialogProps) {
                 name="dateCreated"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Date Created</FormLabel>
+                    <FormLabel className="text-sm">Date Created</FormLabel>
                     <FormControl>
-                      <Input type="date" {...field} />
+                      <Input type="date" className="text-sm" {...field} />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="text-xs" />
                   </FormItem>
                 )}
               />
             </div>
 
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <FormField
                 control={form.control}
                 name="ifscCode"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{messages.form.sections.bank.fields.ifscCode}</FormLabel>
+                    <FormLabel className="text-sm">{messages.form.sections.bank.fields.ifscCode}</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input className="text-sm" {...field} />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="text-xs" />
                   </FormItem>
                 )}
               />
@@ -165,11 +164,11 @@ export function BankDetailsDialog({ form }: BankDetailsDialogProps) {
                 name="swiftCode"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{messages.form.sections.bank.fields.swiftCode}</FormLabel>
+                    <FormLabel className="text-sm">{messages.form.sections.bank.fields.swiftCode}</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input className="text-sm" {...field} />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="text-xs" />
                   </FormItem>
                 )}
               />
@@ -178,20 +177,20 @@ export function BankDetailsDialog({ form }: BankDetailsDialogProps) {
                 name="aksmvbsMembershipNumber"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{messages.form.sections.bank.fields.membershipNumber}</FormLabel>
+                    <FormLabel className="text-sm">{messages.form.sections.bank.fields.membershipNumber}</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input className="text-sm" {...field} />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="text-xs" />
                   </FormItem>
                 )}
               />
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
-        <DialogFooter>
-          <Button onClick={onSave} type="submit" className="w-[120px]">{messages.form.buttons.save}</Button>
+        <DialogFooter className="mt-4">
+          <Button onClick={onSave} type="submit" className="w-full sm:w-[120px]">{messages.form.buttons.save}</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
