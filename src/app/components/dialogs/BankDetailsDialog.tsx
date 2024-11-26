@@ -57,7 +57,7 @@ export function BankDetailsDialog({ form }: BankDetailsDialogProps) {
       <DialogTrigger asChild>
         <Button variant="outline" className="flex items-center gap-2 w-full">
           <CreditCard className="w-4 h-4" />
-          {messages.form.buttons.addMore}
+          {messages.form.buttons.save}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[800px]">

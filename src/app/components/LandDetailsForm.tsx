@@ -13,7 +13,13 @@ import { PropertyDetailsDialog } from "./dialogs/PropertyDetailsDialog";
 import { WitnessesDialog } from "./dialogs/WitnessesDialog";
 import { z } from "zod";
 import { MOUPreview } from "./MOUPreview";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -28,6 +34,9 @@ import { useState } from "react";
 import { LanguageToggle } from "@/components/LanguageToggle";
 
 import { useLanguage } from "@/contexts/LanguageContext";
+import { usePostLandDetails } from "@/api/form/use-post-land-details";
+import JsonDataView from "./JsonDataView";
+import { mockLandDetailsResponse } from "@/mocks/mockLandDetails";
 
 // Define the type from the schema
 export type FormData = z.infer<typeof formSchema>;
@@ -78,14 +87,40 @@ export default function LandDetailsForm() {
     name: "witnesses",
   });
 
-  const [showJsonPreview, setShowJsonPreview] = useState(false);
-  const [jsonData, setJsonData] = useState<FormData | null>(null);
+  const { mutate: postLandDetails, isPending } = usePostLandDetails();
+
+  const [showJsonPreview, setShowJsonPreview] = useState(true);
+  const [jsonData, setJsonData] = useState<LandDetailsResponse | null>(
+    mockLandDetailsResponse
+  );
 
   function onSubmit(data: FormData) {
-    setJsonData(data);
-    setShowJsonPreview(true);
-    toast.success("Form submitted successfully!");
-    console.log(data);
+    postLandDetails(
+      {
+        accountNumber: data.accountNumber,
+        accountHolder: data.accountHolder,
+        bank: data.bank,
+        branch: data.branch,
+        dateCreated: data.dateCreated,
+        ifscCode: data.ifscCode,
+        swiftCode: data.swiftCode,
+        aksmvbsMembershipNumber: data.aksmvbsMembershipNumber,
+        landOwners: data.landOwners,
+        propertyDetails: data.propertyDetails,
+        witnesses: data.witnesses,
+      },
+      {
+        onSuccess: (data) => {
+          setJsonData(data);
+          setShowJsonPreview(true);
+          toast.success("Form submitted successfully!");
+        },
+        onError: (error) => {
+          console.log(error);
+          toast.error("Please Try Again" + error.message);
+        },
+      }
+    );
   }
 
   // Calculate form completion progress
@@ -98,19 +133,19 @@ export default function LandDetailsForm() {
 
     // Check landowners - at least one landowner with required fields
     const hasValidLandowner = formData.landOwners?.some(
-      owner => owner.landownerName && owner.aadhar && owner.mobile
+      (owner) => owner.landownerName && owner.aadhar && owner.mobile
     );
     if (hasValidLandowner) progress += 25;
 
     // Check properties - at least one property with required fields
     const hasValidProperty = formData.propertyDetails?.some(
-      property => property.itemName && property.totalArea && property.location
+      (property) => property.itemName && property.totalArea && property.location
     );
     if (hasValidProperty) progress += 25;
 
     // Check witnesses - at least one witness with required fields
     const hasValidWitness = formData.witnesses?.some(
-      witness => witness.name && witness.address
+      (witness) => witness.name && witness.address
     );
     if (hasValidWitness) progress += 25;
 
@@ -120,19 +155,20 @@ export default function LandDetailsForm() {
   // Helper function to check section completion for badges
   const isSectionComplete = (section: string) => {
     switch (section) {
-      case 'bank':
+      case "bank":
         return !!(formData.accountNumber && formData.bank);
-      case 'landowners':
+      case "landowners":
         return formData.landOwners?.some(
-          owner => owner.landownerName && owner.aadhar && owner.mobile
+          (owner) => owner.landownerName && owner.aadhar && owner.mobile
         );
-      case 'properties':
+      case "properties":
         return formData.propertyDetails?.some(
-          property => property.itemName && property.totalArea && property.location
+          (property) =>
+            property.itemName && property.totalArea && property.location
         );
-      case 'witnesses':
+      case "witnesses":
         return formData.witnesses?.some(
-          witness => witness.name && witness.address
+          (witness) => witness.name && witness.address
         );
       default:
         return false;
@@ -150,14 +186,18 @@ export default function LandDetailsForm() {
               <div className="flex items-center justify-between mb-6">
                 <div>
                   <h1 className="text-2xl font-bold">{messages.form.title}</h1>
-                  <p className="text-muted-foreground">{messages.form.description}</p>
+                  <p className="text-muted-foreground">
+                    {messages.form.description}
+                  </p>
                 </div>
                 <LanguageToggle />
               </div>
               <div className="flex items-center justify-between">
                 <div>
                   <CardTitle>Land Registration Form</CardTitle>
-                  <CardDescription>Fill in the details to generate your MOU document</CardDescription>
+                  <CardDescription>
+                    Fill in the details to generate your MOU document
+                  </CardDescription>
                 </div>
                 <Badge variant="outline" className="h-8">
                   {getProgress()}% Complete
@@ -169,10 +209,32 @@ export default function LandDetailsForm() {
               <div className="space-y-1 text-sm mb-2">
                 <p className="text-muted-foreground">Complete all sections:</p>
                 <div className="grid grid-cols-2 gap-2">
-                  <Badge variant={isSectionComplete('bank') ? "default" : "outline"}>Bank Details</Badge>
-                  <Badge variant={isSectionComplete('landowners') ? "default" : "outline"}>Landowners</Badge>
-                  <Badge variant={isSectionComplete('properties') ? "default" : "outline"}>Properties</Badge>
-                  <Badge variant={isSectionComplete('witnesses') ? "default" : "outline"}>Witnesses</Badge>
+                  <Badge
+                    variant={isSectionComplete("bank") ? "default" : "outline"}
+                  >
+                    Bank Details
+                  </Badge>
+                  <Badge
+                    variant={
+                      isSectionComplete("landowners") ? "default" : "outline"
+                    }
+                  >
+                    Landowners
+                  </Badge>
+                  <Badge
+                    variant={
+                      isSectionComplete("properties") ? "default" : "outline"
+                    }
+                  >
+                    Properties
+                  </Badge>
+                  <Badge
+                    variant={
+                      isSectionComplete("witnesses") ? "default" : "outline"
+                    }
+                  >
+                    Witnesses
+                  </Badge>
                 </div>
               </div>
             </CardContent>
@@ -183,18 +245,28 @@ export default function LandDetailsForm() {
             <CardContent className="p-6">
               <ScrollArea className="">
                 <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                  <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="space-y-4"
+                  >
                     <div className="space-y-4">
-                      
                       <div className="space-y-2">
-                        <h3 className="font-medium">{messages.form.sections.bank.title}</h3>
-                        <p className="text-sm text-muted-foreground">{messages.form.sections.bank.description}</p>
+                        <h3 className="font-medium">
+                          {messages.form.sections.bank.title}
+                        </h3>
+                        <p className="text-sm text-muted-foreground">
+                          {messages.form.sections.bank.description}
+                        </p>
                         <BankDetailsDialog form={form} />
                       </div>
 
                       <div className="space-y-2">
-                        <h3 className="font-medium">{messages.form.sections.landowners.title}</h3>
-                        <p className="text-sm text-muted-foreground">{messages.form.sections.landowners.description}</p>
+                        <h3 className="font-medium">
+                          {messages.form.sections.landowners.title}
+                        </h3>
+                        <p className="text-sm text-muted-foreground">
+                          {messages.form.sections.landowners.description}
+                        </p>
                         <LandOwnersDialog
                           form={form}
                           landOwnerFields={landOwnerFields}
@@ -204,8 +276,12 @@ export default function LandDetailsForm() {
                       </div>
 
                       <div className="space-y-2">
-                        <h3 className="font-medium">{messages.form.sections.property.title}</h3>
-                        <p className="text-sm text-muted-foreground">{messages.form.sections.property.description}</p>
+                        <h3 className="font-medium">
+                          {messages.form.sections.property.title}
+                        </h3>
+                        <p className="text-sm text-muted-foreground">
+                          {messages.form.sections.property.description}
+                        </p>
                         <PropertyDetailsDialog
                           form={form}
                           propertyFields={propertyFields}
@@ -215,8 +291,12 @@ export default function LandDetailsForm() {
                       </div>
 
                       <div className="space-y-2">
-                        <h3 className="font-medium">{messages.form.sections.witnesses.title}</h3>
-                        <p className="text-sm text-muted-foreground">{messages.form.sections.witnesses.description}</p>
+                        <h3 className="font-medium">
+                          {messages.form.sections.witnesses.title}
+                        </h3>
+                        <p className="text-sm text-muted-foreground">
+                          {messages.form.sections.witnesses.description}
+                        </p>
                         <WitnessesDialog
                           form={form}
                           witnessFields={witnessFields}
@@ -234,14 +314,16 @@ export default function LandDetailsForm() {
           {/* Submit Button Card */}
           <Card className="flex-none">
             <CardContent className="p-4">
-              <Button 
-                type="submit" 
-                size="lg" 
+              <Button
+                type="submit"
+                size="lg"
                 className="w-full"
                 onClick={form.handleSubmit(onSubmit)}
-                disabled={getProgress() < 100}
+                disabled={getProgress() < 100 || isPending}
               >
-                {getProgress() < 100 ? "Please Complete All Sections" : "Generate MOU Document"}
+                {getProgress() < 100
+                  ? "Please Complete All Sections"
+                  : "Generate MOU Document"}
               </Button>
             </CardContent>
           </Card>
@@ -253,7 +335,9 @@ export default function LandDetailsForm() {
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle>Document Preview</CardTitle>
-                <CardDescription>Real-time preview of your MOU document</CardDescription>
+                <CardDescription>
+                  Real-time preview of your MOU document
+                </CardDescription>
               </div>
               <Badge variant="secondary">Live Preview</Badge>
             </div>
@@ -261,21 +345,18 @@ export default function LandDetailsForm() {
           <CardContent className="h-[calc(100vh-10rem)]">
             <MOUPreview data={form.watch()} />
           </CardContent>
-          
         </Card>
       </div>
 
       {/* JSON Preview Dialog */}
       <Dialog open={showJsonPreview} onOpenChange={setShowJsonPreview}>
-        <DialogContent className="sm:max-w-[800px]">
-          <DialogHeader>
-            <DialogTitle>Generated MOU Data</DialogTitle>
+        <DialogContent className="sm:max-w-[1200px] sm:max-h-[600px] overflow-scroll">
+          <DialogHeader >
+            <DialogTitle className="text-center text-5xl">Memorandum of Understanding (MoU)</DialogTitle>
           </DialogHeader>
-          <div className="bg-muted p-4 rounded-lg">
-            <pre className="whitespace-pre-wrap overflow-auto max-h-[60vh]">
-              {JSON.stringify(jsonData, null, 2)}
-            </pre>
-          </div>
+
+            <JsonDataView data={jsonData} />
+    
         </DialogContent>
       </Dialog>
     </div>
