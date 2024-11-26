@@ -196,6 +196,280 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
           </CardContent>
         </Card>
 
+        <div className="text-4xl font-bold py-3 ">3.1. Aurigraph</div>
+        <Card>
+          <CardHeader className="hidden" />
+          <CardTitle className="hidden" />
+          <CardContent>
+            <div className="p-4 space-y-4 text-lg">
+              <ol className="list-inside space-y-2">
+                <li>
+                  a. Aurigraph will obtain all compliances and approvals from
+                  regulatory agencies at its cost.
+                </li>
+                <li>
+                  b. Aurigraph will provide feasibility and estimates of yield
+                  after surveys and assessments.
+                </li>
+                <li>
+                  c. Aurigraph will have the yield assessed by a team of experts
+                  and 3rd party verifiers.
+                </li>
+                <li>
+                  d.Aurigraph will conduct drone-based scanning services to
+                  determine and compute natural assets that may be tokenized
+                </li>
+                <li>
+                  e. Aurigraph will integrate with global markets to trade
+                  tokenized assets to derive maximum value for the tokenized
+                  assets.
+                </li>
+                <li>
+                  f. Aurigraph will undertake the sales and marketing of the
+                  digital assets through appropriate legal entities. Digital
+                  Assets would include the digital survey area of the land under
+                  consideration, tokens generated, carbon harvest data, and all
+                  such data collected during the feasibility study.{" "}
+                </li>
+              </ol>
+            </div>
+          </CardContent>
+        </Card>
+        <div className="text-4xl font-bold py-3 ">4. Landowner</div>
+
+        <Card>
+          <CardHeader className="hidden" />
+          <CardTitle className="hidden" />
+          <CardContent>
+            <div className="p-4 space-y-4 text-lg">
+              <ol className="list-inside space-y-2">
+                <li>
+                  a. Landowner expressly hereby provides his/her consent and
+                  no-objection to share the information provided pursuant to
+                  this agreement, including personally identifiable information
+                  and personal sensitive information to Aurigraph and for
+                  Aurigraph to share this information with the third parties.
+                  Aurigraph shall use all reasonable and prudent care to ensure
+                  that any such information collected by it shall be maintained
+                  with the strictest security against unauthorized access or
+                  leak. The personal identifiable information would limit to but
+                  not restricted to all the details required to establish the
+                  bonafide ownership of the land and to establish that the land
+                  is free from any encumbrances.
+                </li>
+                <li>
+                  b. Landowner hereby confirms possessing the rights of
+                  authorization to the land, either arising or granted under
+                  statute, regulation, or decree by a competent authority,
+                  enabling the entry into this agreement with Aurigraph for the
+                  proposed carbon project within a specific geographic
+                  jurisdiction.
+                </li>
+                <li>
+                  c. Landowners shall ensure that the local taxes with respect
+                  to the land are fully paid up from time to time. Copy of the
+                  tax paid receipts shall be shared while submitted the
+                  documents for verification of the title of the land.
+                </li>
+                <li>
+                  d.Whereas landowner offers to assign Carbon Credits or Green
+                  Credits or Scope 3 emission reduction assets or other
+                  ecosystem benefits, collectively referred to as "Carbon
+                  Credits", produced by him/her through adoption of Aurigraph
+                  Carbon Markets to Aurigraph. Landowner declares and agrees to
+                  assign all legal rights to such Carbon Credits to Aurigraph
+                  only, including all the rights to issuances, forwarding, and
+                  sale of such Carbon Credits as issued units under any
+                  applicable standard.
+                </li>
+                <li>
+                  e. Landowner attests that he/she has not participated in the
+                  any greenhouse gases (GHG) reduction projects, or not sold,
+                  and will not sell, any Carbon Credits arising from project
+                  activity(s) to any party other than Aurigraph during the
+                  project life cycle.
+                </li>
+                <li>
+                  f. The participation of landowner in this project is Free,
+                  prior, informed consent, and at his/her sole discretion. The
+                  landowner is solely responsible for enrolling his/her specific
+                  fields of the Land in the Aurigraph carbon project. Land
+                  enrolment is subject to eligibility requirements as may be
+                  established by Aurigraph at its discretion/ Project
+                  requirement. The landowner agrees to initially enrol _______
+                  hectares/acres of Land as provided in the section 10. This
+                  agreement applies to all eligible and enrolled Land including
+                  future enrolments ("Land").
+                </li>
+                <li>
+                  g. Landowner further confirms possessing all legal rights
+                  necessary to execute the project activity or activities within
+                  the Land area registered under the Project, in accordance with
+                  the terms and conditions outlined within this agreement.
+                  Landowner shall provide verifiable documents of properties
+                  listed in Section 10. Failure to establish the title of the
+                  land would be construed as the failure on part of the
+                  landowner.{" "}
+                </li>
+                <li>
+                  h. The Landowner confirms herein that terms and conditions of
+                  this agreement shall survive changes to control of the Land
+                  and will be applicable to those who control the Land in future
+                  for the duration of the term of this agreement. If the
+                  landowner is unable to demonstrate changes in control of the
+                  Land or any change in property ownership, whether in full or
+                  part, he/she shall promptly provide written notice of any loss
+                  of control over the Land to Aurigraph, ensuring that such
+                  changes are communicated at least 30 days in advance. advance.
+                  Failure to comply to this clause would attract a Penalty and
+                  compensation to be mentioned in the definitive agreement
+                </li>
+                <li>
+                  i. Landowners shall promptly notify if there is any change in
+                  the tree cover or land by any natural or man-made causes from
+                  time to time.
+                </li>
+                <li>
+                  j. Landowners shall take all preventive measures to protect
+                  the trees or and continue the improved land management
+                  activities. In the event of any natural calamity will be
+                  notified promptly.
+                </li>
+                <li>
+                  k. In case the landowner wishes to withdraw or cancel the
+                  agreement in part or in full, the landowner must refund one
+                  year’s payment made toward carbon credits for the property
+                  under consideration
+                </li>
+                <li>
+                  l. Landowners must reverify property and beneficiary eKYC
+                  records every 4 (four) years, either through eKYC or through
+                  AKSMVBS , to keep the records current
+                </li>
+              </ol>
+            </div>
+          </CardContent>
+        </Card>
+        <div className="text-4xl font-bold py-3 ">
+          5. Revenue Sharing and Payment Terms
+        </div>
+        <Card>
+          <CardHeader className="hidden" />
+          <CardTitle className="hidden" />
+          <CardContent>
+            <div className="p-4 space-y-4 text-lg">
+              <ol className="list-inside space-y-2">
+                <li>
+                  a. Aurigraph will share 50 % (Fifty percent) of the revenues
+                  with registered Landowner(s) at the time of the sale from the
+                  third year of the sale of carbon tokens through Aurigraph
+                  ActiveContracts
+                </li>
+                <li>
+                  b. Aurigraph will share 2 % (two percent) of the revenues with
+                  AKSMVBS from the third year of sale of carbon tokens of its
+                  members and references through Aurigraph ActiveContracts.
+                </li>
+              </ol>
+            </div>
+          </CardContent>
+        </Card>
+        <div className="text-4xl font-bold py-3 ">
+          6. Monitoring and Verification
+        </div>
+        <Card>
+          <CardHeader className="hidden" />
+          <CardTitle className="hidden" />
+          <CardContent>
+            <div className="p-4 space-y-4 text-lg">
+              <ol className="list-inside space-y-2">
+                <li>
+                  a.AKSMVBS and Landowner shall participate in monitoring and
+                  verification of the Project activities.
+                </li>
+                <li>
+                  b. Aurigraph shall conduct an initial assessment to determine
+                  the carbon harvest potential of the Landowner's property.
+                </li>
+                <li>
+                  c. AKSMVBS and Aurigraph shall conduct a due diligence of the
+                  title deeds of the property. The due diligence would be
+                  conducted to confirm the ownership of the land by the
+                  landowner. The landowner shall cooperate to suitably conduct
+                  the due diligence.
+                </li>
+                <li>
+                  d. The assessment process will adhere to recognized
+                  methodologies and standards for carbon credit measurement and
+                  verification.
+                </li>
+                <li>
+                  e. Landowners shall give access to the land for Audit, survey,
+                  and any kind of verification to Aurigraph and Aurigraph Drones
+                  at any time with 24 hours’ notice.
+                </li>
+              </ol>
+            </div>
+          </CardContent>
+        </Card>
+        <div className="text-4xl font-bold py-3 ">
+          7. Carbon Credit Sequestration
+        </div>
+        <Card>
+          <CardHeader className="hidden" />
+          <CardTitle className="hidden" />
+          <CardContent>
+            <div className="p-4 space-y-4 text-lg">
+              <ol className="list-inside space-y-2">
+                <li>
+                  a. Upon successful assessment, both parties agree to
+                  collaborate in the sequestering carbon credits from the
+                  Landowner's property.
+                </li>
+                <li>
+                  b. Aurigraph shall be responsible for implementing and
+                  managing the carbon credit harvesting process.
+                </li>
+                <li>
+                  c. Aurigraph will communicate and update landowner as and when
+                  if any updates or communication is important.
+                </li>
+              </ol>
+            </div>
+          </CardContent>
+        </Card>
+
+        <div className="text-4xl font-bold py-3 ">8. Governing Law</div>
+        <Card>
+          <CardHeader className="hidden" />
+          <CardTitle className="hidden" />
+          <CardContent>
+            <div className="p-4 space-y-4 text-lg">
+              <ol className="list-inside space-y-2">
+                <li>
+                  This MoU shall be governed by and construed in accordance
+                  with the laws of Bangalore, India.
+                </li>
+              </ol>
+            </div>
+          </CardContent>
+        </Card>
+        <div className="text-4xl font-bold py-3 ">9. Amendments</div>
+        <Card>
+          <CardHeader className="hidden" />
+          <CardTitle className="hidden" />
+          <CardContent>
+            <div className="p-4 space-y-4 text-lg">
+              <ol className="list-inside space-y-2">
+                <li>
+                  Any amendments to this MoU must be made in writing and
+                  signed by both parties.
+                </li>
+              </ol>
+            </div>
+          </CardContent>
+        </Card>
+        
         <Card>
           <CardHeader>
             <div className="flex items-center justify-between">
