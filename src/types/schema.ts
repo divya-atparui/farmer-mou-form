@@ -32,7 +32,6 @@ export const formSchema = z.object({
   swiftCode: z.string().min(8, "SWIFT code must be 8-11 characters").max(11),
   bank: z.string().min(1, "Bank name is required"),
   branch: z.string().min(1, "Branch name is required"),
-  aksmvbsMembershipNumber: z.string().min(1, "Membership number is required"),
   landOwners: z.array(landOwnerSchema).min(1, "At least one landowner is required"),
   propertyDetails: z.array(propertySchema).min(1, "At least one property is required"),
   witnesses: z.array(witnessSchema).min(1, "At least one witness is required"),

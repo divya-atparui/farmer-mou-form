@@ -1,4 +1,4 @@
-# Carbon Credit Form Application
+# Farmers MOUs Form Application
 
 ## Overview
 A web application for managing and tracking carbon credits through land details registration. The application supports multilingual interfaces (English and Kannada) and provides a comprehensive form system for land owners, property details, and witness information.

@@ -184,21 +184,7 @@ export function BankDetailsDialog({ form }: BankDetailsDialogProps) {
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="aksmvbsMembershipNumber"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-sm">
-                      {messages.form.sections.bank.fields.membershipNumber}
-                    </FormLabel>
-                    <FormControl>
-                      <Input className="text-sm" {...field} />
-                    </FormControl>
-                    <FormMessage className="text-xs" />
-                  </FormItem>
-                )}
-              />
+          
             </div>
           </div>
         </div>

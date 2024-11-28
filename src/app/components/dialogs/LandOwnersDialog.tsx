@@ -73,7 +73,7 @@ export function LandOwnersDialog({
           {messages.form.buttons.addMore}
         </Button>
       </DialogTrigger>
-      <DialogContent hideClose className="dialog-modal-style ">
+      <DialogContent hideClose className="dialog-modal-style">
         <DialogHeader className="px-2 xs:px-4 pt-3 xs:pt-6">
           <div className="flex flex-col xs:flex-row xs:justify-between gap-2">
             <DialogTitle className="flex items-center gap-2 text-base xs:text-lg">
@@ -107,112 +107,122 @@ export function LandOwnersDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="mt-2 xs:mt-4 overflow-scroll px-2 xs:px-4 space-y-4 xs:space-y-6 ">
-          {landOwnerFields.map((field, index) => (
-            <div 
-              key={field.id} 
-              className="relative p-3 xs:p-6 bg-white border rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200"
-            >
-              <div className="space-y-3 xs:space-y-4">
-                <div className="grid grid-cols-1 gap-3 xs:gap-6">
-                  <FormField
-                    control={form.control}
-                    name={`landOwners.${index}.landownerName`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-xs xs:text-sm font-medium">
-                          {messages.form.sections.landowners.fields.name}
-                        </FormLabel>
-                        <FormControl>
-                          <Input className="text-xs xs:text-sm h-8 xs:h-9" {...field} />
-                        </FormControl>
-                        <FormMessage className="text-[10px] xs:text-xs" />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name={`landOwners.${index}.signature`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-xs xs:text-sm font-medium">Signature</FormLabel>
-                        <FormControl>
-                          <Input className="text-xs xs:text-sm h-8 xs:h-9" {...field} />
-                        </FormControl>
-                        <FormMessage className="text-[10px] xs:text-xs" />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name={`landOwners.${index}.aadhar`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-xs xs:text-sm font-medium">
-                          {messages.form.sections.landowners.fields.aadhar}
-                        </FormLabel>
-                        <FormControl>
-                          <Input className="text-xs xs:text-sm h-8 xs:h-9" {...field} />
-                        </FormControl>
-                        <FormMessage className="text-[10px] xs:text-xs" />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name={`landOwners.${index}.email`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-xs xs:text-sm font-medium">
-                          {messages.form.sections.landowners.fields.email}
-                        </FormLabel>
-                        <FormControl>
-                          <Input className="text-xs xs:text-sm h-8 xs:h-9" type="email" {...field} />
-                        </FormControl>
-                        <FormMessage className="text-[10px] xs:text-xs" />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name={`landOwners.${index}.mobile`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-xs xs:text-sm font-medium">
-                          {messages.form.sections.landowners.fields.mobile}
-                        </FormLabel>
-                        <FormControl>
-                          <Input className="text-xs xs:text-sm h-8 xs:h-9" type="tel" {...field} />
-                        </FormControl>
-                        <FormMessage className="text-[10px] xs:text-xs" />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </div>
-              <Button
-                type="button"
-                variant="destructive"
-                size="icon"
-                className="absolute -right-1 xs:-right-2 -top-1 xs:-top-2 h-6 w-6 xs:h-8 xs:w-8 rounded-full shadow-lg"
-                onClick={() => {
-                  removeLandOwner(index);
-                  if (landOwnerFields.length === 1) {
-                    appendLandOwner({
-                      landownerName: "",
-                      signature: "",
-                      aadhar: "",
-                      date: new Date().toISOString().split("T")[0],
-                      email: "",
-                      mobile: "",
-                    });
-                  }
-                }}
-              >
-                <Trash2 className="h-3 w-3 xs:h-4 xs:w-4" />
-              </Button>
+        <div className="dialog-content-scroll">
+          {landOwnerFields.length === 0 ? (
+            <div className="dialog-empty-state">
+              <Users className="dialog-empty-state-icon" />
+              <h3 className="dialog-empty-state-title">No Land Owners Added</h3>
+              <p className="dialog-empty-state-text">Please add a land owner using the button above</p>
             </div>
-          ))}
+          ) : (
+            <div className="space-y-4 xs:space-y-6">
+              {landOwnerFields.map((field, index) => (
+                <div 
+                  key={field.id} 
+                  className="relative p-3 xs:p-6 bg-white border rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200"
+                >
+                  <div className="space-y-3 xs:space-y-4">
+                    <div className="grid grid-cols-1 gap-3 xs:gap-6">
+                      <FormField
+                        control={form.control}
+                        name={`landOwners.${index}.landownerName`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-xs xs:text-sm font-medium">
+                              {messages.form.sections.landowners.fields.name}
+                            </FormLabel>
+                            <FormControl>
+                              <Input className="text-xs xs:text-sm h-8 xs:h-9" {...field} />
+                            </FormControl>
+                            <FormMessage className="text-[10px] xs:text-xs" />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`landOwners.${index}.signature`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-xs xs:text-sm font-medium">Signature</FormLabel>
+                            <FormControl>
+                              <Input className="text-xs xs:text-sm h-8 xs:h-9" {...field} />
+                            </FormControl>
+                            <FormMessage className="text-[10px] xs:text-xs" />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`landOwners.${index}.aadhar`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-xs xs:text-sm font-medium">
+                              {messages.form.sections.landowners.fields.aadhar}
+                            </FormLabel>
+                            <FormControl>
+                              <Input className="text-xs xs:text-sm h-8 xs:h-9" {...field} />
+                            </FormControl>
+                            <FormMessage className="text-[10px] xs:text-xs" />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`landOwners.${index}.email`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-xs xs:text-sm font-medium">
+                              {messages.form.sections.landowners.fields.email}
+                            </FormLabel>
+                            <FormControl>
+                              <Input className="text-xs xs:text-sm h-8 xs:h-9" type="email" {...field} />
+                            </FormControl>
+                            <FormMessage className="text-[10px] xs:text-xs" />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`landOwners.${index}.mobile`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-xs xs:text-sm font-medium">
+                              {messages.form.sections.landowners.fields.mobile}
+                            </FormLabel>
+                            <FormControl>
+                              <Input className="text-xs xs:text-sm h-8 xs:h-9" type="tel" {...field} />
+                            </FormControl>
+                            <FormMessage className="text-[10px] xs:text-xs" />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </div>
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="icon"
+                    className="absolute -right-1 xs:-right-2 -top-1 xs:-top-2 h-6 w-6 xs:h-8 xs:w-8 rounded-full shadow-lg"
+                    onClick={() => {
+                      removeLandOwner(index);
+                      if (landOwnerFields.length === 1) {
+                        appendLandOwner({
+                          landownerName: "",
+                          signature: "",
+                          aadhar: "",
+                          date: new Date().toISOString().split("T")[0],
+                          email: "",
+                          mobile: "",
+                        });
+                      }
+                    }}
+                  >
+                    <Trash2 className="h-3 w-3 xs:h-4 xs:w-4" />
+                  </Button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <DialogFooter className="mt-2 xs:mt-4 px-2 xs:px-4">

@@ -67,7 +67,7 @@ declare interface LandDetailsVariables {
   swiftCode: string;
   bank: string;
   branch: string;
-  aksmvbsMembershipNumber: string;
+
   landOwners: LandOwner[];
   propertyDetails: Property[];
   witnesses: Witness[];

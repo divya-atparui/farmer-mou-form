@@ -106,7 +106,7 @@ export default function LandDetailsForm() {
       dateCreated: "",
       ifscCode: "",
       swiftCode: "",
-      aksmvbsMembershipNumber: "",
+      
       landOwners: [],
       propertyDetails: [],
       witnesses: [],
@@ -156,7 +156,7 @@ export default function LandDetailsForm() {
         dateCreated: data.dateCreated,
         ifscCode: data.ifscCode,
         swiftCode: data.swiftCode,
-        aksmvbsMembershipNumber: data.aksmvbsMembershipNumber,
+       
         landOwners: data.landOwners,
         propertyDetails: data.propertyDetails,
         witnesses: data.witnesses,

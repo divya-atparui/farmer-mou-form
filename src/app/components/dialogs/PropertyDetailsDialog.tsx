@@ -74,10 +74,10 @@ export function PropertyDetailsDialog({
         </Button>
       </DialogTrigger>
       <DialogContent hideClose className="dialog-modal-style">
-        <DialogHeader className="px-2 xs:px-4 pt-3 xs:pt-5">
+        <DialogHeader className="px-2 xs:px-4 pt-3 xs:pt-6">
           <div className="flex flex-col xs:flex-row xs:justify-between gap-2">
             <DialogTitle className="flex items-center gap-2 text-base xs:text-lg">
-              <Home className="w-4 h-4" />
+              <Building2 className="w-4 h-4" />
               {messages.form.sections.property.title}
             </DialogTitle>
 
@@ -106,15 +106,22 @@ export function PropertyDetailsDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="mt-2 xs:mt-4 overflow-scroll px-2 xs:px-4 space-y-4 xs:space-y-6">
-          <div className="max-h-[500px] overflow-y-auto -mx-6">
-            <div className="sticky top-0 bg-background z-10 px-6 pb-4 border-b flex flex-row items-center justify-between">
-              <div className="flex items-center gap-2 font-semibold">
-                <Building2 className="w-5 h-5" />
-                Property Details
-              </div>
+        <div className="dialog-content-scroll">
+          {propertyFields.length === 0 ? (
+            <div className="dialog-empty-state">
+              <Building2 className="dialog-empty-state-icon" />
+              <h3 className="dialog-empty-state-title">No Property Details Added</h3>
+              <p className="dialog-empty-state-text">Please add property details using the button above</p>
             </div>
-            <div className="space-y-6 p-6">
+          ) : (
+            <div className="space-y-4 xs:space-y-6">
+              <div className="sticky top-0 bg-background z-10 pb-4 border-b flex flex-row items-center justify-between">
+                <div className="flex items-center gap-2 font-semibold">
+                  <Building2 className="w-5 h-5" />
+                  Property Details
+                </div>
+              </div>
+
               {propertyFields.map((field, index) => (
                 <div
                   key={field.id}
@@ -201,7 +208,7 @@ export function PropertyDetailsDialog({
                     type="button"
                     variant="destructive"
                     size="icon"
-                    className="absolute -right-2 -top-2 h-8 w-8"
+                    className="absolute -right-2 -top-2 h-8 w-8 rounded-full shadow-lg"
                     onClick={() => {
                       removeProperty(index);
                       if (propertyFields.length === 1) {
@@ -220,7 +227,7 @@ export function PropertyDetailsDialog({
                 </div>
               ))}
             </div>
-          </div>
+          )}
         </div>
         <DialogFooter className="mt-2 xs:mt-4 px-2 xs:px-4">
           <div className="flex flex-col xs:flex-row justify-between w-full gap-2 xs:gap-4">
