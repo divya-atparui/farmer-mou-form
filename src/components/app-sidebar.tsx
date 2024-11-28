@@ -35,7 +35,7 @@ export function AppSidebar() {
       <SidebarContent>
       
         <SidebarGroup>
-          <SidebarGroupLabel>Farmer&apos;s MOU Section</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-xl font-bold mb-4">Farmer&apos;s MOU Section</SidebarGroupLabel>
           <SidebarMenu>
             {items.map((item) => (
               <SidebarMenuItem key={item.title}>

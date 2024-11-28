@@ -40,7 +40,7 @@ export default function FormLayout({
         <AppSidebar />
         <main className="flex-1 p-4">
 
-          <SidebarTrigger className="sticky top-0 bg-white p-4 mb-4 rounded-full shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          <SidebarTrigger className="sticky top-4 bg-white p-6 mb-4 rounded-full shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500" />
           
           {children}
         </main>
