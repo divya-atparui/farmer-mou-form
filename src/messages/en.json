@@ -55,7 +55,8 @@
       "save": "Save",
       "addMore": "Add More",
       "generate": "Generate MOU Document",
-      "incomplete": "Please Complete All Sections"
+      "incomplete": "Please Complete All Sections",
+      "close": "Close"
     }
   },
   "preview": {

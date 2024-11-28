@@ -44,7 +44,7 @@ export function BankDetailsDialog({ form }: BankDetailsDialogProps) {
     ];
 
     const result = await form.trigger(bankFields);
-    
+
     if (result) {
       toast.success("Bank details saved successfully!");
       setOpen(false);
@@ -59,28 +59,30 @@ export function BankDetailsDialog({ form }: BankDetailsDialogProps) {
           {messages.form.buttons.save}
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[800px] w-[calc(100vw-2rem)] overflow-y-auto max-h-[calc(100vh-2rem)]">
-        <DialogHeader>
+      <DialogContent
+        hideClose
+        className="dialog-modal-style  "
+      >
+        <DialogHeader className="px-4">
           <DialogTitle className="flex items-center gap-2 text-lg sm:text-xl">
             <Building2 className="w-4 h-4 sm:w-5 sm:h-5" />
             {messages.form.sections.bank.title}
           </DialogTitle>
-          <DialogDescription className="text-sm">
+          <DialogDescription className="text-sm text-start">
             {messages.form.sections.bank.description}
           </DialogDescription>
         </DialogHeader>
-        <div className="space-y-6 -mx-6">
-          <div className="px-6 py-4 border-b">
-            <div className="text-base sm:text-lg font-semibold">{messages.form.sections.bank.title}</div>
-          </div>
-          <div className="px-6 grid gap-4 sm:gap-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="my-4 sm:my-4 overflow-scroll">
+          <div className="px-6 grid gap-4 sm:gap-6 mb-10">
+            <div className="grid grid-cols-1 sm:grid-cols-1 gap-4">
               <FormField
                 control={form.control}
                 name="accountNumber"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-sm">{messages.form.sections.bank.fields.accountNumber}</FormLabel>
+                    <FormLabel className="text-sm">
+                      {messages.form.sections.bank.fields.accountNumber}
+                    </FormLabel>
                     <FormControl>
                       <Input className="text-sm" {...field} />
                     </FormControl>
@@ -93,7 +95,9 @@ export function BankDetailsDialog({ form }: BankDetailsDialogProps) {
                 name="accountHolder"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-sm">{messages.form.sections.bank.fields.accountHolder}</FormLabel>
+                    <FormLabel className="text-sm">
+                      {messages.form.sections.bank.fields.accountHolder}
+                    </FormLabel>
                     <FormControl>
                       <Input className="text-sm" {...field} />
                     </FormControl>
@@ -103,13 +107,15 @@ export function BankDetailsDialog({ form }: BankDetailsDialogProps) {
               />
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
                 name="bank"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-sm">{messages.form.sections.bank.fields.bank}</FormLabel>
+                    <FormLabel className="text-sm">
+                      {messages.form.sections.bank.fields.bank}
+                    </FormLabel>
                     <FormControl>
                       <Input className="text-sm" {...field} />
                     </FormControl>
@@ -122,7 +128,9 @@ export function BankDetailsDialog({ form }: BankDetailsDialogProps) {
                 name="branch"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-sm">{messages.form.sections.bank.fields.branch}</FormLabel>
+                    <FormLabel className="text-sm">
+                      {messages.form.sections.bank.fields.branch}
+                    </FormLabel>
                     <FormControl>
                       <Input className="text-sm" {...field} />
                     </FormControl>
@@ -143,15 +151,14 @@ export function BankDetailsDialog({ form }: BankDetailsDialogProps) {
                   </FormItem>
                 )}
               />
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <FormField
                 control={form.control}
                 name="ifscCode"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-sm">{messages.form.sections.bank.fields.ifscCode}</FormLabel>
+                    <FormLabel className="text-sm">
+                      {messages.form.sections.bank.fields.ifscCode}
+                    </FormLabel>
                     <FormControl>
                       <Input className="text-sm" {...field} />
                     </FormControl>
@@ -159,12 +166,17 @@ export function BankDetailsDialog({ form }: BankDetailsDialogProps) {
                   </FormItem>
                 )}
               />
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
                 name="swiftCode"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-sm">{messages.form.sections.bank.fields.swiftCode}</FormLabel>
+                    <FormLabel className="text-sm">
+                      {messages.form.sections.bank.fields.swiftCode}
+                    </FormLabel>
                     <FormControl>
                       <Input className="text-sm" {...field} />
                     </FormControl>
@@ -177,7 +189,9 @@ export function BankDetailsDialog({ form }: BankDetailsDialogProps) {
                 name="aksmvbsMembershipNumber"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-sm">{messages.form.sections.bank.fields.membershipNumber}</FormLabel>
+                    <FormLabel className="text-sm">
+                      {messages.form.sections.bank.fields.membershipNumber}
+                    </FormLabel>
                     <FormControl>
                       <Input className="text-sm" {...field} />
                     </FormControl>
@@ -190,7 +204,22 @@ export function BankDetailsDialog({ form }: BankDetailsDialogProps) {
         </div>
 
         <DialogFooter className="mt-4">
-          <Button onClick={onSave} type="submit" className="w-full sm:w-[120px]">{messages.form.buttons.save}</Button>
+          <div className="flex w-32 gap-2 flex-row justify-between w-full sm:flex-row sm:justify-end">
+            <Button
+              variant="outline"
+              onClick={() => setOpen(false)}
+              className="w-full sm:w-[120px]"
+            >
+              {messages.form.buttons.close}
+            </Button>
+            <Button
+              onClick={onSave}
+              type="submit"
+              className="w-full sm:w-[120px]"
+            >
+              {messages.form.buttons.save}
+            </Button>
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>

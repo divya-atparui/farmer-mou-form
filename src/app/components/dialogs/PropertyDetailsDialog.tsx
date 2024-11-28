@@ -73,27 +73,18 @@ export function PropertyDetailsDialog({
           {messages.form.buttons.addMore}
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[800px] max-w-[95vw] w-full">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-xl">
-            <Home className="w-6 h-6" />
-            {messages.form.sections.property.title}
-          </DialogTitle>
-          <DialogDescription>
-            {messages.form.sections.property.description}
-          </DialogDescription>
-        </DialogHeader>
+      <DialogContent hideClose className="dialog-modal-style">
+        <DialogHeader className="px-2 xs:px-4 pt-3 xs:pt-5">
+          <div className="flex flex-col xs:flex-row xs:justify-between gap-2">
+            <DialogTitle className="flex items-center gap-2 text-base xs:text-lg">
+              <Home className="w-4 h-4" />
+              {messages.form.sections.property.title}
+            </DialogTitle>
 
-        <div className="max-h-[500px] overflow-y-auto -mx-6">
-          <div className="sticky top-0 bg-background z-10 px-6 pb-4 border-b flex flex-row items-center justify-between">
-            <div className="flex items-center gap-2 font-semibold">
-              <Building2 className="w-5 h-5" />
-              Property Details
-            </div>
             <Button
               type="button"
-              variant="default"
-              className="w-fit"
+              variant="outline"
+              size="sm"
               onClick={() =>
                 appendProperty({
                   itemName: "",
@@ -103,137 +94,149 @@ export function PropertyDetailsDialog({
                   location: "",
                 })
               }
+              className="w-full xs:w-40 text-xs rounded-sm drop-shadow-lg"
             >
-              <Plus className="mr-2 h-4 w-4" />
+              <Plus className="mr-1 h-3 w-3 xs:h-4 xs:w-4" />
               Add Property
             </Button>
           </div>
-          <div className="space-y-6 p-6">
-            {propertyFields.map((field, index) => (
-              <div
-                key={field.id}
-                className="relative p-2 sm:p-4 rounded-lg border bg-card"
-              >
-                <div className="grid gap-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <FormField
-                      control={form.control}
-                      name={`propertyDetails.${index}.itemName`}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>{messages.form.sections.property.fields.itemName}</FormLabel>
-                          <FormControl>
-                            <Input {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name={`propertyDetails.${index}.cropDetails`}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>{messages.form.sections.property.fields.cropDetails}</FormLabel>
-                          <FormControl>
-                            <Input {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <FormField
-                      control={form.control}
-                      name={`propertyDetails.${index}.totalArea`}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>{messages.form.sections.property.fields.totalArea}</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="number"
-                              {...field}
-                              onChange={(e) =>
-                                field.onChange(parseFloat(e.target.value))
-                              }
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name={`propertyDetails.${index}.surveyNumbers`}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>{messages.form.sections.property.fields.surveyNumbers}</FormLabel>
-                          <FormControl>
-                            <Input {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name={`propertyDetails.${index}.location`}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>{messages.form.sections.property.fields.location}</FormLabel>
-                          <FormControl>
-                            <Input {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                </div>
-                <Button
-                  type="button"
-                  variant="destructive"
-                  size="icon"
-                  className="absolute -right-2 -top-2 h-8 w-8"
-                  onClick={() => {
-                    removeProperty(index);
-                    if (propertyFields.length === 1) {
-                      appendProperty({
-                        itemName: "",
-                        cropDetails: "",
-                        totalArea: 0,
-                        surveyNumbers: "",
-                        location: "",
-                      });
-                    }
-                  }}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
+
+          <DialogDescription className="text-xs xs:text-sm text-start mt-1">
+            {messages.form.sections.property.description}
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="mt-2 xs:mt-4 overflow-scroll px-2 xs:px-4 space-y-4 xs:space-y-6">
+          <div className="max-h-[500px] overflow-y-auto -mx-6">
+            <div className="sticky top-0 bg-background z-10 px-6 pb-4 border-b flex flex-row items-center justify-between">
+              <div className="flex items-center gap-2 font-semibold">
+                <Building2 className="w-5 h-5" />
+                Property Details
               </div>
-            ))}
+            </div>
+            <div className="space-y-6 p-6">
+              {propertyFields.map((field, index) => (
+                <div
+                  key={field.id}
+                  className="relative p-2 sm:p-4 rounded-lg border bg-card"
+                >
+                  <div className="grid gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <FormField
+                        control={form.control}
+                        name={`propertyDetails.${index}.itemName`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{messages.form.sections.property.fields.itemName}</FormLabel>
+                            <FormControl>
+                              <Input {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`propertyDetails.${index}.cropDetails`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{messages.form.sections.property.fields.cropDetails}</FormLabel>
+                            <FormControl>
+                              <Input {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      <FormField
+                        control={form.control}
+                        name={`propertyDetails.${index}.totalArea`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{messages.form.sections.property.fields.totalArea}</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="number"
+                                {...field}
+                                onChange={(e) =>
+                                  field.onChange(parseFloat(e.target.value))
+                                }
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`propertyDetails.${index}.surveyNumbers`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{messages.form.sections.property.fields.surveyNumbers}</FormLabel>
+                            <FormControl>
+                              <Input {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`propertyDetails.${index}.location`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{messages.form.sections.property.fields.location}</FormLabel>
+                            <FormControl>
+                              <Input {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </div>
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="icon"
+                    className="absolute -right-2 -top-2 h-8 w-8"
+                    onClick={() => {
+                      removeProperty(index);
+                      if (propertyFields.length === 1) {
+                        appendProperty({
+                          itemName: "",
+                          cropDetails: "",
+                          totalArea: 0,
+                          surveyNumbers: "",
+                          location: "",
+                        });
+                      }
+                    }}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-        <DialogFooter>
-          <div className="flex flex-col sm:flex-row justify-between w-full gap-4">
+        <DialogFooter className="mt-2 xs:mt-4 px-2 xs:px-4">
+          <div className="flex flex-col xs:flex-row justify-between w-full gap-2 xs:gap-4">
             <Button
               type="button"
               variant="outline"
-              className="w-full sm:w-[120px]"
-              onClick={() => {
-                appendProperty({
-                  itemName: "",
-                  cropDetails: "",
-                  totalArea: 0,
-                  surveyNumbers: "",
-                  location: "",
-                });
-              }}
+              className="w-full text-xs xs:text-sm h-8 xs:h-9"
+              onClick={() => setOpen(false)}
             >
-              Add More
+              {messages.form.buttons.close}
             </Button>
-            <Button type="button" className="w-full sm:w-[120px]" onClick={onSave}>
+            <Button
+              type="button"
+              onClick={onSave}
+              className="w-full text-xs xs:text-sm h-8 xs:h-9"
+            >
               {messages.form.buttons.save}
             </Button>
           </div>

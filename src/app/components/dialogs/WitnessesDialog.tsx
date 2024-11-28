@@ -72,28 +72,18 @@ export function WitnessesDialog({
           {messages.form.buttons.addMore}
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[800px] max-w-[95vw] w-full">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-lg sm:text-xl">
-            <UserCheck className="w-4 h-4 sm:w-6 sm:h-6" />
-            {messages.form.sections.witnesses.title}
-          </DialogTitle>
-          <DialogDescription className="text-sm">
-            {messages.form.sections.witnesses.description}
-          </DialogDescription>
-        </DialogHeader>
+      <DialogContent hideClose className="dialog-modal-style">
+        <DialogHeader className="px-2 xs:px-4 pt-3 xs:pt-5">
+          <div className="flex flex-col xs:flex-row xs:justify-between gap-2">
+            <DialogTitle className="flex items-center gap-2 text-base xs:text-lg">
+              <UserCheck className="w-4 h-4" />
+              {messages.form.sections.witnesses.title}
+            </DialogTitle>
 
-        <div className="max-h-[500px] overflow-y-auto -mx-6">
-          <div className="sticky top-0 bg-background z-10 px-6 pb-4 border-b flex flex-row items-center justify-between">
-            <div className="flex items-center gap-2 font-semibold text-sm sm:text-base">
-              <Users className="w-4 h-4 sm:w-5 sm:h-5" />
-              Witnesses
-            </div>
             <Button
               type="button"
               variant="outline"
               size="sm"
-              className="w-fit"
               onClick={() =>
                 appendWitness({
                   name: "",
@@ -102,118 +92,130 @@ export function WitnessesDialog({
                   date: new Date().toISOString().split("T")[0],
                 })
               }
+              className="w-full xs:w-40 text-xs rounded-sm drop-shadow-lg"
             >
-              <Plus className="mr-2 h-4 w-4" />
-              <span className="hidden sm:inline">Add Witness</span>
-              <span className="sm:hidden">Add</span>
+              <Plus className="mr-1 h-3 w-3 xs:h-4 xs:w-4" />
+              Add Witness
             </Button>
           </div>
-          <div className="space-y-4 sm:space-y-6 p-4 sm:p-6">
-            {witnessFields.map((field, index) => (
-              <div
-                key={field.name}
-                className="relative p-2 sm:p-4 rounded-lg border bg-card"
-              >
-                <div className="grid gap-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <FormField
-                      control={form.control}
-                      name={`witnesses.${index}.name`}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>{messages.form.sections.witnesses.fields.name}</FormLabel>
-                          <FormControl>
-                            <Input {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name={`witnesses.${index}.date`}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>{messages.form.sections.witnesses.fields.date}</FormLabel>
-                          <FormControl>
-                            <Input type="date" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <FormField
-                      control={form.control}
-                      name={`witnesses.${index}.address`}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>{messages.form.sections.witnesses.fields.address}</FormLabel>
-                          <FormControl>
-                            <Input {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name={`witnesses.${index}.note`}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>{messages.form.sections.witnesses.fields.note}</FormLabel>
-                          <FormControl>
-                            <Input {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
+
+          <DialogDescription className="text-xs xs:text-sm text-start mt-1">
+            {messages.form.sections.witnesses.description}
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="mt-2 xs:mt-4 overflow-scroll px-2 xs:px-4 space-y-4 xs:space-y-6">
+          {witnessFields.map((field, index) => (
+            <div
+              key={field.name}
+              className="relative p-3 xs:p-6 bg-white border rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200"
+            >
+              <div className="space-y-3 xs:space-y-4">
+                <div className="grid grid-cols-1 gap-3 xs:gap-6">
+                  <FormField
+                    control={form.control}
+                    name={`witnesses.${index}.name`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-xs xs:text-sm font-medium">
+                          {messages.form.sections.witnesses.fields.name}
+                        </FormLabel>
+                        <FormControl>
+                          <Input className="text-xs xs:text-sm h-8 xs:h-9" {...field} />
+                        </FormControl>
+                        <FormMessage className="text-[10px] xs:text-xs" />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name={`witnesses.${index}.date`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-xs xs:text-sm font-medium">
+                          {messages.form.sections.witnesses.fields.date}
+                        </FormLabel>
+                        <FormControl>
+                          <Input 
+                            type="date" 
+                            className="text-xs xs:text-sm h-8 xs:h-9" 
+                            {...field} 
+                          />
+                        </FormControl>
+                        <FormMessage className="text-[10px] xs:text-xs" />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name={`witnesses.${index}.address`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-xs xs:text-sm font-medium">
+                          {messages.form.sections.witnesses.fields.address}
+                        </FormLabel>
+                        <FormControl>
+                          <Input className="text-xs xs:text-sm h-8 xs:h-9" {...field} />
+                        </FormControl>
+                        <FormMessage className="text-[10px] xs:text-xs" />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name={`witnesses.${index}.note`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-xs xs:text-sm font-medium">
+                          {messages.form.sections.witnesses.fields.note}
+                        </FormLabel>
+                        <FormControl>
+                          <Input className="text-xs xs:text-sm h-8 xs:h-9" {...field} />
+                        </FormControl>
+                        <FormMessage className="text-[10px] xs:text-xs" />
+                      </FormItem>
+                    )}
+                  />
                 </div>
-                <Button
-                  type="button"
-                  variant="destructive"
-                  size="icon"
-                  className="absolute -right-2 -top-2 h-8 w-8"
-                  onClick={() => {
-                    removeWitness(index);
-                    if (witnessFields.length === 1) {
-                      appendWitness({
-                        name: "",
-                        address: "",
-                        note: "",
-                        date: new Date().toISOString().split("T")[0],
-                      });
-                    }
-                  }}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
               </div>
-            ))}
-          </div>
+              <Button
+                type="button"
+                variant="destructive"
+                size="icon"
+                className="absolute -right-1 xs:-right-2 -top-1 xs:-top-2 h-6 w-6 xs:h-8 xs:w-8 rounded-full shadow-lg"
+                onClick={() => {
+                  removeWitness(index);
+                  if (witnessFields.length === 1) {
+                    appendWitness({
+                      name: "",
+                      address: "",
+                      note: "",
+                      date: new Date().toISOString().split("T")[0],
+                    });
+                  }
+                }}
+              >
+                <Trash2 className="h-3 w-3 xs:h-4 xs:w-4" />
+              </Button>
+            </div>
+          ))}
         </div>
-        <DialogFooter>
-          <div className="flex flex-col sm:flex-row justify-between w-full gap-3 sm:gap-4">
+
+        <DialogFooter className="mt-2 xs:mt-4 px-2 xs:px-4">
+          <div className="flex flex-col xs:flex-row justify-between w-full gap-2 xs:gap-4">
             <Button
               type="button"
               variant="outline"
-              className="w-full sm:w-fit"
-              onClick={() => {
-                appendWitness({
-                  name: "",
-                  address: "",
-                  note: "",
-                  date: new Date().toISOString().split("T")[0],
-                });
-              }}
+              className="w-full text-xs xs:text-sm h-8 xs:h-9"
+              onClick={() => setOpen(false)}
             >
-              <Plus className="mr-2 h-4 w-4" />
-              Add More
+              {messages.form.buttons.close}
             </Button>
-            <Button type="button" onClick={onSave} className="w-full sm:w-fit">
+            <Button
+              type="button"
+              onClick={onSave}
+              className="w-full text-xs xs:text-sm h-8 xs:h-9"
+            >
               {messages.form.buttons.save}
             </Button>
           </div>

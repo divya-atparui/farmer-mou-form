@@ -23,15 +23,14 @@ export function MOUPreview({ data }: MOUPreviewProps) {
   });
 
   return (
-    <ScrollArea className="h-full">
-      <div className="p-4">
-     
+    <ScrollArea className="h-screen">
+      <div className="p-4 mx-auto flex flex-col items-center justify-center">
         <div
           ref={contentRef}
           className="prose max-w-none dark:prose-invert bg-white rounded-lg print:p-0 print:shadow-none"
           style={{ maxWidth: "210mm" }}
         >
-          <CardContent className="space-y-4">
+          <div className="space-y-4">
             <p className="text-muted-foreground">
               This Memorandum of Understanding (&quot;MoU&quot;) is entered into
               as of {currentDate} (&quot;Effective Date&quot;) by and between
@@ -321,7 +320,7 @@ export function MOUPreview({ data }: MOUPreviewProps) {
                 {data.aksmvbsMembershipNumber || "_____________"}
               </Badge>
             </div>
-          </CardContent>
+          </div>
         </div>
       </div>
     </ScrollArea>

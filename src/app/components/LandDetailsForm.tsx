@@ -26,12 +26,11 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useState } from "react";
-
-
+import { useState, useEffect } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { usePostLandDetails } from "@/api/form/use-post-land-details";
 import JsonDataView from "./JsonDataView";
@@ -42,6 +41,61 @@ export type FormData = z.infer<typeof formSchema>;
 
 export default function LandDetailsForm() {
   const { messages } = useLanguage();
+  const [location, setLocation] = useState<{ latitude: number; longitude: number } | null>(null);
+  const [locationError, setLocationError] = useState<string>("");
+  console.log(locationError, "locationError");
+  console.log(location, "location");  
+
+  const getLocation = () => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    if ("geolocation" in navigator) {
+      const options = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+      };
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLocation({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          });
+        },
+        (error) => {
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              const isFirefox = typeof window !== 'undefined' && navigator.userAgent.toLowerCase().includes('firefox');
+              if (isFirefox && window.location.protocol === 'http:') {
+                setLocationError("Firefox requires HTTPS for geolocation. Please use HTTPS or try Chrome.");
+              } else {
+                setLocationError("Location permission denied. Please enable location access.");
+              }
+              break;
+            case error.POSITION_UNAVAILABLE:
+              setLocationError("Location information is unavailable.");
+              break;
+            case error.TIMEOUT:
+              setLocationError("Location request timed out. Please try again.");
+              break;
+            default:
+              setLocationError(`An unknown error occurred: ${error.message}`);
+          }
+        },
+        options
+      );
+    } else {
+      setLocationError("Geolocation is not supported by your browser");
+    }
+  };
+
+  useEffect(() => {
+    getLocation();
+  }, []);
+
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -91,6 +145,7 @@ export default function LandDetailsForm() {
   const [showJsonPreview, setShowJsonPreview] = useState(false);
   const [jsonData, setJsonData] = useState<LandDetailsResponse | null>(null);
 
+ 
   function onSubmit(data: FormData) {
     postLandDetails(
       {
@@ -105,6 +160,12 @@ export default function LandDetailsForm() {
         landOwners: data.landOwners,
         propertyDetails: data.propertyDetails,
         witnesses: data.witnesses,
+        geoCoordinates:
+          location && location.latitude && location.longitude
+            ? `${location.latitude},${location.longitude}`
+            : "not_available",
+        latitude: location?.latitude,
+        longitude: location?.longitude,
       },
       {
         onSuccess: (data) => {
@@ -184,7 +245,7 @@ export default function LandDetailsForm() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-6 min-h-screen">
+    <div className="container mx-auto px-4 py-6 min-h-screen mt-5">
       <div className="flex flex-col lg:flex-row gap-6">
         {/* Form Section */}
         <div className="w-full lg:w-[400px] flex flex-col gap-4">
@@ -200,13 +261,8 @@ export default function LandDetailsForm() {
                     {messages.form.description}
                   </p>
                 </div>
-                <div>
-
-                
-            
-                </div>
+                <div></div>
               </div>
-             
             </CardHeader>
             <CardContent>
               <Progress value={getProgress()} className="mb-4" />
@@ -214,7 +270,7 @@ export default function LandDetailsForm() {
                 <p className="text-muted-foreground">Complete all sections:</p>
                 <div className="grid grid-cols-2 gap-2">
                   <Badge
-                    variant={isSectionComplete("bank") ? "defualt" : "outline"}
+                    variant={isSectionComplete("bank") ? "default" : "outline"}
                     className="text-xs sm:text-sm"
                   >
                     Bank Details
@@ -258,15 +314,6 @@ export default function LandDetailsForm() {
                     className="space-y-4"
                   >
                     <div className="space-y-4">
-                      <div className="space-y-2">
-                        <h3 className="font-medium">
-                          {messages.form.sections.bank.title}
-                        </h3>
-                        <p className="text-sm text-muted-foreground">
-                          {messages.form.sections.bank.description}
-                        </p>
-                        <BankDetailsDialog form={form} />
-                      </div>
 
                       <div className="space-y-2">
                         <h3 className="font-medium">
@@ -297,6 +344,15 @@ export default function LandDetailsForm() {
                           removeProperty={removeProperty}
                         />
                       </div>
+                      <div className="space-y-2">
+                        <h3 className="font-medium">
+                          {messages.form.sections.bank.title}
+                        </h3>
+                        <p className="text-sm text-muted-foreground">
+                          {messages.form.sections.bank.description}
+                        </p>
+                        <BankDetailsDialog form={form} />
+                      </div>
 
                       <div className="space-y-2">
                         <h3 className="font-medium">
@@ -320,7 +376,7 @@ export default function LandDetailsForm() {
           </Card>
 
           {/* Submit Button Card */}
-          <Card className="flex-none">
+          <Card className="flex-none mb-10">
             <CardContent className="p-4">
               <Button
                 type="submit"
@@ -360,7 +416,7 @@ export default function LandDetailsForm() {
               </Badge>
             </div>
           </CardHeader>
-          <CardContent className="h-[calc(100vh-10rem)]">
+          <CardContent className="h-[calc(100vh-20rem)] overflow-scroll">
             <MOUPreview data={form.watch()} />
           </CardContent>
         </Card>
@@ -379,29 +435,41 @@ export default function LandDetailsForm() {
 
       {/* JSON Preview Dialog */}
       <Dialog open={showJsonPreview} onOpenChange={setShowJsonPreview}>
-        <DialogContent className="w-[calc(100vw-2rem)] sm:max-w-[1200px] h-[calc(100vh-4rem)] overflow-auto">
-          <DialogHeader>
-            <DialogTitle className="text-center text-xl sm:text-2xl">
+        <DialogContent
+          hideClose
+          className="w-[calc(100vw-2rem)] sm:w-[calc(100vw-1rem)] sm:max-w-[1200px] h-[calc(100vh-1rem)] sm:h-[calc(100vh-2rem)]  p-2 sm:p-6"
+        >
+          <DialogHeader className="space-y-2 sm:space-y-4">
+            <DialogTitle className="text-center text-lg sm:text-xl md:text-2xl">
               Memorandum of Understanding (MoU)
             </DialogTitle>
-            <div className="flex justify-end mt-4">
+            <div className="flex justify-end">
               <Button
                 onClick={handlePrint}
                 variant="default"
-                className="text-sm sm:text-base"
+                className="text-xs sm:text-sm px-2 py-1 h-8 sm:h-10 sm:px-4 sm:py-2"
               >
                 Print MoU
               </Button>
             </div>
           </DialogHeader>
 
-          <div id="mou-content" className="">
+          <div id="mou-content" className="mt-2 sm:mt-4 overflow-scroll">
             {messages.lang === "en" ? (
               <JsonDataView data={jsonData} />
             ) : (
               <JsonDataKannadaView data={jsonData} />
             )}
           </div>
+          <DialogFooter>
+            <Button
+              onClick={() => setShowJsonPreview(false)}
+              variant="default"
+              className="w-32 sm:w-40"
+            >
+              Close
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>
