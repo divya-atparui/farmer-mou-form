@@ -3,7 +3,7 @@
 
 import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { formSchema } from "../types/schema";
+
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { toast } from "sonner";
@@ -12,7 +12,7 @@ import { LandOwnersDialog } from "./dialogs/LandOwnersDialog";
 import { PropertyDetailsDialog } from "./dialogs/PropertyDetailsDialog";
 import { WitnessesDialog } from "./dialogs/WitnessesDialog";
 import { z } from "zod";
-import { MOUPreview } from "./MOUPreview";
+
 import {
   Card,
   CardContent,
@@ -35,6 +35,8 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { usePostLandDetails } from "@/api/form/use-post-land-details";
 import JsonDataView from "./JsonDataView";
 import JsonDataKannadaView from "./JsonDataKannadaView";
+import { formSchema } from "@/types/schema";
+import { MOUPreview } from "./MOUPreview";
 
 // Define the type from the schema
 export type FormData = z.infer<typeof formSchema>;

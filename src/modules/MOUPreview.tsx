@@ -1,5 +1,5 @@
 "use client";
-import { FormData } from "./LandDetailsForm";
+import { FormData } from "./LandDetailsForm2";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";

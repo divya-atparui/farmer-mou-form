@@ -1,5 +1,5 @@
 import React from 'react'
-import JsonDataKannadaView from '../components/JsonDataKannadaView'
+import JsonDataKannadaView from '../../modules/JsonDataKannadaView'
 import { mockLandDetailsResponse } from '@/mocks/mockLandDetails'
 
 const TestPage = () => {

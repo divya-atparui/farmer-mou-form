@@ -1,28 +1,30 @@
-"use client"
-import { deleteCookie } from "@/api/auth/cookie";
-import { LanguageToggle } from "@/components/LanguageToggle";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import { useTransition } from "react";
+"use client";
+// import { deleteCookie } from "@/api/auth/cookie";
+import { AppSidebar } from "@/components/app-sidebar";
+// import { LanguageToggle } from "@/components/LanguageToggle";
+// import { Button } from "@/components/ui/button";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+// import { useRouter } from "next/navigation";
+// import { useTransition } from "react";
 
 export default function FormLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const router = useRouter();
-  const [isPending, startTransition] = useTransition();
+  // const router = useRouter();
+  // const [isPending, startTransition] = useTransition();
 
-  const handleLogout = async () => {
-    startTransition(async () => {
-      await deleteCookie();
-      router.push("/login");
-    });
-  };
+  // const handleLogout = async () => {
+  //   startTransition(async () => {
+  //     await deleteCookie();
+  //     router.push("/login");
+  //   });
+  // };
 
   return (
     <>
-      <div className="fixed top-4 right-4 z-50 flex flex-col items-center gap-2">
+      {/* <div className="fixed top-4 right-4 z-50 flex flex-col items-center gap-2">
         <Button
           onClick={handleLogout}
           variant="default"
@@ -33,8 +35,16 @@ export default function FormLayout({
           {isPending ? "Logging out..." : "Logout"}
         </Button>
         <LanguageToggle />
-      </div>
-      <main className="min-h-screen bg-gray-50">{children}</main>
+      </div> */}
+      <SidebarProvider className="flex h-screen">
+        <AppSidebar />
+        <main className="flex-1 p-4">
+
+          <SidebarTrigger className="sticky top-0 bg-white p-4 mb-4 rounded-full shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500" />
+          
+          {children}
+        </main>
+      </SidebarProvider>
     </>
   );
 }
