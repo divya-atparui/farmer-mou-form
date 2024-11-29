@@ -13,10 +13,16 @@ import { ChevronUp, User2 } from 'lucide-react'
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { Separator } from './ui/separator'
 import { useRouter } from "next/navigation";
+import { useGetUserDetails } from '@/api/auth/use-get-user-details';
+
 const Applogout = () => {
   const [isOpen, setIsOpen] = useState(false)
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+
+const { data } =  useGetUserDetails()
+
+console.log(data)
 
   const handleLogout = async () => {
     startTransition(async () => {
@@ -33,18 +39,25 @@ const Applogout = () => {
         <DropdownMenu onOpenChange={(open) => setIsOpen(open)}>
           <DropdownMenuTrigger asChild>
             <SidebarMenuButton className="focus:outline-none">
-              <User2 className="mr-2" /> Username
+              <User2 className="mr-2" /> {data?.fullName}
               <ChevronUp className={`ml-auto transition-transform duration-200 ease-in-out ${isOpen ? 'rotate-180' : ''}`} />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
             side="top"
-            className="w-[--radix-popper-anchor-width]"
+            className="w-[--radix-popper-anchor-width] bg-white shadow-md rounded-md p-4"
           >
             <DropdownMenuItem>
-              <span  onClick={handleLogout} className="flex items-center gap-2 hover:opacity-70 transition-opacity duration-200 ease-in-out">
+              <div className="flex flex-col bg-blue-100/30 p-2 rounded-md w-full">
+                <span className="font-semibold text-lg">{data?.fullName}</span>
+                <span className="text-sm text-green-600">{data?.email}</span>
+              </div>
+            </DropdownMenuItem>
+            <Separator className="my-1" />
+            <DropdownMenuItem>
+              <div  onClick={handleLogout} className="flex items-center gap-2 transition-all duration-200 ease-in-out hover:cursor-pointer w-full p-2 rounded-md">
                 <span>Sign out</span>
-              </span>
+              </div>
             </DropdownMenuItem>
             <Separator className="my-1" />
             <DropdownMenuItem>

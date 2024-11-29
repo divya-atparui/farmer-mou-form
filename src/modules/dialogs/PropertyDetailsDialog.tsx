@@ -114,7 +114,7 @@ export function PropertyDetailsDialog({
               <p className="dialog-empty-state-text">Please add property details using the button above</p>
             </div>
           ) : (
-            <div className="space-y-4 xs:space-y-6">
+            <div className="space-y-4 xs:space-y-6 max-h-[480px] no-scrollbar overflow-scroll ">
               <div className="sticky top-0 bg-background z-10 pb-4 border-b flex flex-row items-center justify-between">
                 <div className="flex items-center gap-2 font-semibold">
                   <Building2 className="w-5 h-5" />
@@ -125,7 +125,7 @@ export function PropertyDetailsDialog({
               {propertyFields.map((field, index) => (
                 <div
                   key={field.id}
-                  className="relative p-2 sm:p-4 rounded-lg border bg-card"
+                  className="relative p-2 sm:p-4 rounded-lg border bg-card mx-3"
                 >
                   <div className="grid gap-4">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

@@ -14,9 +14,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { usePostRegister } from "@/api/auth/use-post-register";
+
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { usePostRegister } from "@/api/auth/use-post-register";
 
 const formSchema = z.object({
   email: z.string().email({

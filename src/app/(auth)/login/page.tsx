@@ -13,11 +13,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
-import { usePostLogin } from "@/api/auth/use-post-login";
+
 import { loginSchema } from "@/app/types/schema";
 import type { z } from "zod";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { usePostLogin } from "@/api/auth/use-post-login";
 
 export default function LoginPage() {
   const router = useRouter();

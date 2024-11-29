@@ -4,13 +4,13 @@ import { getUserLandDetails } from './get-data';
 
 
 
-// type Response = {};
+type Response = UserLandDetailsResponse[];
 type Variables = void;
 
 export const useGetUserLandDetails = createQuery<Response, Variables, AxiosError>({
-  queryKey: [''],
+  queryKey: ['userLandDetails'],
   fetcher: () => {
-    const data = getUserLandDetails({ userId: "" });
+    const data = getUserLandDetails();
     return data;
   },
 });

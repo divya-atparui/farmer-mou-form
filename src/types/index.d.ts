@@ -71,15 +71,15 @@ declare interface LandDetailsVariables {
   landOwners: LandOwner[];
   propertyDetails: Property[];
   witnesses: Witness[];
-  geoCoordinates: string;
-  latitude?: number;
-  longitude?: number;
+  geoCoordinates: string | "";
+
 }
 
 declare interface LandOwner {
   landownerName: string;
   signature: string;
   aadhar: string;
+  address:string;
   date: string;
   email: string;
   mobile: string;
@@ -114,8 +114,7 @@ declare interface LandDetailsResponse {
   propertyDetails: PropertyResponse[];
   witnesses: WitnessResponse[];
   geoCoordinates: string | "not_available";
-  latitude?: number;
-  longitude?: number;
+
 }
   
 
@@ -161,7 +160,24 @@ declare interface UserLandDetailsResponse {
   landOwners: LandOwnerResponse[];
   propertyDetails: PropertyResponse[];
   witnesses: WitnessResponse[];
-  geoCoordinates: string | "not_available";
+  geoCoordinates: string | "";
   latitude?: number;
   longitude?: number;
+}
+
+declare interface UserDetailsResponse {
+  createdBy: null;
+  createdDate: string;
+  lastModifiedBy: null;
+  lastModifiedDate: string;
+  id: number;
+  fullName: string;
+  email: string;
+  password: string;
+  enabled: boolean;
+  authorities: unknown[];
+  username: string;
+  accountNonExpired: boolean;
+  accountNonLocked: boolean;
+  credentialsNonExpired: boolean;
 }

@@ -115,11 +115,12 @@ export function LandOwnersDialog({
               <p className="dialog-empty-state-text">Please add a land owner using the button above</p>
             </div>
           ) : (
-            <div className="space-y-4 xs:space-y-6">
+            <div className="space-y-4 xs:space-y-6 h-[500px] overflow-y-auto no-scrollbar">
+              <div  className="m-2"/>
               {landOwnerFields.map((field, index) => (
                 <div 
                   key={field.id} 
-                  className="relative p-3 xs:p-6 bg-white border rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200"
+                  className="relative p-3 xs:p-6 bg-white border rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 mx-2"
                 >
                   <div className="space-y-3 xs:space-y-4">
                     <div className="grid grid-cols-1 gap-3 xs:gap-6">

@@ -26,6 +26,7 @@
           "name": "Name",
           "aadhar": "Aadhar",
           "mobile": "Mobile",
+          "address": "Address",
           "email": "Email"
         }
       },
@@ -70,6 +71,8 @@
       "badge": "Landowner",
       "date": "Date",
       "email": "Email",
+      "landownerName": "Landowner Name",
+     
       "mobile": "Mobile",
       "aadhar": "Aadhar",
       "signature": "Signature"

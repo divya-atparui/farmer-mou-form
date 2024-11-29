@@ -166,8 +166,7 @@ export default function LandDetailsForm() {
           location && location.latitude && location.longitude
             ? `${location.latitude},${location.longitude}`
             : "not_available",
-        latitude: location?.latitude,
-        longitude: location?.longitude,
+     
       },
       {
         onSuccess: (data) => {

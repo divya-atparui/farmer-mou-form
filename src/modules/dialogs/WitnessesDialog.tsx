@@ -112,11 +112,11 @@ export function WitnessesDialog({
               <p className="dialog-empty-state-text">Please add a witness using the button above</p>
             </div>
           ) : (
-            <div className="space-y-4 xs:space-y-6">
+            <div className="space-y-4 xs:space-y-6 max-h-[420px] overflow-scroll no-scrollbar">
               {witnessFields.map((field, index) => (
                 <div
                   key={field.name}
-                  className="relative p-3 xs:p-6 bg-white border rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200"
+                  className="m-3 relative p-3 xs:p-6 bg-white border rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200"
                 >
                   <div className="space-y-3 xs:space-y-4">
                     <div className="grid grid-cols-1 gap-3 xs:gap-6">

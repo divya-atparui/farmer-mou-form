@@ -25,6 +25,7 @@
           "name": "ಹೆಸರು",
           "aadhar": "ಆಧಾರ್",
           "mobile": "ಮೊಬೈಲ್",
+          "address": "ವಿಳಾಸ",
           "email": "ಇಮೇಲ್"
         }
       },
@@ -70,6 +71,8 @@
       "date": "ದಿನಾಂಕ",
       "email": "ಇಮೇಲ್",
       "mobile": "ಮೊಬೈಲ್",
+      "landownerName": "ಭೂ ಮಾಲೀಕರ ಹೆಸರು",
+      "address": "ವಿಳಾಸ",
       "aadhar": "ಆಧಾರ್",
       "signature": "ಸಹಿ"
     },

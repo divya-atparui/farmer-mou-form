@@ -4,6 +4,7 @@ export const landOwnerSchema = z.object({
   landownerName: z.string().min(1, "Landowner name is required"),
   signature: z.string().min(1, "Signature is required"),
   aadhar: z.string().min(12, "Aadhar must be 12 digits").max(12),
+  address : z.string().min(1, "Address is required"),
   date: z.string(),
   email: z.string().email("Invalid email address"),
   mobile: z.string().min(10, "Mobile number must be 10 digits").max(10),

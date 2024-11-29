@@ -72,7 +72,7 @@ export function BankDetailsDialog({ form }: BankDetailsDialogProps) {
             {messages.form.sections.bank.description}
           </DialogDescription>
         </DialogHeader>
-        <div className="my-4 sm:my-4 overflow-scroll">
+        <div className="my-4 sm:my-4 overflow-scroll no-scrollbar">
           <div className="px-6 grid gap-4 sm:gap-6 mb-10">
             <div className="grid grid-cols-1 sm:grid-cols-1 gap-4">
               <FormField
