@@ -1,6 +1,6 @@
 "use client";
 // import { deleteCookie } from "@/api/auth/cookie";
-import { AppSidebar } from "@/components/app-sidebar";
+import { AppSidebar } from "@/components/nav/app-sidebar";
 // import { LanguageToggle } from "@/components/LanguageToggle";
 // import { Button } from "@/components/ui/button";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";

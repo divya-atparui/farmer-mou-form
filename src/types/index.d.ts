@@ -181,3 +181,19 @@ declare interface UserDetailsResponse {
   accountNonLocked: boolean;
   credentialsNonExpired: boolean;
 }
+
+declare interface UserLandDetailsDataTable {
+  id: number;
+  accountNumber: string;
+  accountHolder: string;
+  dateCreated: string;
+  ifscCode: string;
+  swiftCode: string;
+  bank: string;
+  branch: string;
+  aksmvbsMembershipNumber: string;
+  landOwners: LandOwnerResponse[];
+  propertyDetails: PropertyResponse[];
+  witnesses: WitnessResponse[];
+  geoCoordinates: string | "";
+}

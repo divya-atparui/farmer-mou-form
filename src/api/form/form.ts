@@ -2,6 +2,7 @@
 
 import { cookies } from "next/headers";
 import { client } from "../common/client";
+import { revalidatePath } from 'next/cache';
 
 export const postLandDetails = async (variables: LandDetailsVariables) => {
   const token = cookies().get("authToken")?.value;
@@ -19,5 +20,11 @@ export const postLandDetails = async (variables: LandDetailsVariables) => {
       Authorization: `Bearer ${token}`,
     },
   }).then((response) => response.data);
+
+  // Revalidate all land details pages since we've added new data
+  revalidatePath('/land-details', 'layout');
+  // Revalidate the root path to update any overview or dashboard data
+  revalidatePath('/', 'layout');
+  
   return data;
 };

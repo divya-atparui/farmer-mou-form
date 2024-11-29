@@ -2,6 +2,7 @@
 
 import { cookies } from "next/headers";
 import { client } from "../common/client";
+import { revalidatePath } from 'next/cache';
 
 export const CreateUser = async ({
   email,
@@ -18,6 +19,11 @@ export const CreateUser = async ({
       fullName,
     },
   }).then((response) => response.data);
+  
+  // Revalidate paths after user creation
+  revalidatePath('/', 'layout');
+  revalidatePath('/land-details', 'layout');
+  
   return data;
 };
 
@@ -32,6 +38,11 @@ export const getAuthToken = async ({email,password}:LoginVariables) => {
           password,
         },
     }).then((response) => response.data);
+    
+    // Revalidate paths after login
+    revalidatePath('/', 'layout');
+    revalidatePath('/land-details', 'layout');
+    
     return data;
 }
 

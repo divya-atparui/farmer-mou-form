@@ -16,13 +16,39 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
     return typeof value === "string" ? value : JSON.stringify(value);
   };
 
-  const emptyLandOwner = { id: null, landownerName: null, email: null, mobile: null, aadhar: null, address: null, date: null };
-  const emptyProperty = { id: null, itemName: null, location: null, cropDetails: null, totalArea: null, surveyNumbers: null };
-  const emptyWitness = { id: null, name: null, address: null, note: null, date: null };
+  const emptyLandOwner = { 
+    id: 'empty-landowner', 
+    landownerName: null, 
+    email: null, 
+    mobile: null, 
+    aadhar: null, 
+    address: null, 
+    date: null 
+  };
+  
+  const emptyProperty = { 
+    id: 'empty-property', 
+    itemName: null, 
+    location: null, 
+    cropDetails: null, 
+    totalArea: null, 
+    surveyNumbers: null 
+  };
+  
+  const emptyWitness = { 
+    id: 'empty-witness', 
+    name: null, 
+    address: null, 
+    note: null, 
+    date: null 
+  };
 
   const landOwners = data?.landOwners || [emptyLandOwner];
   const propertyDetails = data?.propertyDetails || [emptyProperty];
-  const witnesses = data?.witnesses || [emptyWitness, emptyWitness];
+  const witnesses = data?.witnesses || [
+    { ...emptyWitness, id: 'empty-witness-1' }, 
+    { ...emptyWitness, id: 'empty-witness-2' }
+  ];
 
   return (
     <ScrollArea className="h-full w-full">

@@ -8,7 +8,7 @@ interface JsonDataKannadaViewProps {
 }
 
 const JsonDataKannadaView: React.FC<JsonDataKannadaViewProps> = ({ data }) => {
-  const renderValue = (value: unknown ) => {
+  const renderValue = (value: unknown) => {
     if (!data || value === null || value === undefined || value === "") {
       return <span className="inline-block w-32 h-0.5 bg-gray-300">_______</span>;
     }
@@ -16,7 +16,7 @@ const JsonDataKannadaView: React.FC<JsonDataKannadaViewProps> = ({ data }) => {
   };
 
   const emptyLandOwner = {
-    id: null,
+    id: 'empty-landowner-ka',
     landownerName: null,
     email: null,
     mobile: null,
@@ -24,16 +24,18 @@ const JsonDataKannadaView: React.FC<JsonDataKannadaViewProps> = ({ data }) => {
     address: null,
     date: null,
   };
+  
   const emptyProperty = {
-    id: null,
+    id: 'empty-property-ka',
     itemName: null,
     location: null,
     cropDetails: null,
     totalArea: null,
     surveyNumbers: null,
   };
+  
   const emptyWitness = {
-    id: null,
+    id: 'empty-witness-ka',
     name: null,
     address: null,
     note: null,
@@ -42,7 +44,10 @@ const JsonDataKannadaView: React.FC<JsonDataKannadaViewProps> = ({ data }) => {
 
   const landOwners = data?.landOwners || [emptyLandOwner];
   const propertyDetails = data?.propertyDetails || [emptyProperty];
-  const witnesses = data?.witnesses || [emptyWitness, emptyWitness];
+  const witnesses = data?.witnesses || [
+    { ...emptyWitness, id: 'empty-witness-ka-1' },
+    { ...emptyWitness, id: 'empty-witness-ka-2' }
+  ];
 
   return (
     <ScrollArea className="h-full w-full">
@@ -224,7 +229,9 @@ const JsonDataKannadaView: React.FC<JsonDataKannadaViewProps> = ({ data }) => {
           </CardContent>
         </Card>
 
-        <div className="text-4xl font-bold py-3 ">3.1 ಅರಿಗ್ರಾಫ್</div>
+        <div className="text-4xl font-bold py-3 ">
+          3.1 ಅರಿಗ್ರಾಫ್
+        </div>
         <Card>
           <CardHeader className="hidden" />
           <CardTitle className="hidden" />
@@ -319,9 +326,9 @@ const JsonDataKannadaView: React.FC<JsonDataKannadaViewProps> = ({ data }) => {
                   ಇ. ಪ್ರಾಜೆಕ್ಟ್ ಅಡಿಯಲ್ಲಿ ನೋಂದಾಯಿಸಲಾದ ಭೂ ಪ್ರದೇಶದೊಳಗೆ ಯೋಜನೆಯ
                   ಚಟುವಟಿಕೆ ಅಥವಾ ಚಟುವಟಿಕೆಗಳನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸಲು ಅಗತ್ಯವಿರುವ ಎಲ್ಲಾ
                   ಕಾನೂನು ಹಕ್ಕುಗಳನ್ನು ಹೊಂದಿರುವುದನ್ನು ಭೂಮಾಲೀಕರು ಮತ್ತಷ್ಟು
-                  ಖಚಿತಪಡಿಸುತ್ತಾರೆ. ಭೂಮಾಲೀಕನು ವಿಭಾಗ 10 ರಲ್ಲಿ ಪಟ್ಟಿ ಮಾಡಲಾದ ಆಸ್ತಿಗಳ
-                  ಪರಿಶೀಲಿಸಬಹುದಾದ ದಾಖಲೆಗಳನ್ನು ಒದಗಿಸಬೇಕು. ಭೂಮಿಯ ಶೀರ್ಷಿಕೆಯನ್ನು
-                  ಸ್ಥಾಪಿಸಲು ವಿಫಲವಾದರೆ, ಅವನು/ಅವಳ ಭಾಗದ ವಿಫಲತೆ ಎಂದು
+                  ಖಚಿತಪಡಿಸುತ್ತಾರೆ. ಭೂಮಾಲೀಕನು ಭೂಮಿಯ ನಿಯಂತ್ರಣದಲ್ಲಿ
+                  ಬದಲಾವಣೆಗಳನ್ನು ಅಥವಾ ಆಸ್ತಿಯ ಮಾಲೀಕತ್ವದಲ್ಲಿ ಯಾವುದೇ ಬದಲಾವಣೆಯನ್ನು
+                  ಪ್ರದರ್ಶಿಸಲು ಸಾಧ್ಯವಾಗದಿದ್ದರೆ, ಅವನು/ಅವಳ ಭಾಗದ ವಿಫಲತೆ ಎಂದು
                   ಅರ್ಥೈಸಲಾಗುತ್ತದೆ.
                 </li>
                 <li>
@@ -330,9 +337,8 @@ const JsonDataKannadaView: React.FC<JsonDataKannadaViewProps> = ({ data }) => {
                   ಭವಿಷ್ಯದಲ್ಲಿ ಭೂಮಿಯನ್ನು ನಿಯಂತ್ರಿಸುವವರಿಗೆ ಅನ್ವಯಿಸುತ್ತದೆ ಎಂದು
                   ಭೂಮಾಲೀಕರು ಇಲ್ಲಿ ದೃಢೀಕರಿಸುತ್ತಾರೆ. ಭೂಮಾಲೀಕನು ಭೂಮಿಯ ನಿಯಂತ್ರಣದಲ್ಲಿ
                   ಬದಲಾವಣೆಗಳನ್ನು ಅಥವಾ ಆಸ್ತಿಯ ಮಾಲೀಕತ್ವದಲ್ಲಿ ಯಾವುದೇ ಬದಲಾವಣೆಯನ್ನು
-                  ಪ್ರದರ್ಶಿಸಲು ಸಾಧ್ಯವಾಗದಿದ್ದರೆ, ಅವನು/ಅವಳು ಆರಿಗ್ರಾಫ್‌ಗೆ ಭೂಮಿಯ
-                  ಮೇಲಿನ ಯಾವುದೇ ನಿಯಂತ್ರಣದ ನಷ್ಟದ ಲಿಖಿತ ಸೂಚನೆಯನ್ನು ತಕ್ಷಣವೇ
-                  ಒದಗಿಸಬೇಕು. ಕನಿಷ್ಠ 30 ದಿನಗಳ ಮುಂಚಿತವಾಗಿ ಸಂವಹನ. ಮುನ್ನಡೆ. ಈ
+                  ಪ್ರದರ್ಶಿಸಲು ಸಾಧ್ಯವಾಗದಿದ್ದರೆ, ಅವನು/ಅವಳ ಭಾಗದ ವಿಫಲತೆ ಎಂದು
+                  ಅರ್ಥೈಸಲಾಗುತ್ತದೆ. ಕನಿಷ್ಠ 30 ದಿನಗಳ ಮುಂಚಿತವಾಗಿ ಸಂವಹನ. ಮುನ್ನಡೆ. ಈ
                   ಷರತ್ತನ್ನು ಅನುಸರಿಸಲು ವಿಫಲವಾದರೆ ನಿರ್ಣಾಯಕ ಒಪ್ಪಂದದಲ್ಲಿ ನಮೂದಿಸಬೇಕಾದ
                   ದಂಡ ಮತ್ತು ಪರಿಹಾರವನ್ನು ಆಕರ್ಷಿಸುತ್ತದೆ
                 </li>

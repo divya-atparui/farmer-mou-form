@@ -32,6 +32,29 @@ A web application for managing and tracking carbon credits through land details 
   - Lucide React for icons
   - Sonner for toast notifications
 
+## Recent Updates
+
+### Land Details Management Enhancement (Latest)
+- **Individual Land Details Page**
+  - Dynamic routing with `/land-details/[id]` structure
+  - Detailed view for each land record
+  - Interactive data tables using @tanstack/react-table
+
+- **Improved Navigation**
+  - Restructured navigation components in dedicated `/nav` directory
+  - New NavUser component with avatar and dropdown menu
+  - Enhanced AppSidebar with improved layout and user section
+
+- **API & Data Management**
+  - Added cache revalidation for better data freshness
+  - Implemented individual land details API endpoints
+  - Improved error handling and removed debug logs
+  - Production API endpoint configuration
+
+- **New Dependencies**
+  - @radix-ui/react-avatar: ^1.1.1 (User avatars)
+  - @tanstack/react-table: ^8.20.5 (Data tables)
+
 ## Getting Started
 
 First, install the dependencies:

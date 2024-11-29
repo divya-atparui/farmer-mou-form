@@ -46,7 +46,7 @@ export default function LandDetailsForm() {
   const [location, setLocation] = useState<{ latitude: number; longitude: number } | null>(null);
   const [locationError, setLocationError] = useState<string>("");
   console.log(locationError, "locationError");
-  console.log(location, "location");  
+ 
 
   const getLocation = () => {
     if (typeof window === 'undefined') {
@@ -399,8 +399,8 @@ export default function LandDetailsForm() {
         </div>
 
         {/* Preview Section - Hidden on mobile, shown as dialog */}
-        <Card className="hidden lg:block flex-1">
-          <CardHeader className="pb-3">
+        <Card className="hidden lg:block flex-1 max-h-[800px]">
+          <CardHeader className="">
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle>Document Preview</CardTitle>
@@ -417,9 +417,13 @@ export default function LandDetailsForm() {
               </Badge>
             </div>
           </CardHeader>
-          <CardContent className="h-[calc(100vh-20rem)] overflow-scroll">
+          <div className="h-full flex items-start justify-center">
+
+          <CardContent className="h-[700px] overflow-scroll no-scrollbar">
             <MOUPreview data={form.watch()} />
           </CardContent>
+          </div>
+
         </Card>
       </div>
 

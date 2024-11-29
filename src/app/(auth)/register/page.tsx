@@ -52,13 +52,13 @@ export default function RegisterPage() {
       password: values.password,
       fullName: values.fullName
     }, {
-      onSuccess: (data) => {
-        console.log(data)
+      onSuccess: () => {
+     
         toast.success("Registration successful!");
         router.push("/login")
       },
       onError: (error) => {
-        console.log(error)
+       
         toast.error("Please Try Again" + error.message);
       },
     });

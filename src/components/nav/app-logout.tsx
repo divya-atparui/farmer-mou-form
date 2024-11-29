@@ -8,10 +8,10 @@ import {
   } from "@/components/ui/dropdown-menu"
   import { deleteCookie } from "@/api/auth/cookie";
 
-import { SidebarFooter, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from './ui/sidebar'
+import { SidebarFooter, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '../ui/sidebar'
 import { ChevronUp, User2 } from 'lucide-react'
 import { LanguageToggle } from "@/components/LanguageToggle";
-import { Separator } from './ui/separator'
+import { Separator } from '../ui/separator'
 import { useRouter } from "next/navigation";
 import { useGetUserDetails } from '@/api/auth/use-get-user-details';
 
@@ -22,7 +22,7 @@ const Applogout = () => {
 
 const { data } =  useGetUserDetails()
 
-console.log(data)
+
 
   const handleLogout = async () => {
     startTransition(async () => {
