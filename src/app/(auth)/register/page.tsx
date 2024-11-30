@@ -32,8 +32,7 @@ const formSchema = z.object({
 });
 
 export default function RegisterPage() {
-
-  const router =useRouter()
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -44,31 +43,34 @@ export default function RegisterPage() {
     },
   });
 
-  const {mutate :RegisterUser, isPending}= usePostRegister()
+  const { mutate: register, isPending } = usePostRegister();
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    await RegisterUser({
-      email: values.email,
-      password: values.password,
-      fullName: values.fullName
-    }, {
-      onSuccess: () => {
-     
-        toast.success("Registration successful!");
-        router.push("/login")
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    register(
+      {
+        email: values.email,
+        password: values.password,
+        fullName: values.fullName,
       },
-      onError: (error) => {
-       
-        toast.error("Please Try Again" + error.message);
-      },
-    });
+      {
+        onSuccess: () => {
+          toast.success("Registration successful!");
+          router.push("/login");
+        },
+        onError: (error) => {
+          toast.error("Please Try Again" + error.message);
+        },
+      }
+    );
   }
 
   return (
     <div className="flex min-h-screen items-center justify-center">
       <div className="w-full max-w-md space-y-6 rounded-lg border p-6 shadow-lg">
         <div className="space-y-2 text-center">
-          <h1 className="text-3xl font-bold text-blue-500">Create an Account</h1>
+          <h1 className="text-3xl font-bold text-blue-500">
+            Create an Account
+          </h1>
           <p className="text-blue-500">Enter your details to register</p>
         </div>
         <Form {...form}>
@@ -93,7 +95,11 @@ export default function RegisterPage() {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="john@example.com" type="email" {...field} />
+                    <Input
+                      placeholder="john@example.com"
+                      type="email"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -106,7 +112,11 @@ export default function RegisterPage() {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter your password" type="password" {...field} />
+                    <Input
+                      placeholder="Enter your password"
+                      type="password"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -125,5 +135,5 @@ export default function RegisterPage() {
         </Form>
       </div>
     </div>
-  )
+  );
 }

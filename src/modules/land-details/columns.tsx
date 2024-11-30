@@ -12,22 +12,19 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { DataTableMobileContent } from "./data-table-mobile.content";
+
 import { DataTableColumnHeader } from "./data-table-column-header";
 import Link from "next/link";
 
-const fieldLabels = {
-  accountHolder: "Account Holder",
-  accountNumber: "Account Number",
-  bank: "Bank",
-  branch: "Branch",
-  ifscCode: "IFSC Code",
-  swiftCode: "SWIFT Code",
-  aksmvbsMembershipNumber: "Membership Number",
-  dateCreated: "Date Created",
-};
 
 export const columns: ColumnDef<UserLandDetailsDataTable>[] = [
+  {
+    accessorKey: "id",
+    header: "ID",
+    cell: ({ row }) => {
+      return <div className="font-medium">{row.getValue("id")}</div>;
+    },
+  },
   {
     accessorKey: "accountHolder",
     header: ({ column }) => (
@@ -37,21 +34,6 @@ export const columns: ColumnDef<UserLandDetailsDataTable>[] = [
       return (
         <div className="flex items-center gap-2">
           <div className="font-medium">{row.getValue("accountHolder")}</div>
-          <DataTableMobileContent
-            title="Account Details"
-            content={row.original}
-            visibleFields={[
-              "accountHolder",
-              "accountNumber",
-              "bank",
-              "branch",
-              "ifscCode",
-              "swiftCode",
-              "aksmvbsMembershipNumber",
-              "dateCreated",
-            ]}
-            fieldLabels={fieldLabels}
-          />
         </div>
       );
     },
@@ -72,7 +54,7 @@ export const columns: ColumnDef<UserLandDetailsDataTable>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <div className="hidden sm:block font-medium">
+        <div className="  font-medium">
           {row.getValue("ifscCode")}
         </div>
       );
@@ -85,7 +67,7 @@ export const columns: ColumnDef<UserLandDetailsDataTable>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <div className="hidden md:block font-medium">
+        <div className=" font-medium">
           {row.getValue("swiftCode")}
         </div>
       );
@@ -98,7 +80,7 @@ export const columns: ColumnDef<UserLandDetailsDataTable>[] = [
     ),
     cell: ({ row }) => {
       return (
-        <div className="hidden lg:block font-medium">
+        <div className="  font-medium">
           {row.getValue("aksmvbsMembershipNumber")}
         </div>
       );

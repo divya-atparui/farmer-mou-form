@@ -1,6 +1,6 @@
 "use client";
 
-import { BadgeCheck, ChevronsUpDown, LogOut } from "lucide-react";
+import {  ChevronsUpDown, Languages, LogOut } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -19,9 +19,26 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { useGetUserDetails } from "@/api/auth/use-get-user-details";
+import { deleteCookie } from "@/api/auth/cookie";
+import { useTransition } from "react";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useQueryClient } from "@tanstack/react-query";
 
 export function NavUser() {
   const { data: userData, isLoading, isError } = useGetUserDetails();
+
+  const [isPending, startTransition] = useTransition();
+  const queryClient = useQueryClient();
+
+  const handleLogout = async () => {
+    startTransition(async () => {
+      await deleteCookie();
+      queryClient.clear(); // Clear all React Query cache
+      window.location.href = '/login'; // This will trigger a full page reload
+    });
+  };
+
+  const { language, setLanguage } = useLanguage();
 
   const { isMobile } = useSidebar();
   if (isLoading) {
@@ -81,13 +98,13 @@ export function NavUser() {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheck />
-                Account
+              <DropdownMenuItem onClick={() => setLanguage(language === "en" ? "kn" : "en")} className="hover:cursor-pointer"> 
+              <Languages className="h-4 w-4" />
+              {language === "en" ? "ಕನ್ನಡ" : "English"}
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem disabled={isPending} onClick={handleLogout} className="hover:cursor-pointer">
               <LogOut />
               Log out
             </DropdownMenuItem>

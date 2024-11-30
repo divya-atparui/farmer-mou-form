@@ -19,10 +19,12 @@ import type { z } from "zod";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { usePostLogin } from "@/api/auth/use-post-login";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function LoginPage() {
   const router = useRouter();
   const { mutate: login, isPending } = usePostLogin();
+  const queryClient = useQueryClient();
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -38,6 +40,7 @@ export default function LoginPage() {
       password: values.password
     }, {
       onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ['userLandDetails'] });
         toast.success("Login successful!");  
         router.push("/");
       },

@@ -34,26 +34,40 @@ A web application for managing and tracking carbon credits through land details 
 
 ## Recent Updates
 
-### Land Details Management Enhancement (Latest)
-- **Individual Land Details Page**
-  - Dynamic routing with `/land-details/[id]` structure
-  - Detailed view for each land record
-  - Interactive data tables using @tanstack/react-table
+### Latest Updates (December 2023)
+- **Enhanced User Experience**
+  - Added loading and empty states for dashboard
+  - Improved authentication flow with redirect preservation
+  - Enhanced language toggle in user menu
+  - Unified table experience across devices
+  - Added address field to land owners form
 
-- **Improved Navigation**
-  - Restructured navigation components in dedicated `/nav` directory
-  - New NavUser component with avatar and dropdown menu
-  - Enhanced AppSidebar with improved layout and user section
+- **Data Management Improvements**
+  - Optimized data fetching with improved caching strategy
+  - Enhanced query invalidation for better data consistency
+  - Improved logout functionality with proper cache clearing
+  - Updated API configurations for better reliability
 
-- **API & Data Management**
-  - Added cache revalidation for better data freshness
-  - Implemented individual land details API endpoints
-  - Improved error handling and removed debug logs
-  - Production API endpoint configuration
+- **Land Details Management Enhancement**
+  - **Individual Land Details Page**
+    - Dynamic routing with `/land-details/[id]` structure
+    - Detailed view for each land record
+    - Interactive data tables using @tanstack/react-table
 
-- **New Dependencies**
-  - @radix-ui/react-avatar: ^1.1.1 (User avatars)
-  - @tanstack/react-table: ^8.20.5 (Data tables)
+  - **Improved Navigation**
+    - Restructured navigation components in dedicated `/nav` directory
+    - New NavUser component with avatar and dropdown menu
+    - Enhanced AppSidebar with improved layout and user section
+
+  - **API & Data Management**
+    - Added cache revalidation for better data freshness
+    - Implemented individual land details API endpoints
+    - Improved error handling and removed debug logs
+    - Production API endpoint configuration
+
+  - **New Dependencies**
+    - @radix-ui/react-avatar: ^1.1.1 (User avatars)
+    - @tanstack/react-table: ^8.20.5 (Data tables)
 
 ## Getting Started
 

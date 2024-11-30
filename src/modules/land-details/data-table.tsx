@@ -43,10 +43,27 @@ export function DataTable<TData, TValue>({
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({
-    swiftCode: false,
-    aksmvbsMembershipNumber: false,
-    dateCreated: false,
+    bank: window.innerWidth < 640,
+    ifscCode: window.innerWidth < 640,
+    swiftCode: window.innerWidth < 640,
+    aksmvbsMembershipNumber: window.innerWidth < 640,
+    dateCreated: window.innerWidth < 640,
   })
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      setColumnVisibility({
+        bank: window.innerWidth < 640,
+        ifscCode: window.innerWidth < 640,
+        swiftCode: window.innerWidth < 640,
+        aksmvbsMembershipNumber: window.innerWidth < 640,
+        dateCreated: window.innerWidth < 640,
+      });
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const table = useReactTable({
     data,
@@ -68,14 +85,7 @@ export function DataTable<TData, TValue>({
   return (
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row items-center gap-4">
-        <Input
-          placeholder="Filter by account holder..."
-          value={(table.getColumn("accountHolder")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("accountHolder")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
+       
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="sm" className="ml-auto">

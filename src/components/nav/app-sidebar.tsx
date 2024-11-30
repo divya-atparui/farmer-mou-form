@@ -11,9 +11,12 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 
-import Applogout from "./app-logout";
+
 import { NavUser } from "./nav-user";
 import Link from "next/link";
+
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 const items = [
   {
@@ -29,6 +32,7 @@ const items = [
 ];
 
 export function AppSidebar() {
+  const pathname = usePathname();
   return (
     <Sidebar>
       <SidebarHeader className="h-16 border-b border-sidebar-border">
@@ -42,7 +46,13 @@ export function AppSidebar() {
           <SidebarMenu>
             {items.map((item) => (
               <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton asChild>
+                <SidebarMenuButton 
+                   asChild
+                   isActive={pathname === item.url}
+                   className={cn(
+                     pathname === item.url && "bg-green-100"
+                   )}
+                >
                   <Link href={item.url}>
                     <item.icon />
                     <span>{item.title}</span>
@@ -53,9 +63,7 @@ export function AppSidebar() {
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
-      <div className="rounded-xl border bg-card  shadow mb-4 mx-2">
-        <Applogout />
-      </div>
+ 
     </Sidebar>
   );
 }

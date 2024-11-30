@@ -43,6 +43,7 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
     date: null 
   };
 
+  console.log(data)
   const landOwners = data?.landOwners || [emptyLandOwner];
   const propertyDetails = data?.propertyDetails || [emptyProperty];
   const witnesses = data?.witnesses || [

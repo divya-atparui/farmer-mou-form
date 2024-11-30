@@ -4,6 +4,7 @@ import { AppSidebar } from "@/components/nav/app-sidebar";
 // import { LanguageToggle } from "@/components/LanguageToggle";
 // import { Button } from "@/components/ui/button";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { Toaster } from "sonner";
 // import { useRouter } from "next/navigation";
 // import { useTransition } from "react";
 
@@ -43,6 +44,7 @@ export default function FormLayout({
           <SidebarTrigger className="sticky top-4 bg-white p-6 mb-4 rounded-full shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500" />
           
           {children}
+ 
         </main>
       </SidebarProvider>
     </>

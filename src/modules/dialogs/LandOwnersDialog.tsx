@@ -23,6 +23,7 @@ import { UseFormReturn } from "react-hook-form";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Textarea } from "@/components/ui/textarea";
 
 interface LandOwnersDialogProps {
   form: UseFormReturn<any>;
@@ -47,6 +48,7 @@ export function LandOwnersDialog({
         `landOwners.${index}.aadhar`,
         `landOwners.${index}.mobile`,
         `landOwners.${index}.email`,
+        `landOwners.${index}.address`
       ];
       return form.trigger(fields);
     });
@@ -139,6 +141,26 @@ export function LandOwnersDialog({
                           </FormItem>
                         )}
                       />
+                      <FormField
+                        control={form.control}
+                        name={`landOwners.${index}.address`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel className="text-xs xs:text-sm font-medium">
+                              {messages.form.sections.landowners.fields.address}
+                            </FormLabel>
+                            <FormControl>
+                              <Textarea
+                                className="text-xs xs:text-sm h-8 xs:h-9"
+                                rows={3}
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage className="text-[10px] xs:text-xs" />
+                          </FormItem>
+                        )}
+                      />
+
                       <FormField
                         control={form.control}
                         name={`landOwners.${index}.signature`}

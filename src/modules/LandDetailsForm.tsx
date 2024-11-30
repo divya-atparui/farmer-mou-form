@@ -45,7 +45,7 @@ export default function LandDetailsForm() {
   const { messages } = useLanguage();
   const [location, setLocation] = useState<{ latitude: number; longitude: number } | null>(null);
   const [locationError, setLocationError] = useState<string>("");
-  console.log(locationError, "locationError");
+
  
 
   const getLocation = () => {
@@ -158,7 +158,6 @@ export default function LandDetailsForm() {
         dateCreated: data.dateCreated,
         ifscCode: data.ifscCode,
         swiftCode: data.swiftCode,
-       
         landOwners: data.landOwners,
         propertyDetails: data.propertyDetails,
         witnesses: data.witnesses,

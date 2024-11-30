@@ -13,7 +13,6 @@ export const CreateUser = async ({
     url : "/auth/signup",
     method: "POST",
     data: {
-
       email,
       password,
       fullName,
