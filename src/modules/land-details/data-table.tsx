@@ -42,28 +42,16 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
-  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({
-    bank: window.innerWidth < 640,
-    ifscCode: window.innerWidth < 640,
-    swiftCode: window.innerWidth < 640,
-    aksmvbsMembershipNumber: window.innerWidth < 640,
-    dateCreated: window.innerWidth < 640,
-  })
+  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>(() => ({
+    bank: false,
+    ifscCode: false,
+    swiftCode: false,
+    aksmvbsMembershipNumber: false,
+    dateCreated: false,
+  }))
 
-  React.useEffect(() => {
-    const handleResize = () => {
-      setColumnVisibility({
-        bank: window.innerWidth < 640,
-        ifscCode: window.innerWidth < 640,
-        swiftCode: window.innerWidth < 640,
-        aksmvbsMembershipNumber: window.innerWidth < 640,
-        dateCreated: window.innerWidth < 640,
-      });
-    };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+   
 
   const table = useReactTable({
     data,
@@ -85,7 +73,6 @@ export function DataTable<TData, TValue>({
   return (
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row items-center gap-4">
-       
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="sm" className="ml-auto">
@@ -113,55 +100,61 @@ export function DataTable<TData, TValue>({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
+      <div className="rounded-md border ">
+        <div className="relative rounded-md">
+          <div className="overflow-x-auto  ">
+            <Table >
+              <TableHeader>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => {
+                      return (
+                        <TableHead key={header.id}>
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                        </TableHead>
+                      )
+                    })}
+                  </TableRow>
+                ))}
+              </TableHeader>
+              <TableBody >
+                {table.getRowModel().rows?.length ? (
+                  table.getRowModel().rows.map((row) => (
+                    <TableRow
+                     className="overflow-x-scroll"
+                      key={row.id}
+                      data-state={row.getIsSelected() && "selected"}
+                    >
+                      
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id}>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
                           )}
-                    </TableHead>
-                  )
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={columns.length + 1}
+                      className="h-24 text-center"
+                    >
+                      No results.
                     </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        </div>
       </div>
       <div className="flex items-center justify-between space-x-2 py-4">
         <div className="flex-1 text-sm text-muted-foreground">

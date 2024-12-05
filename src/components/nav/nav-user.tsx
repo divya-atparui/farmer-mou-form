@@ -30,7 +30,7 @@ export function NavUser() {
   const [isPending, startTransition] = useTransition();
   const queryClient = useQueryClient();
 
-  const handleLogout = async () => {
+  const handleClearCookiesAndLogout = async () => {
     startTransition(async () => {
       await deleteCookie();
       queryClient.clear(); // Clear all React Query cache
@@ -42,15 +42,79 @@ export function NavUser() {
 
   const { isMobile } = useSidebar();
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <SidebarMenuButton
+                size="lg"
+                className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              >
+                <div className="animate-pulse flex items-center gap-2 w-full">
+                  <div className="h-8 w-8 bg-gray-200 rounded-lg"></div>
+                  <div className="flex-1">
+                    <div className="h-4 bg-gray-200 rounded w-24 mb-2"></div>
+                    <div className="h-3 bg-gray-200 rounded w-32"></div>
+                  </div>
+                </div>
+              </SidebarMenuButton>
+            </DropdownMenuTrigger>
+          </DropdownMenu>
+        </SidebarMenuItem>
+      </SidebarMenu>
+    );
+  }
+
+  // If no user data is found, immediately clear cookies and let middleware handle redirect
+  if (!userData) {
+    handleClearCookiesAndLogout();
+    return null; // Return null while the logout process is happening
   }
 
   if (isError) {
-    return <div>Error fetching user data</div>;
-  }
-
-  if (!userData) {
-    return <div>User data not found</div>;
+    return (
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <SidebarMenuButton
+                size="lg"
+                className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              >
+                <Avatar className="h-8 w-8 rounded-lg">
+                  <AvatarFallback className="rounded-lg">GU</AvatarFallback>
+                </Avatar>
+                <div className="grid flex-1 text-left text-sm leading-tight">
+                  <span className="truncate font-semibold">
+                    Guest User
+                  </span>
+                  <span className="truncate text-xs text-red-500">
+                    Error loading profile
+                  </span>
+                </div>
+                <ChevronsUpDown className="ml-auto size-4" />
+              </SidebarMenuButton>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+              side="right"
+              align="start"
+              sideOffset={4}
+            >
+              <DropdownMenuItem 
+                disabled={isPending} 
+                onClick={handleClearCookiesAndLogout}
+                className="hover:cursor-pointer text-red-500"
+              >
+                <LogOut className="mr-2 h-4 w-4" />
+                Clear Session & Login Again
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </SidebarMenuItem>
+      </SidebarMenu>
+    );
   }
   const avatar =
     userData?.fullName.slice(0, 2).toUpperCase()
@@ -104,7 +168,7 @@ export function NavUser() {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem disabled={isPending} onClick={handleLogout} className="hover:cursor-pointer">
+            <DropdownMenuItem disabled={isPending} onClick={handleClearCookiesAndLogout} className="hover:cursor-pointer">
               <LogOut />
               Log out
             </DropdownMenuItem>

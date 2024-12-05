@@ -146,9 +146,10 @@ export default function LandDetailsForm() {
 
   const [showJsonPreview, setShowJsonPreview] = useState(false);
   const [jsonData, setJsonData] = useState<LandDetailsResponse | null>(null);
-
+  
  
   function onSubmit(data: FormData) {
+    console.log(data)
     postLandDetails(
       {
         accountNumber: data.accountNumber,
