@@ -3,7 +3,7 @@ import type { AxiosError } from 'axios';
 import { createQuery } from 'react-query-kit';
 
 
-type Response = UserDetailsResponse;
+type Response = LandDetailsResponse;
 type Variables = {
     id: string
 };

@@ -1,21 +1,11 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Eye, Edit } from "lucide-react";
 
 
 import { DataTableColumnHeader } from "./data-table-column-header";
 import Link from "next/link";
-
 
 export const columns: ColumnDef<UserLandDetailsDataTable>[] = [
   {
@@ -53,11 +43,7 @@ export const columns: ColumnDef<UserLandDetailsDataTable>[] = [
       <DataTableColumnHeader column={column} title="IFSC Code" />
     ),
     cell: ({ row }) => {
-      return (
-        <div className="  font-medium">
-          {row.getValue("ifscCode")}
-        </div>
-      );
+      return <div className="  font-medium">{row.getValue("ifscCode")}</div>;
     },
   },
   {
@@ -66,11 +52,7 @@ export const columns: ColumnDef<UserLandDetailsDataTable>[] = [
       <DataTableColumnHeader column={column} title="SWIFT Code" />
     ),
     cell: ({ row }) => {
-      return (
-        <div className=" font-medium">
-          {row.getValue("swiftCode")}
-        </div>
-      );
+      return <div className=" font-medium">{row.getValue("swiftCode")}</div>;
     },
   },
   {
@@ -104,30 +86,16 @@ export const columns: ColumnDef<UserLandDetailsDataTable>[] = [
     cell: ({ row }) => {
       const details = row.original;
 
+      const ifApprove = details.approved;
+
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() =>
-                navigator.clipboard.writeText(details.accountNumber)
-              }
-            >
-              Copy Account Number
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="hover:cursor-pointer" asChild>
-              <Link href={`/land-details/${details.id}`}>View Details</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>Edit Details</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <Link
+          href={`/land-details/${details.id}`}
+          className="inline-flex items-center justify-center hover:text-primary hover:scale-110 transition-all duration-200"
+          aria-label={`${ifApprove ? 'Edit' : 'View'} details for account ${details.accountNumber}`}
+        >
+          {ifApprove ? <Edit className="h-6 w-6" /> : <Eye className="h-6 w-6" />}
+        </Link>
       );
     },
   },

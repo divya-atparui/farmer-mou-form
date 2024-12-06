@@ -32,30 +32,6 @@ declare interface LoginResponse {
   expiresIn: number;
 }
 
-// curl -X 'POST' \
-//   'https://aurigraphfarmers-api.atparui.com/land-details' \
-//   -H 'accept: */*' \
-//   -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWltYWhlc2gyMzgyQGdtYWlsLmNvbSIsImlhdCI6MTczMjUzNzE2NCwiZXhwIjoxNzMyNTQwNzY0fQ.eibeA-LxcXc9qMyNhEi6b8M7ibl74U_Y9DIKrs9kXZA' \
-//   -H 'Content-Type: application/json' \
-//   -d '{
-//   "accountNumber": "192019201920",
-//   "accountHolder": "Divya",
-//   "dateCreated": "2024-11-25",
-//   "ifscCode": "19209testte",
-//   "swiftCode": "19029019210",
-//   "bank": "Divine",
-//   "branch": "Bangalore",
-//   "aksmvbsMembershipNumber": "190290192091",
-//   "landOwners": [
-//     {
-//       "landownerName": "Divyasimha",
-//       "signature": "signature",
-//       "aadhar": "190291091019",
-//       "date": "2024-11-25",
-//       "email": "divineleo20@gmail.com",
-//       "mobile": "9330438158"
-// }'] } "date": "2024-11-25"re"
-// {"id":2,"accountNumber":"192019201920","accountHolder":"Divya","dateCreated":"2024-11-25","ifscCode":"19209testte","swiftCode":"19029019210","bank":"Divine","branch":"Bangalore","aksmvbsMembershipNumber":"190290192091","landOwners":[{"id":2,"landownerName":"Divyasimha","signature":"signature","aadhar":"190291091019","date":"2024-11-25T00:00:00.000+00:00","email":"divineleo20@gmail.com","mobile":"9330438158"}],"propertyDetails":[{"id":2,"itemName":"test","landDetailsId":2,"cropDetails":"teset","totalArea":104.0,"surveyNumbers":"10","location":"Bangalore"}],"witnesses":[{"id":2,"landDetailsId":2,"name":"testtest","address":"test","note":"test","date":"2024-11-25T00:00:00.000+00:00"}]}
 
 
 declare interface LandDetailsVariables {
@@ -99,8 +75,31 @@ declare interface Witness {
   date: string;
 }
 
+// [
+//   {
+//     "id": 0,
+//     "accountNumber": "string",
+//     "accountHolder": "string",
+//     "dateCreated": "2024-12-06",
+//     "ifscCode": "string",
+//     "swiftCode": "string",
+//     "bank": "string",
+//     "branch": "string",
+//     "aksmvbsMembershipNumber": "string",
+//     
+//     "userId": 0,
+//     "createdBy": "string",
+//     "approved": true,
+//     "approverName": "string",
+//     "createdDate": "2024-12-06T07:39:09.184Z",
+//     "lastModifiedBy": "string",
+//     "lastModifiedDate": "2024-12-06T07:39:09.184Z",
+//     "geoCoordinates": "string",
+//     "latitude": "string",
+//     "longitude": "string"
+//   }
+// ]
 declare interface LandDetailsResponse {
-
   id: number;
   accountNumber: string;
   accountHolder: string;
@@ -113,8 +112,16 @@ declare interface LandDetailsResponse {
   landOwners: LandOwnerResponse[];
   propertyDetails: PropertyResponse[];
   witnesses: WitnessResponse[];
-  geoCoordinates: string | "not_available";
-
+  userId: number;
+  createdBy: string;
+  approved: boolean;
+  approverName: string;
+  createdDate: string;
+  lastModifiedBy: string;
+  lastModifiedDate: string;
+  geoCoordinates: string | "";
+  latitude?: number;
+  longitude?: number;
 }
   
 
@@ -195,5 +202,15 @@ declare interface UserLandDetailsDataTable {
   landOwners: LandOwnerResponse[];
   propertyDetails: PropertyResponse[];
   witnesses: WitnessResponse[];
+  userId: number;
+  createdBy: string;
+  approved: boolean;
+  approverName: string;
+  createdDate: string;
+  lastModifiedBy: string;
+  lastModifiedDate: string;
   geoCoordinates: string | "";
+  latitude?: number;
+  longitude?: number;
+
 }

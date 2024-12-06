@@ -37,19 +37,22 @@ import JsonDataView from "./JsonDataView";
 import JsonDataKannadaView from "./JsonDataKannadaView";
 import { formSchema } from "@/types/schema";
 import { MOUPreview } from "./MOUPreview";
+import { useCreateLandProduct } from "@/api/ofbiz/use-create-land-product";
 
 // Define the type from the schema
 export type FormData = z.infer<typeof formSchema>;
 
 export default function LandDetailsForm() {
   const { messages } = useLanguage();
-  const [location, setLocation] = useState<{ latitude: number; longitude: number } | null>(null);
+  const [location, setLocation] = useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
   const [locationError, setLocationError] = useState<string>("");
-
- 
+  console.log(locationError);
 
   const getLocation = () => {
-    if (typeof window === 'undefined') {
+    if (typeof window === "undefined") {
       return;
     }
 
@@ -57,7 +60,7 @@ export default function LandDetailsForm() {
       const options = {
         enableHighAccuracy: true,
         timeout: 5000,
-        maximumAge: 0
+        maximumAge: 0,
       };
 
       navigator.geolocation.getCurrentPosition(
@@ -70,11 +73,17 @@ export default function LandDetailsForm() {
         (error) => {
           switch (error.code) {
             case error.PERMISSION_DENIED:
-              const isFirefox = typeof window !== 'undefined' && navigator.userAgent.toLowerCase().includes('firefox');
-              if (isFirefox && window.location.protocol === 'http:') {
-                setLocationError("Firefox requires HTTPS for geolocation. Please use HTTPS or try Chrome.");
+              const isFirefox =
+                typeof window !== "undefined" &&
+                navigator.userAgent.toLowerCase().includes("firefox");
+              if (isFirefox && window.location.protocol === "http:") {
+                setLocationError(
+                  "Firefox requires HTTPS for geolocation. Please use HTTPS or try Chrome."
+                );
               } else {
-                setLocationError("Location permission denied. Please enable location access.");
+                setLocationError(
+                  "Location permission denied. Please enable location access."
+                );
               }
               break;
             case error.POSITION_UNAVAILABLE:
@@ -108,7 +117,7 @@ export default function LandDetailsForm() {
       dateCreated: "",
       ifscCode: "",
       swiftCode: "",
-      
+
       landOwners: [],
       propertyDetails: [],
       witnesses: [],
@@ -143,13 +152,13 @@ export default function LandDetailsForm() {
   });
 
   const { mutate: postLandDetails, isPending } = usePostLandDetails();
+  const { mutate: createLandProduct } = useCreateLandProduct();
 
   const [showJsonPreview, setShowJsonPreview] = useState(false);
   const [jsonData, setJsonData] = useState<LandDetailsResponse | null>(null);
-  
- 
+
   function onSubmit(data: FormData) {
-    console.log(data)
+    console.log(data);
     postLandDetails(
       {
         accountNumber: data.accountNumber,
@@ -165,13 +174,35 @@ export default function LandDetailsForm() {
         geoCoordinates:
           location && location.latitude && location.longitude
             ? `${location.latitude},${location.longitude}`
-            : "not_available",
-     
+            : "",
       },
       {
         onSuccess: (data) => {
           setJsonData(data);
           setShowJsonPreview(true);
+          createLandProduct(
+            {
+              productId: `${data.id}_${new Date().toISOString()}`,
+              internalName: `Land Record - ${
+                data.accountNumber
+              } (${data.landOwners
+                .map((owner) => owner.landownerName)
+                .join(", ")})`,
+              longDescription: `Land Details:
+Account Number: ${data.accountNumber}
+Land Owners: ${data.landOwners.map((owner) => owner.landownerName).join(", ")}
+Location: ${data.geoCoordinates || "Not specified"}
+Created: ${new Date().toLocaleString()}`,
+            },
+            {
+              onSuccess: () => {
+                toast.success("Land Product created successfully!");
+              },
+              onError: (error) => {
+                toast.error("Please Try Again" + error.message);
+              },
+            }
+          );
           toast.success("Form submitted successfully!");
         },
         onError: (error) => {
@@ -315,7 +346,6 @@ export default function LandDetailsForm() {
                     className="space-y-4"
                   >
                     <div className="space-y-4">
-
                       <div className="space-y-2">
                         <h3 className="font-medium">
                           {messages.form.sections.landowners.title}
@@ -418,12 +448,10 @@ export default function LandDetailsForm() {
             </div>
           </CardHeader>
           <div className="h-full flex items-start justify-center">
-
-          <CardContent className="h-[700px] overflow-scroll no-scrollbar">
-            <MOUPreview data={form.watch()} />
-          </CardContent>
+            <CardContent className="h-[700px] overflow-scroll no-scrollbar">
+              <MOUPreview data={form.watch()} />
+            </CardContent>
           </div>
-
         </Card>
       </div>
 

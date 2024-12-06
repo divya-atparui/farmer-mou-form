@@ -46,6 +46,6 @@ export const userIndividualLandDetails = async (id: string) => {
 
   // Revalidate the specific land details page
   revalidatePath(`/land-details/${id}`, 'page');
-  
+  https://aurigraphfarmers-api.atparui.com
   return data;
 };
