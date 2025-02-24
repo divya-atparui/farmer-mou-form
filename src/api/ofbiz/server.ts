@@ -38,7 +38,7 @@ export const createLandProductDetails = async (values: ProductLandOfbizVariables
 
     const response = await axios({
         method: 'POST',
-        url: 'http://192.168.0.102:8089/rest/services/createAtparProductByEvents',
+        url: process.env.NEXT_PUBLIC_OFBIZ_API_URL + '/createAtparProductByEvents',
         headers: {
             'Content-Type': 'application/json',
             'X-PrivateTenant': 'default'

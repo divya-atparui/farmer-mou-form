@@ -1,5 +1,5 @@
 "use client";
-import { FormData } from "./LandDetailsForm2";
+
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -7,6 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 import React from "react";
+import { FormData } from "./LandDetailsForm";
 
 interface MOUPreviewProps {
   data: Partial<FormData>;
@@ -23,8 +24,8 @@ export function MOUPreview({ data }: MOUPreviewProps) {
   });
 
   return (
-    <ScrollArea className="h-screen">
-      <div className="p-4 mx-auto flex flex-col items-center justify-center">
+    <ScrollArea className="pt-5">
+      <div className="mx-auto flex flex-col items-center justify-center">
         <div
           ref={contentRef}
           className="prose max-w-none dark:prose-invert bg-white rounded-lg print:p-0 print:shadow-none"
@@ -315,10 +316,7 @@ export function MOUPreview({ data }: MOUPreviewProps) {
             </div>
 
             <div className="text-center mt-8">
-              <Badge variant="outline" className="text-lg">
-                {messages.preview.aksmvbsMembershipNumber}:{" "}
-                {data.aksmvbsMembershipNumber || "_____________"}
-              </Badge>
+             
             </div>
           </div>
         </div>

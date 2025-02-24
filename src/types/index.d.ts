@@ -32,10 +32,13 @@ declare interface LoginResponse {
   expiresIn: number;
 }
 
-
+declare interface ApiResponse<T> {
+  status: number;
+  message: string;
+  data: T[];
+}
 
 declare interface LandDetailsVariables {
-
   accountNumber: string;
   accountHolder: string;
   dateCreated: string;
@@ -48,7 +51,6 @@ declare interface LandDetailsVariables {
   propertyDetails: Property[];
   witnesses: Witness[];
   geoCoordinates: string | "";
-
 }
 
 declare interface LandOwner {
@@ -119,22 +121,22 @@ declare interface LandDetailsResponse {
   createdDate: string;
   lastModifiedBy: string;
   lastModifiedDate: string;
-  geoCoordinates: string | "";
-  latitude?: number;
-  longitude?: number;
+  geoCoordinates: string;
+  bankDetailsPath: string;
 }
   
-
 declare interface LandOwnerResponse {
   id: number;
   landownerName: string;
   signature: string;
-  aadhar: string;
+  aadhaar: string;
+  aadhaarUploadPath: string;
+  landDeedPath: string;
+  address: string;
   date: string;
   email: string;
   mobile: string;
-  landDetailsId: number;
-  address:string;
+  landDetailsId?: number;
 }
 declare interface PropertyResponse {
   id: number;
@@ -212,5 +214,4 @@ declare interface UserLandDetailsDataTable {
   geoCoordinates: string | "";
   latitude?: number;
   longitude?: number;
-
 }

@@ -1,9 +1,10 @@
-import LandDetailsForm from "@/modules/LandDetailsForm";
+import { LandDetailsFormStepper } from "@/modules/LandDetailsFormStepper";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gray-50">
-      <LandDetailsForm />
+    <main className="">
+      {/* <LandDetailsForm /> */}
+      <LandDetailsFormStepper />
     </main>
   );
 }
