@@ -1,6 +1,6 @@
 "use server"
 
-// import { cookies } from "next/headers"
+import { cookies } from "next/headers";
 import {  ofbizClient } from "../common/client";
 import axios from "axios";
 
@@ -12,10 +12,10 @@ interface ProductLandOfbizVariables {
 }
 
 export const createLandProductDetails = async (values: ProductLandOfbizVariables) => {
-    // const token = cookies().get("authToken")?.value;
-    // if (!token) {
-    //     throw new Error("No authentication token found");
-    // }
+    const token = cookies().get("authToken")?.value;
+    if (!token) {
+        throw new Error("No authentication token found");
+    }
  try {
     // const data = await ofbizClient({
     //     url: "/createAtparProductByEvents",
@@ -36,21 +36,37 @@ export const createLandProductDetails = async (values: ProductLandOfbizVariables
 
     // return data;
 
-    const response = await axios({
-        method: 'POST',
-        url: process.env.NEXT_PUBLIC_OFBIZ_API_URL + '/createAtparProductByEvents',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-PrivateTenant': 'default'
-        },
-        data: {
-            productId: values.productId,
-            productTypeId: "GOOD",
-            internalName: values.internalName,
-            longDescription: values.longDescription,
-            primaryProductCategoryId: "acm"
-        }
-    });
+    const response =await ofbizClient({
+      url: "/createAtparProductByEvents",
+      method: "POST",
+      data: {
+        productId: values.productId,
+        productTypeId: "GOOD",
+        internalName: values.internalName,
+        longDescription: values.longDescription,
+        primaryProductCategoryId: "acm"
+      },
+      headers: {
+        "Content-Type": "application/json",
+        "X-PrivateTenant": "default"
+      }
+    })
+
+    // const response = await axios({
+    //     method: 'POST',
+    //     url: process.env.NEXT_PUBLIC_OFBIZ_API_URL + '/createAtparProductByEvents',
+    //     headers: {
+    //         'Content-Type': 'application/json',
+    //         'X-PrivateTenant': 'default'
+    //     },
+    //     data: {
+    //         productId: values.productId,
+    //         productTypeId: "GOOD",
+    //         internalName: values.internalName,
+    //         longDescription: values.longDescription,
+    //         primaryProductCategoryId: "acm"
+    //     }
+    // });
 
     return response.data;
  } catch (error) {

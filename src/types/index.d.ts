@@ -26,7 +26,6 @@ declare interface LoginVariables {
   password: string;
 }
 
-//   {"token":"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYWltYWhlc2gyMzgyQGdtYWlsLmNvbSIsImlhdCI6MTczMjUxNjU4OSwiZXhwIjoxNzMyNTIwMTg5fQ.9pfyEXZtevjqiyyxbQEu3uYqKoX4k6Wo6Dv6Zs_0794","expiresIn":3600000}
 declare interface LoginResponse {
   token: string;
   expiresIn: number;
@@ -38,20 +37,7 @@ declare interface ApiResponse<T> {
   data: T[];
 }
 
-declare interface LandDetailsVariables {
-  accountNumber: string;
-  accountHolder: string;
-  dateCreated: string;
-  ifscCode: string;
-  swiftCode: string;
-  bank: string;
-  branch: string;
 
-  landOwners: LandOwner[];
-  propertyDetails: Property[];
-  witnesses: Witness[];
-  geoCoordinates: string | "";
-}
 
 declare interface LandOwner {
   landownerName: string;
@@ -77,31 +63,12 @@ declare interface Witness {
   date: string;
 }
 
-// [
-//   {
-//     "id": 0,
-//     "accountNumber": "string",
-//     "accountHolder": "string",
-//     "dateCreated": "2024-12-06",
-//     "ifscCode": "string",
-//     "swiftCode": "string",
-//     "bank": "string",
-//     "branch": "string",
-//     "aksmvbsMembershipNumber": "string",
-//     
-//     "userId": 0,
-//     "createdBy": "string",
-//     "approved": true,
-//     "approverName": "string",
-//     "createdDate": "2024-12-06T07:39:09.184Z",
-//     "lastModifiedBy": "string",
-//     "lastModifiedDate": "2024-12-06T07:39:09.184Z",
-//     "geoCoordinates": "string",
-//     "latitude": "string",
-//     "longitude": "string"
-//   }
-// ]
 declare interface LandDetailsResponse {
+  status: number;
+  message: string;
+  data: LandDetails[];
+}
+declare interface LandDetails {
   id: number;
   accountNumber: string;
   accountHolder: string;
@@ -136,7 +103,6 @@ declare interface LandOwnerResponse {
   date: string;
   email: string;
   mobile: string;
-  landDetailsId?: number;
 }
 declare interface PropertyResponse {
   id: number;
@@ -156,23 +122,7 @@ declare interface WitnessResponse {
   date: string;
 }
 
-declare interface UserLandDetailsResponse {
-  id: number;
-  accountNumber: string;
-  accountHolder: string;
-  dateCreated: string;
-  ifscCode: string;
-  swiftCode: string;
-  bank: string;
-  branch: string;
-  aksmvbsMembershipNumber: string;
-  landOwners: LandOwnerResponse[];
-  propertyDetails: PropertyResponse[];
-  witnesses: WitnessResponse[];
-  geoCoordinates: string | "";
-  latitude?: number;
-  longitude?: number;
-}
+
 
 declare interface UserDetailsResponse {
   createdBy: null;
@@ -191,27 +141,4 @@ declare interface UserDetailsResponse {
   credentialsNonExpired: boolean;
 }
 
-declare interface UserLandDetailsDataTable {
-  id: number;
-  accountNumber: string;
-  accountHolder: string;
-  dateCreated: string;
-  ifscCode: string;
-  swiftCode: string;
-  bank: string;
-  branch: string;
-  aksmvbsMembershipNumber: string;
-  landOwners: LandOwnerResponse[];
-  propertyDetails: PropertyResponse[];
-  witnesses: WitnessResponse[];
-  userId: number;
-  createdBy: string;
-  approved: boolean;
-  approverName: string;
-  createdDate: string;
-  lastModifiedBy: string;
-  lastModifiedDate: string;
-  geoCoordinates: string | "";
-  latitude?: number;
-  longitude?: number;
-}
+

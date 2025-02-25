@@ -14,37 +14,37 @@ const JsonDataKannadaView: React.FC<JsonDataKannadaViewProps> = ({ data }) => {
     }
     return typeof value === "string" ? value : JSON.stringify(value);
   };
-
-  const emptyLandOwner = {
-    id: 'empty-landowner-ka',
-    landownerName: null,
-    email: null,
-    mobile: null,
-    aadhar: null,
-    address: null,
-    date: null,
+  const emptyLandOwner = { 
+    id: 'empty-landowner', 
+    landownerName: null, 
+    email: null, 
+    mobile: null, 
+    aadhaar: null, 
+    address: null, 
+    date: null 
   };
   
-  const emptyProperty = {
-    id: 'empty-property-ka',
-    itemName: null,
-    location: null,
-    cropDetails: null,
-    totalArea: null,
-    surveyNumbers: null,
+  const emptyProperty = { 
+    id: 'empty-property', 
+    itemName: null, 
+    location: null, 
+    cropDetails: null, 
+    totalArea: null, 
+    surveyNumbers: null 
   };
   
-  const emptyWitness = {
-    id: 'empty-witness-ka',
-    name: null,
-    address: null,
-    note: null,
-    date: null,
+  const emptyWitness = { 
+    id: 'empty-witness', 
+    name: null, 
+    address: null, 
+    note: null, 
+    date: null 
   };
 
-  const landOwners = data?.landOwners || [emptyLandOwner];
-  const propertyDetails = data?.propertyDetails || [emptyProperty];
-  const witnesses = data?.witnesses || [
+  const landDetails = data?.data[0] || null
+  const landOwners = landDetails?.landOwners || [emptyLandOwner];
+  const propertyDetails = landDetails?.propertyDetails || [emptyProperty];
+  const witnesses = landDetails?.witnesses || [
     { ...emptyWitness, id: 'empty-witness-ka-1' },
     { ...emptyWitness, id: 'empty-witness-ka-2' }
   ];
@@ -60,7 +60,7 @@ const JsonDataKannadaView: React.FC<JsonDataKannadaViewProps> = ({ data }) => {
             <div className="text-xl p-4 space-y-4">
               <div>
                 ಈ ತಿಳುವಳಿಕೆಯ ಜ್ಞಾಪಕ ಪತ್ರವನ್ನು (&quot;MoU&quot;) is entered into
-                as of <span className="font-bold">{data?.dateCreated}</span>{" "}
+                as of <span className="font-bold">{landDetails?.dateCreated}</span>{" "}
                 (&quot;Effective Date&quot;) by and between{" "}
                 <span className="font-bold">
                   **Aurigraph DLT Corporation,**
@@ -96,18 +96,18 @@ const JsonDataKannadaView: React.FC<JsonDataKannadaViewProps> = ({ data }) => {
               <div className="text-center text-2xl font-bold py-3">AND</div>
               <div>
                 The Landowner or Grower or farmer is{" "}
-                <span className="font-bold">{data?.accountHolder}</span>,
+                <span className="font-bold">{landDetails?.accountHolder}</span>,
                 bearing{" "}
                 <span className="font-bold">
                   Addhar No
-                  {data?.landOwners[0].aadhar}
+                  {landDetails?.landOwners[0].aadhaar}
                 </span>{" "}
                 as ID{" "}
                 <span className="font-bold">
-                  {data?.landOwners[0].landownerName}
+                  {landDetails?.landOwners[0].landownerName}
                 </span>
                 , residing at{" "}
-                <span className="font-bold">{data?.landOwners[0].address}</span>
+                <span className="font-bold">{landDetails?.landOwners[0].address}</span>
                 ,hereafter referred to as (&quot;Landowner&quot;) is having own
                 land/field or farming activities or field in the Aurigraph
                 proposed carbon project
@@ -490,56 +490,56 @@ const JsonDataKannadaView: React.FC<JsonDataKannadaViewProps> = ({ data }) => {
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle>Basic Information</CardTitle>
-              <Badge variant="outline">ID: {data?.id}</Badge>
+              <Badge variant="outline">ID: {landDetails?.id}</Badge>
             </div>
           </CardHeader>
           <CardContent className="grid grid-cols-2 gap-4">
             <div>
               <p className="text-sm font-medium">Account Holder</p>
               <p className="text-sm text-muted-foreground">
-                {renderValue(data?.accountHolder)}
+                {renderValue(landDetails?.accountHolder)}
               </p>
             </div>
             <div>
               <p className="text-sm font-medium">Account Number</p>
               <p className="text-sm text-muted-foreground">
-                {renderValue(data?.accountNumber)}
+                {renderValue(landDetails?.accountNumber)}
               </p>
             </div>
             <div>
               <p className="text-sm font-medium">Bank</p>
               <p className="text-sm text-muted-foreground">
-                {renderValue(data?.bank)}
+                {renderValue(landDetails?.bank)}
               </p>
             </div>
             <div>
               <p className="text-sm font-medium">Branch</p>
               <p className="text-sm text-muted-foreground">
-                {renderValue(data?.branch)}
+                {renderValue(landDetails?.branch)}
               </p>
             </div>
             <div>
               <p className="text-sm font-medium">IFSC Code</p>
               <p className="text-sm text-muted-foreground">
-                {renderValue(data?.ifscCode)}
+                {renderValue(landDetails?.ifscCode)}
               </p>
             </div>
             <div>
               <p className="text-sm font-medium">Swift Code</p>
               <p className="text-sm text-muted-foreground">
-                {renderValue(data?.swiftCode)}
+                {renderValue(landDetails?.swiftCode)}
               </p>
             </div>
             <div>
               <p className="text-sm font-medium">Membership Number</p>
               <p className="text-sm text-muted-foreground">
-                {renderValue(data?.aksmvbsMembershipNumber)}
+                {renderValue(landDetails?.aksmvbsMembershipNumber)}
               </p>
             </div>
             <div>
               <p className="text-sm font-medium">Date Created</p>
               <p className="text-sm text-muted-foreground">
-                {renderValue(data?.dateCreated)}
+                {renderValue(landDetails?.dateCreated)}
               </p>
             </div>
           </CardContent>
@@ -579,7 +579,7 @@ const JsonDataKannadaView: React.FC<JsonDataKannadaViewProps> = ({ data }) => {
                   <div>
                     <p className="text-sm font-medium">Aadhar</p>
                     <p className="text-sm text-muted-foreground">
-                      {renderValue(owner.aadhar)}
+                      {renderValue(owner.aadhaar)}
                     </p>
                   </div>
                   <div>
@@ -760,7 +760,7 @@ const JsonDataKannadaView: React.FC<JsonDataKannadaViewProps> = ({ data }) => {
                         Authorized Signatory
                       </p>
                       <p className="text-sm text-muted-foreground">
-                        Date: {renderValue(data?.dateCreated)}
+                        Date: {renderValue(landDetails?.dateCreated)}
                       </p>
                     </div>
                   </div>
@@ -775,7 +775,7 @@ const JsonDataKannadaView: React.FC<JsonDataKannadaViewProps> = ({ data }) => {
                         Authorized Signatory
                       </p>
                       <p className="text-sm text-muted-foreground">
-                        Date: {renderValue(data?.dateCreated)}
+                        Date: {renderValue(landDetails?.dateCreated)}
                       </p>
                     </div>
                   </div>

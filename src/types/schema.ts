@@ -4,8 +4,8 @@ export const landOwnerSchema = z.object({
   landownerName: z.string().min(1, "Landowner name is required"),
   signature: z.string().min(1, "Signature is required"),
   aadhaar: z.string().min(12, "Aadhaar must be 12 digits").max(12), // Changed from aadhar to aadhaar
-  aadhaarUploadPath: z.instanceof(File).nullable(), // New field
-  landDeedPath: z.instanceof(File).nullable(), // New field
+  aadhaarFile: z.instanceof(File).nullable(), // New field
+  landDeedFile: z.instanceof(File).nullable(), // New field
   address: z.string().min(1, "Address is required"),
   date: z.string(),
   email: z.string().email("Invalid email address"),
@@ -35,7 +35,7 @@ export const formSchema = z.object({
   swiftCode: z.string().min(8, "SWIFT code must be 8-11 characters").max(11),
   bank: z.string().min(1, "Bank name is required"),
   branch: z.string().min(1, "Branch name is required"),
-  bankDetailsPath: z.instanceof(File).nullable(), // New field
+  bankDetailsUpload: z.instanceof(File).nullable(), // New field
   landOwners: z.array(landOwnerSchema).min(1, "At least one landowner is required"),
   propertyDetails: z.array(propertySchema).min(1, "At least one property is required"),
   witnesses: z.array(witnessSchema).min(1, "At least one witness is required"),

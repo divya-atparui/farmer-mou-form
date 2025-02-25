@@ -7,10 +7,10 @@ import { Separator } from "@/components/ui/separator";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 import React from "react";
-import { FormData } from "./LandDetailsForm";
+import { FormSchemaType } from "@/types/schema";
 
 interface MOUPreviewProps {
-  data: Partial<FormData>;
+  data: Partial<FormSchemaType>;
 }
 
 export function MOUPreview({ data }: MOUPreviewProps) {
@@ -124,7 +124,7 @@ export function MOUPreview({ data }: MOUPreviewProps) {
                           <p className="text-sm text-muted-foreground">
                             {messages.preview.landowners.aadhar}
                           </p>
-                          <p>{owner.aadhar || "_____________"}</p>
+                          <p>{owner.aadhaar || "_____________"}</p>
                         </div>
 
                         <div className="col-span-2">

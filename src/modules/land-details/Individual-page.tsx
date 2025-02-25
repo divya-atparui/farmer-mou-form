@@ -34,12 +34,12 @@ const IndividualPage = () => {
   const jsonData = JSON.parse(JSON.stringify(data));
 
   const LandDataPayload = {
-    productId: data.id + data.landOwners[0].landownerName + "Test",
+    productId: data.data[0].id + data.data[0].landOwners[0].landownerName + "Test",
 
-    internalName: data.landOwners
+    internalName: data.data[0].landOwners
       .map((owner) => owner.landownerName)
       .join(", "),
-    longDescription: data.landOwners
+    longDescription: data.data[0].landOwners
       .map((owner) => owner.landownerName)
       .join(", "),
   

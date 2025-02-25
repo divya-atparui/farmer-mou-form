@@ -8,6 +8,7 @@ import { EmptyState, LoadingState } from './land-details/state-components'
 const Dashboard = () => {
   const { data, isLoading, error } = useGetUserLandDetails();
 
+  console.log(data)
   if (isLoading) {
     return <LoadingState />;
   }
@@ -16,13 +17,17 @@ const Dashboard = () => {
     return <EmptyState />;
   }
 
-  if (!data || data.length === 0 || data === undefined || data === null) {
+  if (!data?.data || data === undefined || data?.data === null || data.status !== 404) {
     return <EmptyState />;
   }
 
+  const landDetails = data.data;
+
+
   return (
     <div>
-      <DataTable data={data} columns={columns} />
+      
+      <DataTable data={landDetails} columns={columns} />
     </div>
   );
 };

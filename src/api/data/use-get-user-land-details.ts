@@ -2,7 +2,7 @@ import type { AxiosError } from 'axios';
 import { createQuery } from 'react-query-kit';
 import { getUserLandDetails } from './get-data';
 
-type Response = UserLandDetailsResponse[];
+type Response = LandDetailsResponse;
 type Variables = void;
 
 export const useGetUserLandDetails = createQuery<Response, Variables, AxiosError>({

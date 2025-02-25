@@ -8,6 +8,8 @@ interface JsonDataViewProps {
 }
 
 const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
+
+  console.log(data?.data[0].landOwners[0].aadhaar)
   // Helper function to render value or underline
   const renderValue = (value: unknown) => {
     if (!data || value === null || value === undefined || value === "") {
@@ -21,7 +23,7 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
     landownerName: null, 
     email: null, 
     mobile: null, 
-    aadhar: null, 
+    aadhaar: null, 
     address: null, 
     date: null 
   };
@@ -43,10 +45,10 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
     date: null 
   };
 
-  console.log(data)
-  const landOwners = data?.landOwners || [emptyLandOwner];
-  const propertyDetails = data?.propertyDetails || [emptyProperty];
-  const witnesses = data?.witnesses || [
+   const landDetails = data?.data[0] || null
+  const landOwners = landDetails?.landOwners || [emptyLandOwner];
+  const propertyDetails = landDetails?.propertyDetails || [emptyProperty];
+  const witnesses = landDetails?.witnesses || [
     { ...emptyWitness, id: 'empty-witness-1' }, 
     { ...emptyWitness, id: 'empty-witness-2' }
   ];
@@ -61,8 +63,9 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
           <CardContent className="p-2 sm:p-4">
             <div className="text-md p-4 space-y-4">
               <div>
+                
                 This Memorandum of Understanding (&quot;MoU&quot;) is entered
-                into as of <span className="font-bold">{renderValue(data?.dateCreated)}</span>{" "}
+                into as of <span className="font-bold">{renderValue(landDetails?.dateCreated)}</span>{" "}
                 (&quot;Effective Date&quot;) by and between{" "}
                 <span className="font-bold">
                   **Aurigraph DLT Corporation,**
@@ -98,17 +101,18 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
               <div className="text-center text-lg font-semibold py-3">AND</div>
               <div>
                 The Landowner or Grower or farmer is{" "}
-                <span className="font-bold">{renderValue(data?.accountHolder)}</span>, bearing{" "}
+                <span className="font-bold">{renderValue(landDetails?.accountHolder)}</span>, bearing{" "}
                 <span className="font-bold">
                   Addhar No
-                  {renderValue(data?.landOwners[0]?.aadhar)}
+                  {renderValue(landDetails?.landOwners[0].aadhaar || ""
+                  )}
                 </span>{" "}
                 as ID{" "}
                 <span className="font-bold">
-                  {renderValue(data?.landOwners[0]?.landownerName)}
+                  {renderValue(landDetails?.landOwners[0]?.landownerName || "")}
                 </span>
                 , residing at{" "}
-                <span className="font-bold">{renderValue(data?.landOwners[0]?.address)}</span>
+                <span className="font-bold">{renderValue(landDetails?.landOwners[0]?.address || "")}</span>
                 ,hereafter referred to as (&quot;Landowner&quot;) is having own
                 land/field or farming activities or field in the Aurigraph
                 proposed carbon project
@@ -521,48 +525,48 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle>Basic Information</CardTitle>
-              <Badge variant="outline">ID: {renderValue(data?.id)}</Badge>
+              <Badge variant="outline">ID: {renderValue(landDetails?.id)}</Badge>
             </div>
           </CardHeader>
           <CardContent className="p-2 sm:p-4 grid grid-cols-1 gap-3 sm:gap-4 sm:grid-cols-2">
             <div>
               <p className="text-sm font-medium">Account Holder</p>
               <p className="text-sm text-muted-foreground">
-                {renderValue(data?.accountHolder)}
+                {renderValue(landDetails?.accountHolder)}
               </p>
             </div>
             <div>
               <p className="text-sm font-medium">Account Number</p>
               <p className="text-sm text-muted-foreground">
-                {renderValue(data?.accountNumber)}
+                {renderValue(landDetails?.accountNumber)}
               </p>
             </div>
             <div>
               <p className="text-sm font-medium">Bank</p>
-              <p className="text-sm text-muted-foreground">{renderValue(data?.bank)}</p>
+              <p className="text-sm text-muted-foreground">{renderValue(landDetails?.bank)}</p>
             </div>
             <div>
               <p className="text-sm font-medium">Branch</p>
-              <p className="text-sm text-muted-foreground">{renderValue(data?.branch)}</p>
+              <p className="text-sm text-muted-foreground">{renderValue(landDetails?.branch)}</p>
             </div>
             <div>
               <p className="text-sm font-medium">IFSC Code</p>
-              <p className="text-sm text-muted-foreground">{renderValue(data?.ifscCode)}</p>
+              <p className="text-sm text-muted-foreground">{renderValue(landDetails?.ifscCode)}</p>
             </div>
             <div>
               <p className="text-sm font-medium">Swift Code</p>
-              <p className="text-sm text-muted-foreground">{renderValue(data?.swiftCode)}</p>
+              <p className="text-sm text-muted-foreground">{renderValue(landDetails?.swiftCode)}</p>
             </div>
             <div>
               <p className="text-sm font-medium">Membership Number</p>
               <p className="text-sm text-muted-foreground">
-                {renderValue(data?.aksmvbsMembershipNumber)}
+                {renderValue(landDetails?.aksmvbsMembershipNumber)}
               </p>
             </div>
             <div>
               <p className="text-sm font-medium">Date Created</p>
               <p className="text-sm text-muted-foreground">
-                {renderValue(data?.dateCreated)}
+                {renderValue(landDetails?.dateCreated)}
               </p>
             </div>
           </CardContent>
@@ -600,9 +604,9 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium">Aadhar</p>
+                    <p className="text-sm font-medium">Aadhaar</p>
                     <p className="text-sm text-muted-foreground">
-                      {renderValue(owner.aadhar)}
+                      {renderValue(owner.aadhaar)}
                     </p>
                   </div>
                   <div>
@@ -780,7 +784,7 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
                         Authorized Signatory
                       </p>
                       <p className="text-sm text-muted-foreground">
-                        Date: {renderValue(data?.dateCreated)}
+                        Date: {renderValue(landDetails?.dateCreated)}
                       </p>
                     </div>
                   </div>
@@ -795,7 +799,7 @@ const JsonDataView: React.FC<JsonDataViewProps> = ({ data }) => {
                         Authorized Signatory
                       </p>
                       <p className="text-sm text-muted-foreground">
-                        Date: {renderValue(data?.dateCreated)}
+                        Date: {renderValue(landDetails?.dateCreated)}
                       </p>
                     </div>
                   </div>

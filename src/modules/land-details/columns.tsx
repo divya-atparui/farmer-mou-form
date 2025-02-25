@@ -7,7 +7,7 @@ import { Eye, Edit } from "lucide-react";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import Link from "next/link";
 
-export const columns: ColumnDef<UserLandDetailsDataTable>[] = [
+export const columns: ColumnDef<LandDetails>[] = [
   {
     accessorKey: "id",
     header: "ID",
