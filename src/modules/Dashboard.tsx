@@ -17,7 +17,7 @@ const Dashboard = () => {
     return <EmptyState />;
   }
 
-  if (!data?.data || data === undefined || data?.data === null || data.status !== 404) {
+  if (!data?.data || data === undefined || data?.data === null ) {
     return <EmptyState />;
   }
 

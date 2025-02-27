@@ -10,12 +10,14 @@ import { Building2 } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 
 import { FormSchemaType } from "@/types/schema";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface BankDetailComponentProps {
   form: UseFormReturn<FormSchemaType>;
 }
 
 export function BankDetailComponent({ form }: BankDetailComponentProps) {
+  const { messages } = useLanguage();
 
   return (
     <div className="w-full max-w-4xl mx-auto p-4">
@@ -23,10 +25,10 @@ export function BankDetailComponent({ form }: BankDetailComponentProps) {
       <div className="mb-4">
         <h2 className="text-base font-semibold flex items-center gap-2">
           <Building2 className="h-4 w-4" />
-          Bank Account Information
+          {messages.form.sections.bank.title}
         </h2>
         <p className="text-sm text-gray-500 mt-1">
-          Enter bank account details for the transaction
+          {messages.form.sections.bank.description}
         </p>
       </div>
 
@@ -40,11 +42,11 @@ export function BankDetailComponent({ form }: BankDetailComponentProps) {
             render={({ field, fieldState: { error, invalid, isDirty } }) => (
               <FormItem>
                 <FormLabel className={`text-sm font-medium ${invalid && isDirty ? 'text-rose-500' : ''}`}>
-                  Account Number
+                  {messages.form.sections.bank.fields.accountNumber}
                 </FormLabel>
                 <FormControl>
                   <Input 
-                    placeholder="Enter account number"
+                    placeholder={`${messages.form.sections.bank.fields.accountNumber}`}
                     className={`text-sm ${invalid && isDirty ? 'border-rose-500' : ''}`}
                     {...field} 
                   />
@@ -64,11 +66,11 @@ export function BankDetailComponent({ form }: BankDetailComponentProps) {
             render={({ field, fieldState: { error, invalid, isDirty } }) => (
               <FormItem>
                 <FormLabel className={`text-sm font-medium ${invalid && isDirty ? 'text-rose-500' : ''}`}>
-                  Account Holder
+                  {messages.form.sections.bank.fields.accountHolder}
                 </FormLabel>
                 <FormControl>
                   <Input 
-                    placeholder="Enter account holder name"
+                    placeholder={`${messages.form.sections.bank.fields.accountHolder}`}
                     className={`text-sm ${invalid && isDirty ? 'border-rose-500' : ''}`}
                     {...field} 
                   />
@@ -91,11 +93,11 @@ export function BankDetailComponent({ form }: BankDetailComponentProps) {
             render={({ field, fieldState: { error, invalid, isDirty } }) => (
               <FormItem>
                 <FormLabel className={`text-sm font-medium ${invalid && isDirty ? 'text-rose-500' : ''}`}>
-                  Bank
+                  {messages.form.sections.bank.fields.bank}
                 </FormLabel>
                 <FormControl>
                   <Input 
-                    placeholder="Enter bank name"
+                    placeholder={`${messages.form.sections.bank.fields.bank}`}
                     className={`text-sm ${invalid && isDirty ? 'border-rose-500' : ''}`}
                     {...field} 
                   />
@@ -115,11 +117,11 @@ export function BankDetailComponent({ form }: BankDetailComponentProps) {
             render={({ field, fieldState: { error, invalid, isDirty } }) => (
               <FormItem>
                 <FormLabel className={`text-sm font-medium ${invalid && isDirty ? 'text-rose-500' : ''}`}>
-                  Branch
+                  {messages.form.sections.bank.fields.branch}
                 </FormLabel>
                 <FormControl>
                   <Input 
-                    placeholder="Enter branch name"
+                    placeholder={`${messages.form.sections.bank.fields.branch}`}
                     className={`text-sm ${invalid && isDirty ? 'border-rose-500' : ''}`}
                     {...field} 
                   />
@@ -142,7 +144,7 @@ export function BankDetailComponent({ form }: BankDetailComponentProps) {
             render={({ field, fieldState: { error, invalid, isDirty } }) => (
               <FormItem>
                 <FormLabel className={`text-sm font-medium ${invalid && isDirty ? 'text-rose-500' : ''}`}>
-                  Date Created
+                  {messages.form.sections.bank.fields.dateCreated}
                 </FormLabel>
                 <FormControl>
                   <Input 
@@ -153,7 +155,7 @@ export function BankDetailComponent({ form }: BankDetailComponentProps) {
                   />
                 </FormControl>
                 {error && isDirty && (
-                  <FormMessage className="text-xs">
+                  <FormMessage className="text-xs text-rose-500">
                     {error.message}
                   </FormMessage>
                 )}
@@ -167,11 +169,11 @@ export function BankDetailComponent({ form }: BankDetailComponentProps) {
             render={({ field, fieldState: { error, invalid, isDirty } }) => (
               <FormItem>
                 <FormLabel className={`text-sm font-medium ${invalid && isDirty ? 'text-rose-500' : ''}`}>
-                  IFSC Code
+                  {messages.form.sections.bank.fields.ifscCode}
                 </FormLabel>
                 <FormControl>
                   <Input 
-                    placeholder="Enter IFSC code"
+                    placeholder={`${messages.form.sections.bank.fields.ifscCode}`}
                     className={`text-sm ${invalid && isDirty ? 'border-rose-500' : ''}`}
                     {...field} 
                   />
@@ -194,11 +196,11 @@ export function BankDetailComponent({ form }: BankDetailComponentProps) {
             render={({ field, fieldState: { error, invalid, isDirty } }) => (
               <FormItem>
                 <FormLabel className={`text-sm font-medium ${invalid && isDirty ? 'text-rose-500' : ''}`}>
-                  SWIFT Code
+                  {messages.form.sections.bank.fields.swiftCode}
                 </FormLabel>
                 <FormControl>
                   <Input 
-                    placeholder="Enter SWIFT code"
+                    placeholder={`${messages.form.sections.bank.fields.swiftCode}`}
                     className={`text-sm ${invalid && isDirty ? 'border-rose-500' : ''}`}
                     {...field} 
                   />
@@ -218,16 +220,16 @@ export function BankDetailComponent({ form }: BankDetailComponentProps) {
           <FormField
             control={form.control}
             name="bankDetailsUpload"
-            render={({ field }) => (
+            render={({ field, fieldState: { error, invalid, isDirty } }) => (
               <FormItem>
-                <FormLabel className="text-sm font-medium">
-                  Bank Details Document
+                <FormLabel className={`text-sm font-medium ${invalid && isDirty ? 'text-rose-500' : ''}`}>
+                  {messages.form.sections.bank.fields.bankDetailsUpload}
                 </FormLabel>
                 <FormControl>
-                  <div className="flex items-center gap-2 ">
-                    <Input 
-                      type="file" 
-                      className="h-12 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100" 
+                  <div className="flex items-center gap-2">
+                    <Input
+                      type="file"
+                      className={`text-sm ${invalid && isDirty ? 'border-rose-500' : ''}`}
                       onChange={(e) => {
                         const file = e.target.files?.[0];
                         field.onChange(file);

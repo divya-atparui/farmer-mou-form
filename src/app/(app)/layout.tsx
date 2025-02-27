@@ -6,7 +6,8 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Toaster } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTransition } from "react";
-import { LogOut } from "lucide-react";
+import { LogOut, Languages } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function FormLayout({
   children,
@@ -15,6 +16,7 @@ export default function FormLayout({
 }>) {
   const queryClient = useQueryClient();
   const [isPending, startTransition] = useTransition();
+  const { language, setLanguage } = useLanguage();
 
   const handleLogout = () => {
     startTransition(async () => {
@@ -31,14 +33,26 @@ export default function FormLayout({
         <main className="flex-1 p-4">
           <div className="flex justify-between items-center mb-4">
             <SidebarTrigger className="bg-blue-100 p-6 rounded-full shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500" />
-            <button
-              onClick={handleLogout}
-              disabled={isPending}
-              className="bg-green-100 p-4 rounded-full shadow-md hover:shadow-lg hover:bg-red-50 transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-red-500 disabled:opacity-50"
-              title="Logout"
-            >
-              <LogOut className={`w-6 h-6 ${isPending ? 'text-gray-400' : 'text-blue-500'} hover:text-red-500 transition-colors`} />
-            </button>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setLanguage(language === "en" ? "kn" : "en")}
+                className="bg-blue-100 p-4 rounded-full shadow-md hover:shadow-lg hover:bg-blue-50 transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center gap-2"
+                title={language === "en" ? "Switch to ಕನ್ನಡ" : "Switch to English"}
+              >
+                <Languages className="w-6 h-6 text-blue-500 hover:text-blue-700 transition-colors" />
+                <span className="text-sm font-medium text-blue-700">
+                  {language === "en" ? "ಕನ್ನಡ" : "English"}
+                </span>
+              </button>
+              <button
+                onClick={handleLogout}
+                disabled={isPending}
+                className="bg-green-100 p-4 rounded-full shadow-md hover:shadow-lg hover:bg-red-50 transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-red-500 disabled:opacity-50"
+                title="Logout"
+              >
+                <LogOut className={`w-6 h-6 ${isPending ? 'text-gray-400' : 'text-blue-500'} hover:text-red-500 transition-colors`} />
+              </button>
+            </div>
           </div>
           {children}
         </main>

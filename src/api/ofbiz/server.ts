@@ -44,7 +44,7 @@ export const createLandProductDetails = async (values: ProductLandOfbizVariables
         productTypeId: "GOOD",
         internalName: values.internalName,
         longDescription: values.longDescription,
-        primaryProductCategoryId: "acm"
+        primaryProductCategoryId: "AURIGRAPH-CATEGORY"
       },
       headers: {
         "Content-Type": "application/json",

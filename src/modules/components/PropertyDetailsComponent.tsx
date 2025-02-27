@@ -35,60 +35,54 @@ export function PropertyDetailsComponent({ form }: PropertyDetailsComponentProps
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-6">
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h2 className="flex items-center gap-2 text-lg sm:text-xl font-semibold">
-            <Building2 className="w-4 h-4 sm:w-5 sm:h-5" />
-            {messages.form.sections.property.title}
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            {messages.form.sections.property.description}
-          </p>
-        </div>
+    <div className="w-full max-w-4xl mx-auto p-4">
+      {/* Property Details Header */}
+      <div className="mb-4">
+        <h2 className="text-base font-semibold flex items-center gap-2">
+          <Building2 className="h-4 w-4" />
+          {messages.form.sections.property.title}
+        </h2>
+        <p className="text-sm text-gray-500 mt-1">
+          {messages.form.sections.property.description}
+        </p>
+      </div>
+
+      {/* Add Property Button */}
+      <div className="mb-4">
         <Button
           type="button"
           variant="outline"
+          size="sm"
+          className="flex items-center gap-1"
           onClick={addNewProperty}
-          className="flex items-center gap-2"
         >
-          <Plus className="w-4 h-4" />
-          Add Property
+          <Plus className="h-3.5 w-3.5" />
+          {messages.form.sections.property.fields.addProperty}
         </Button>
       </div>
 
-      {fields.length === 0 ? (
-        <div className="text-center py-10 border rounded-lg bg-gray-50">
-          <Building2 className="mx-auto h-12 w-12 text-gray-400" />
-          <h3 className="mt-2 text-sm font-semibold text-gray-900">No Properties</h3>
-          <p className="mt-1 text-sm text-gray-500">Add a property to get started</p>
-          <Button
-            type="button"
-            variant="outline"
-            onClick={addNewProperty}
-            className="mt-6"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            Add Property
-          </Button>
-        </div>
-      ) : (
+      {/* Property List */}
+      {fields.length > 0 && (
         <div className="space-y-6">
           {fields.map((field, index) => (
-            <div
-              key={field.id}
-              className="relative p-6 border rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200"
-            >
-              <Button
-                type="button"
-                variant="destructive"
-                size="icon"
-                className="absolute -right-2 -top-2 h-8 w-8 rounded-full"
-                onClick={() => remove(index)}
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
+            <div key={field.id} className="border rounded-lg p-4 bg-white/80">
+              {/* Property Header with Remove Button */}
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-sm font-medium">
+                  {messages.form.sections.property.fields.propertyTitle} {index + 1}
+                </h3>
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  className="h-8 w-8 p-0"
+                  onClick={() => remove(index)}
+                >
+                  <Trash2 className="h-4 w-4 text-gray-500 hover:text-red-500" />
+                </Button>
+              </div>
 
+              {/* Property Form Fields */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
@@ -100,7 +94,7 @@ export function PropertyDetailsComponent({ form }: PropertyDetailsComponentProps
                       </FormLabel>
                       <FormControl>
                         <Input 
-                          placeholder="Enter item name"
+                          placeholder={`${messages.form.sections.property.fields.itemName}`}
                           className={`text-sm ${invalid && isDirty ? 'border-rose-500' : ''}`} 
                           {...field} 
                         />
@@ -113,7 +107,6 @@ export function PropertyDetailsComponent({ form }: PropertyDetailsComponentProps
                     </FormItem>
                   )}
                 />
-
                 <FormField
                   control={form.control}
                   name={`propertyDetails.${index}.cropDetails`}
@@ -124,7 +117,7 @@ export function PropertyDetailsComponent({ form }: PropertyDetailsComponentProps
                       </FormLabel>
                       <FormControl>
                         <Input 
-                          placeholder="Enter crop details"
+                          placeholder={`${messages.form.sections.property.fields.cropDetails}`}
                           className={`text-sm ${invalid && isDirty ? 'border-rose-500' : ''}`} 
                           {...field} 
                         />
@@ -137,7 +130,6 @@ export function PropertyDetailsComponent({ form }: PropertyDetailsComponentProps
                     </FormItem>
                   )}
                 />
-
                 <FormField
                   control={form.control}
                   name={`propertyDetails.${index}.totalArea`}
@@ -149,7 +141,7 @@ export function PropertyDetailsComponent({ form }: PropertyDetailsComponentProps
                       <FormControl>
                         <Input 
                           type="number"
-                          placeholder="Enter total area"
+                          placeholder={`${messages.form.sections.property.fields.totalArea}`}
                           className={`text-sm ${invalid && isDirty ? 'border-rose-500' : ''}`} 
                           onChange={(e) => field.onChange(parseFloat(e.target.value))}
                           value={field.value}
@@ -163,7 +155,6 @@ export function PropertyDetailsComponent({ form }: PropertyDetailsComponentProps
                     </FormItem>
                   )}
                 />
-
                 <FormField
                   control={form.control}
                   name={`propertyDetails.${index}.surveyNumbers`}
@@ -174,7 +165,7 @@ export function PropertyDetailsComponent({ form }: PropertyDetailsComponentProps
                       </FormLabel>
                       <FormControl>
                         <Input 
-                          placeholder="Enter survey numbers"
+                          placeholder={`${messages.form.sections.property.fields.surveyNumbers}`}
                           className={`text-sm ${invalid && isDirty ? 'border-rose-500' : ''}`} 
                           {...field} 
                         />
@@ -187,7 +178,6 @@ export function PropertyDetailsComponent({ form }: PropertyDetailsComponentProps
                     </FormItem>
                   )}
                 />
-
                 <FormField
                   control={form.control}
                   name={`propertyDetails.${index}.location`}
@@ -198,7 +188,7 @@ export function PropertyDetailsComponent({ form }: PropertyDetailsComponentProps
                       </FormLabel>
                       <FormControl>
                         <Input 
-                          placeholder="Enter location"
+                          placeholder={`${messages.form.sections.property.fields.location}`}
                           className={`text-sm ${invalid && isDirty ? 'border-rose-500' : ''}`} 
                           {...field} 
                         />

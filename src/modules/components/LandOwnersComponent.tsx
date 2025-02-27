@@ -59,15 +59,19 @@ export function LandOwnersComponent({ form }: LandOwnersComponentProps) {
           className="flex items-center gap-2"
         >
           <Plus className="w-4 h-4" />
-          Add Land Owner
+          {messages.form.sections.landowners.addLandowner}
         </Button>
       </div>
 
       {fields.length === 0 ? (
         <div className="text-center py-10 border rounded-lg bg-gray-50">
           <Users className="mx-auto h-12 w-12 text-gray-400" />
-          <h3 className="mt-2 text-sm font-semibold text-gray-900">No Land Owners</h3>
-          <p className="mt-1 text-sm text-gray-500">Add a land owner to get started</p>
+          <h3 className="mt-2 text-sm font-semibold text-gray-900">
+            {messages.form.sections.landowners.noLandowners}
+          </h3>
+          <p className="mt-1 text-sm text-gray-500">
+            {messages.form.sections.landowners.addLandownerDescription}
+          </p>
           <Button
             type="button"
             variant="outline"
@@ -75,7 +79,7 @@ export function LandOwnersComponent({ form }: LandOwnersComponentProps) {
             className="mt-6"
           >
             <Plus className="w-4 h-4 mr-2" />
-            Add Land Owner
+            {messages.form.sections.landowners.addLandowner}
           </Button>
         </div>
       ) : (
@@ -94,7 +98,7 @@ export function LandOwnersComponent({ form }: LandOwnersComponentProps) {
               >
                 <Trash2 className="h-4 w-4" />
               </Button>
-
+              
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
@@ -106,7 +110,7 @@ export function LandOwnersComponent({ form }: LandOwnersComponentProps) {
                       </FormLabel>
                       <FormControl>
                         <Input 
-                          placeholder="Enter landowner name"
+                          placeholder={messages.form.sections.landowners.fields.name}
                           className={`text-sm ${invalid && isDirty ? 'border-rose-500' : ''}`} 
                           {...field} 
                         />
@@ -130,7 +134,7 @@ export function LandOwnersComponent({ form }: LandOwnersComponentProps) {
                       </FormLabel>
                       <FormControl>
                         <Input 
-                          placeholder="Enter Aadhaar number"
+                          placeholder={messages.form.sections.landowners.fields.aadhar}
                           maxLength={12}
                           className={`text-sm ${invalid && isDirty ? 'border-rose-500' : ''}`} 
                           {...field} 
@@ -156,7 +160,7 @@ export function LandOwnersComponent({ form }: LandOwnersComponentProps) {
                       <FormControl>
                         <Input 
                           type="email"
-                          placeholder="Enter email address"
+                          placeholder={messages.form.sections.landowners.fields.email}
                           className={`text-sm ${invalid && isDirty ? 'border-rose-500' : ''}`} 
                           {...field} 
                         />
@@ -182,7 +186,7 @@ export function LandOwnersComponent({ form }: LandOwnersComponentProps) {
                         <Input 
                           type="tel"
                           maxLength={10}
-                          placeholder="Enter mobile number"
+                          placeholder={messages.form.sections.landowners.fields.mobile}
                           className={`text-sm ${invalid && isDirty ? 'border-rose-500' : ''}`} 
                           {...field} 
                         />
@@ -206,7 +210,7 @@ export function LandOwnersComponent({ form }: LandOwnersComponentProps) {
                       </FormLabel>
                       <FormControl>
                         <Textarea 
-                          placeholder="Enter address"
+                          placeholder={messages.form.sections.landowners.fields.address}
                           className={`text-sm ${invalid && isDirty ? 'border-rose-500' : ''}`} 
                           {...field} 
                         />
@@ -226,7 +230,7 @@ export function LandOwnersComponent({ form }: LandOwnersComponentProps) {
                   render={({ field: { onChange,value, ...field }, fieldState: { error, invalid, isDirty } }) => (
                     <FormItem>
                       <FormLabel className={`text-sm font-medium ${invalid && isDirty ? 'text-rose-500' : ''}`}>
-                        Aadhaar Document
+                        {messages.form.sections.landowners.fields.aadhaarDocument}
                       </FormLabel>
                       <FormControl>
                         <Input
@@ -254,7 +258,7 @@ export function LandOwnersComponent({ form }: LandOwnersComponentProps) {
                   render={({ field: { onChange,value, ...field }, fieldState: { error, invalid, isDirty } }) => (
                     <FormItem>
                       <FormLabel className={`text-sm font-medium ${invalid && isDirty ? 'text-rose-500' : ''}`}>
-                        Land Deed Document
+                        {messages.form.sections.landowners.fields.landDeedDocument}
                       </FormLabel>
                       <FormControl>
                         <Input
@@ -282,11 +286,11 @@ export function LandOwnersComponent({ form }: LandOwnersComponentProps) {
                   render={({ field, fieldState: { error, invalid, isDirty } }) => (
                     <FormItem>
                       <FormLabel className={`text-sm font-medium ${invalid && isDirty ? 'text-rose-500' : ''}`}>
-                        Signature
+                        {messages.form.sections.landowners.fields.signature}
                       </FormLabel>
                       <FormControl>
                         <Input 
-                          placeholder="Enter signature"
+                          placeholder={messages.form.sections.landowners.fields.signature}
                           className={`text-sm ${invalid && isDirty ? 'border-rose-500' : ''}`} 
                           {...field} 
                         />
@@ -306,7 +310,7 @@ export function LandOwnersComponent({ form }: LandOwnersComponentProps) {
                   render={({ field, fieldState: { error, invalid, isDirty } }) => (
                     <FormItem>
                       <FormLabel className={`text-sm font-medium ${invalid && isDirty ? 'text-rose-500' : ''}`}>
-                        Date
+                        {messages.form.sections.landowners.fields.date}
                       </FormLabel>
                       <FormControl>
                         <Input 

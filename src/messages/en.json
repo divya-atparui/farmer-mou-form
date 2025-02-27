@@ -16,18 +16,27 @@
           "dateCreated": "Date Created",
           "ifscCode": "IFSC Code",
           "swiftCode": "SWIFT Code",
-          "membershipNumber": "Membership Number"
+          "membershipNumber": "Membership Number",
+          "bankDetailsUpload": "Bank Details Document"
         }
       },
       "landowners": {
         "title": "Landowner Details",
         "description": "Add information about the landowners",
+        "addLandowner": "Add Land Owner",
+        "noLandowners": "No Land Owners",
+        "addLandownerDescription": "Add a land owner to get started",
+        "landownerTitle": "Land Owner",
         "fields": {
           "name": "Name",
           "aadhar": "Aadhar",
           "mobile": "Mobile",
           "address": "Address",
-          "email": "Email"
+          "email": "Email",
+          "date": "Date",
+          "signature": "Signature",
+          "aadhaarDocument": "Aadhaar Document",
+          "landDeedDocument": "Land Deed Document"
         }
       },
       "property": {
@@ -38,12 +47,16 @@
           "cropDetails": "Crop Details",
           "totalArea": "Total Area",
           "surveyNumbers": "Survey Numbers",
-          "location": "Location"
+          "location": "Location",
+          "addProperty": "Add Property",
+          "propertyTitle": "Property"
         }
       },
       "witnesses": {
         "title": "Witness Information",
         "description": "Add details of witnesses",
+        "addWitness": "Add Witness",
+        "witnessTitle": "Witness",
         "fields": {
           "name": "Name",
           "address": "Address",

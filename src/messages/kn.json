@@ -15,23 +15,34 @@
           "dateCreated": "ರಚಿಸಿದ ದಿನಾಂಕ",
           "ifscCode": "IFSC ಕೋಡ್",
           "swiftCode": "SWIFT ಕೋಡ್",
-          "membershipNumber": "ಸದಸ್ಯತ್ವ ಸಂಖ್ಯೆ"
+          "membershipNumber": "ಸದಸ್ಯತ್ವ ಸಂಖ್ಯೆ",
+          "bankDetailsUpload": "ಬ್ಯಾಂಕ್ ವಿವರಗಳ ದಾಖಲೆ"
         }
       },
       "landowners": {
         "title": "ಭೂ ಮಾಲೀಕರ ವಿವರಗಳು",
         "description": "ಭೂ ಮಾಲೀಕರ ಬಗ್ಗೆ ಮಾಹಿತಿ ಸೇರಿಸಿ",
+        "addLandowner": "ಭೂ ಮಾಲೀಕರನ್ನು ಸೇರಿಸಿ",
+        "noLandowners": "ಯಾವುದೇ ಭೂ ಮಾಲೀಕರಿಲ್ಲ",
+        "addLandownerDescription": "ಪ್ರಾರಂಭಿಸಲು ಭೂ ಮಾಲೀಕರನ್ನು ಸೇರಿಸಿ",
+        "landownerTitle": "ಭೂ ಮಾಲೀಕ",
         "fields": {
           "name": "ಹೆಸರು",
           "aadhar": "ಆಧಾರ್",
           "mobile": "ಮೊಬೈಲ್",
           "address": "ವಿಳಾಸ",
-          "email": "ಇಮೇಲ್"
+          "email": "ಇಮೇಲ್",
+          "date": "ದಿನಾಂಕ",
+          "signature": "ಸಹಿ",
+          "aadhaarDocument": "ಆಧಾರ್ ದಾಖಲೆ",
+          "landDeedDocument": "ಭೂಮಿ ಪತ್ರದ ದಾಖಲೆ"
         }
       },
       "property": {
         "title": "ಆಸ್ತಿ ಮಾಹಿತಿ",
         "description": "ಆಸ್ತಿಗಳ ಬಗ್ಗೆ ವಿವರಗಳನ್ನು ಸೇರಿಸಿ",
+        "addProperty": "ಆಸ್ತಿ ಸೇರಿಸಿ",
+        "propertyTitle": "ಆಸ್ತಿ",
         "fields": {
           "itemName": "ವಸ್ತುವಿನ ಹೆಸರು",
           "cropDetails": "ಬೆಳೆ ವಿವರಗಳು",
@@ -43,6 +54,8 @@
       "witnesses": {
         "title": "ಸಾಕ್ಷಿದಾರರ ಮಾಹಿತಿ",
         "description": "ಸಾಕ್ಷಿದಾರರ ವಿವರಗಳನ್ನು ಸೇರಿಸಿ",
+        "addWitness": "ಸಾಕ್ಷಿದಾರರನ್ನು ಸೇರಿಸಿ",
+        "witnessTitle": "ಸಾಕ್ಷಿದಾರ",
         "fields": {
           "name": "ಹೆಸರು",
           "address": "ವಿಳಾಸ",
