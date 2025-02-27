@@ -1,18 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { formSchema, FormSchemaType } from "@/types/schema";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardDescription,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Building2, Users, Home, UserCheck } from "lucide-react";
-import { MOUPreview } from "./MOUPreview";
+
 import { StepperHeader } from "./stepper/StepperHeader";
 import { StepperNavigation } from "./stepper/StepperNavigation";
 import type { StepType } from "./stepper/types";
@@ -22,25 +16,75 @@ import PropertyDetailsComponent from "./components/PropertyDetailsComponent";
 import WitnessesComponent from "./components/WitnessesComponent";
 import { usePostLandDetails } from "@/api/form/use-post-land-details";
 import { toast } from "sonner";
-// import { useCreateLandProduct } from "@/api/ofbiz/use-create-land-product";
-import { DialogFooter, DialogTitle } from "@/components/ui/dialog";
-import { DialogHeader } from "@/components/ui/dialog";
-import { DialogContent } from "@/components/ui/dialog";
-import { Dialog } from "@/components/ui/dialog";
-import JsonDataView from "./JsonDataView";
-import JsonDataKannadaView from "./JsonDataKannadaView";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { Badge } from "@/components/ui/badge";
-
+import { useCreateLandProduct } from "@/api/ofbiz/use-create-land-product";
+import { AxiosError } from "axios";
 export function LandDetailsFormStepper() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isValidating, setIsValidating] = useState(false);
+  const [location, setLocation] = useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
+  const [locationError, setLocationError] = useState<string>("");
+
+  const getLocation = () => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    if ("geolocation" in navigator) {
+      const options = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0,
+      };
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLocation({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          });
+        },
+        (error) => {
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              const isFirefox =
+                typeof window !== "undefined" &&
+                navigator.userAgent.toLowerCase().includes("firefox");
+              if (isFirefox && window.location.protocol === "http:") {
+                setLocationError(
+                  "Firefox requires HTTPS for geolocation. Please use HTTPS or try Chrome."
+                );
+              } else {
+                setLocationError(
+                  "Location permission denied. Please enable location access."
+                );
+              }
+              break;
+            case error.POSITION_UNAVAILABLE:
+              setLocationError("Location information is unavailable.");
+              break;
+            case error.TIMEOUT:
+              setLocationError("Location request timed out. Please try again.");
+              break;
+            default:
+              setLocationError(`An unknown error occurred: ${error.message}`);
+          }
+        },
+        options
+      );
+    } else {
+      setLocationError("Geolocation is not supported by your browser");
+    }
+  };
+
+  useEffect(() => {
+    getLocation();
+  }, []);
 
   const { mutate: postLandDetails } = usePostLandDetails();
-  // const { mutate: createLandProduct } = useCreateLandProduct();
-  const { messages } = useLanguage();
-  const [jsonData, setJsonData] = useState<LandDetailsResponse | null>(null);
-  const [showJsonPreview, setShowJsonPreview] = useState(false);
+  const { mutate: createLandProduct } = useCreateLandProduct();
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -48,7 +92,6 @@ export function LandDetailsFormStepper() {
       accountHolder: "",
       bank: "",
       branch: "",
-      dateCreated: "",
       ifscCode: "",
       swiftCode: "",
       bankDetailsUpload: null,
@@ -101,7 +144,6 @@ export function LandDetailsFormStepper() {
             "accountHolder",
             "bank",
             "branch",
-            "dateCreated",
             "ifscCode",
             "swiftCode",
             "bankDetailsUpload",
@@ -167,10 +209,10 @@ export function LandDetailsFormStepper() {
               if (key === "landOwners" && "landownerName" in item) {
                 const landOwner = item as {
                   landownerName: string;
-                  signature: string;
                   aadhaar: string;
+                  aadhaarFile: File | null;
+                  landDeedFile: File | null;
                   address: string;
-                  date: string;
                   email: string;
                   mobile: string;
                 };
@@ -180,20 +222,12 @@ export function LandDetailsFormStepper() {
                   landOwner.landownerName
                 );
                 formDataValues.append(
-                  `landOwners[${index}].signature`,
-                  landOwner.signature
-                );
-                formDataValues.append(
                   `landOwners[${index}].aadhaar`,
                   landOwner.aadhaar
                 );
                 formDataValues.append(
                   `landOwners[${index}].address`,
                   landOwner.address
-                );
-                formDataValues.append(
-                  `landOwners[${index}].date`,
-                  landOwner.date
                 );
                 formDataValues.append(
                   `landOwners[${index}].email`,
@@ -267,6 +301,13 @@ export function LandDetailsFormStepper() {
         formDataValues.append("bankDetailsUpload", data.bankDetailsUpload);
       }
 
+      if (!!location && location.latitude && location.longitude) {
+        formDataValues.append(
+          "geoCoordinates",
+          `${location.latitude},${location.longitude}`
+        );
+      }
+
       // Land Owners files with type checking
       if (Array.isArray(data.landOwners)) {
         data.landOwners.forEach((owner, index) => {
@@ -284,7 +325,6 @@ export function LandDetailsFormStepper() {
           }
         });
       }
-
       // Log the FormData entries for verification
       postLandDetails(
         {
@@ -292,34 +332,33 @@ export function LandDetailsFormStepper() {
         },
         {
           onSuccess: (data) => {
-            setJsonData(data);
-            console.log(data);
-            setShowJsonPreview(true);
-            //           createLandProduct(
-            //             {
-            //               productId: `${data.data[0].id}_${new Date().toISOString()}`,
-            //               internalName: `Land Record - ${
-            //                 data.data[0].accountNumber
-            //               } (${data.data[0].landOwners
-            //                 .map((owner) => owner.landownerName)
-            //                 .join(", ")})`,
-            //               longDescription: `Land Details:
-            // Account Number: ${data.data[0].accountNumber}
-            // Land Owners: ${data.data[0].landOwners.map((owner) => owner.landownerName).join(", ")}
-            // Location: ${data.data[0].geoCoordinates || "Not specified"}
-            // Created: ${new Date().toLocaleString()}`,
-            //             },
-            //             {
-            //               onSuccess: (data) => {
-            //                 toast.success("Land Product created successfully!");
-            //                 console.log(data);
-            //               },
-            //               onError: (error: any) => {
-            //                 console.log(error);
-            //                 toast.error("Please Try Again" + error.message);
-            //               },
-            //             }
-            //           );
+            createLandProduct(
+              {
+                productId: `${data.data[0].id}_${new Date().toISOString()}`,
+                internalName: `Land Record - ${
+                  data.data[0].accountNumber
+                } (${data.data[0].landOwners
+                  .map((owner) => owner.landownerName)
+                  .join(", ")})`,
+                longDescription: `Land Details:
+            Account Number: ${data.data[0].accountNumber}
+            Land Owners: ${data.data[0].landOwners
+              .map((owner) => owner.landownerName)
+              .join(", ")}
+            Location: ${data.data[0].geoCoordinates || "Not specified"}
+            Created: ${new Date().toLocaleString()}`,
+              },
+              {
+                onSuccess: (data) => {
+                  toast.success("Land Product created successfully!");
+                  console.log(data);
+                },
+                onError: (error: AxiosError) => {
+                  console.log(error);
+                  toast.error("Please Try Again" + error.message);
+                },
+              }
+            );
           },
           onError: (error) => {
             console.log(error);
@@ -331,30 +370,16 @@ export function LandDetailsFormStepper() {
       console.error("Error in form submission:", error);
     }
   };
-  const handlePrint = () => {
-    const printContent = document.getElementById("mou-content");
-    if (printContent) {
-      const originalContents = document.body.innerHTML;
-      document.body.innerHTML = printContent.innerHTML;
-      window.print();
-      document.body.innerHTML = originalContents;
-      window.location.reload(); // Reload to restore all event listeners
-    }
-  };
 
   return (
     <FormProvider {...form}>
       <div className="h-full bg-gray-50">
-        {" "}
-        {/* Account for top navbar if any */}
-        <div className=" max-w-[1600px] mx-auto px-2 sm:px-4 ">
-          <div className="flex flex-col lg:flex-row gap-4 h-full ">
-            {/* Form Section */}
-            <div className="relative w-full lg:w-1/2 h-full">
+        <div className="max-w-[1600px] mx-auto px-2 sm:px-4">
+          <div className="h-full">
+            <div className="relative h-full">
               <Card className="h-full flex flex-col overflow-hidden">
                 <StepperHeader steps={steps} currentStep={currentStep} />
 
-                {/* Form Content Area - Flex grow */}
                 <div className="flex-grow p-3 sm:p-4 min-h-0">
                   <div className="h-[600px] border rounded-lg bg-white/50 overflow-auto">
                     {currentStep === 0 && <BankDetailComponent form={form} />}
@@ -376,84 +401,8 @@ export function LandDetailsFormStepper() {
                 />
               </Card>
             </div>
-
-            {/* Preview Section */}
-            <Card className="hidden lg:block flex-1 max-h-[800px]">
-              <CardHeader className="">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle>Document Preview</CardTitle>
-                    <CardDescription>
-                      Real-time preview of your MOU document
-                    </CardDescription>
-                  </div>
-                  <Badge
-                    onClick={() => setShowJsonPreview(true)}
-                    variant="default"
-                    className="cursor-pointer "
-                  >
-                    Live Preview
-                  </Badge>
-                </div>
-              </CardHeader>
-              <div className="h-full flex items-start justify-center">
-                <CardContent className="h-[700px] overflow-scroll no-scrollbar">
-                  <MOUPreview data={form.watch()} />
-                </CardContent>
-              </div>
-            </Card>
           </div>
         </div>
-        {/* Mobile Preview Dialog Trigger */}
-        <div className="fixed bottom-4 right-4 lg:hidden z-50">
-          <Button
-            onClick={() => {
-              /* Handle mobile preview */
-            }}
-            size="sm"
-            className="rounded-full shadow-lg"
-          >
-            Preview
-          </Button>
-        </div>
-        <Dialog open={showJsonPreview} onOpenChange={setShowJsonPreview}>
-          <DialogContent
-            hideClose
-            className="w-[calc(100vw-2rem)] sm:w-[calc(100vw-1rem)] sm:max-w-[1200px] h-[calc(100vh-1rem)] sm:h-[calc(100vh-2rem)]  p-2 sm:p-6"
-          >
-            <DialogHeader className="space-y-2 sm:space-y-4">
-              <DialogTitle className="text-center text-lg sm:text-xl md:text-2xl">
-                Memorandum of Understanding (MoU)
-              </DialogTitle>
-              <div className="flex justify-end">
-                <Button
-                  onClick={handlePrint}
-                  variant="default"
-                  className="text-xs sm:text-sm px-2 py-1 h-8 sm:h-10 sm:px-4 sm:py-2"
-                >
-                  Print MoU
-                </Button>
-              </div>
-            </DialogHeader>
-
-            <div id="mou-content" className="mt-2 sm:mt-4 overflow-scroll">
-              {messages.lang === "en" ? (
-                <JsonDataView data={jsonData} />
-              ) : (
-                <JsonDataKannadaView data={jsonData} />
-              )}
-            </div>
-            <DialogFooter>
-              <Button
-                onClick={() => setShowJsonPreview(false)}
-                variant="default"
-                className="w-32 sm:w-40"
-              >
-                Close
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
       </div>
     </FormProvider>
   );

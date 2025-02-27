@@ -140,31 +140,6 @@ export function BankDetailComponent({ form }: BankDetailComponentProps) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <FormField
             control={form.control}
-            name="dateCreated"
-            render={({ field, fieldState: { error, invalid, isDirty } }) => (
-              <FormItem>
-                <FormLabel className={`text-sm font-medium ${invalid && isDirty ? 'text-rose-500' : ''}`}>
-                  {messages.form.sections.bank.fields.dateCreated}
-                </FormLabel>
-                <FormControl>
-                  <Input 
-                    type="date" 
-                    placeholder="mm/dd/yyyy"
-                    className={`text-sm ${invalid && isDirty ? 'border-rose-500' : ''}`}
-                    {...field} 
-                  />
-                </FormControl>
-                {error && isDirty && (
-                  <FormMessage className="text-xs text-rose-500">
-                    {error.message}
-                  </FormMessage>
-                )}
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
             name="ifscCode"
             render={({ field, fieldState: { error, invalid, isDirty } }) => (
               <FormItem>
@@ -186,11 +161,7 @@ export function BankDetailComponent({ form }: BankDetailComponentProps) {
               </FormItem>
             )}
           />
-        </div>
-
-        {/* SWIFT Code */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <FormField
+            <FormField
             control={form.control}
             name="swiftCode"
             render={({ field, fieldState: { error, invalid, isDirty } }) => (
@@ -215,6 +186,8 @@ export function BankDetailComponent({ form }: BankDetailComponentProps) {
           />
         </div>
 
+
+
         {/* Bank Details Document */}
         <div className="mt-4">
           <FormField
@@ -235,9 +208,14 @@ export function BankDetailComponent({ form }: BankDetailComponentProps) {
                         field.onChange(file);
                       }}
                     />
+
                   </div>
                 </FormControl>
-                <FormMessage className="text-xs" />
+                {error && isDirty && (
+                  <FormMessage className="text-xs text-rose-500">
+                    {error.message}
+                  </FormMessage>
+                )}
               </FormItem>
             )}
           />

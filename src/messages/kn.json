@@ -1,4 +1,5 @@
 {
+  "lang": "kn",
   "form": {
     "title": "ಭೂಮಿ ನೋಂದಣಿ ಫಾರ್ಮ್",
     "description": "ನಿಮ್ಮ MOU ದಾಖಲೆಯನ್ನು ರಚಿಸಲು ವಿವರಗಳನ್ನು ಭರ್ತಿ ಮಾಡಿ",
@@ -46,9 +47,11 @@
         "fields": {
           "itemName": "ವಸ್ತುವಿನ ಹೆಸರು",
           "cropDetails": "ಬೆಳೆ ವಿವರಗಳು",
-          "totalArea": "ಒಟ್ಟು ವಿಸ್ತೀರ್ಣ",
+          "totalArea": "ಒಟ್ಟು ವಿಸ್ತೀರ್ಣ (ಹೆಕ್ಟಾರ್ಸ್)",
           "surveyNumbers": "ಸರ್ವೆ ಸಂಖ್ಯೆಗಳು",
-          "location": "ಸ್ಥಳ"
+          "location": "ಪಿನ್‌ಕೋಡ್",
+          "addProperty": "ಆಸ್ತಿ ಸೇರಿಸಿ",
+          "propertyTitle": "ಆಸ್ತಿ"
         }
       },
       "witnesses": {
@@ -97,7 +100,7 @@
       "cropDetails": "ಬೆಳೆ ವಿವರಗಳು",
       "totalArea": "ಒಟ್ಟು ವಿಸ್ತೀರ್ಣ",
       "surveyNumbers": "ಸರ್ವೆ ಸಂಖ್ಯೆಗಳು",
-      "location": "ಸ್ಥಳ"
+      "location": "ಪಿನ್‌ಕೋಡ್"
     },
     "bankDetails": {
       "title": "ಬ್ಯಾಂಕ್ ವಿವರಗಳು",

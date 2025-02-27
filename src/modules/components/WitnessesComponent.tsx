@@ -29,7 +29,7 @@ export function WitnessesComponent({ form }: WitnessesComponentProps) {
       name: "",
       address: "",
       note: "",
-      date: new Date().toISOString().split("T")[0],
+
     });
   };
 
@@ -94,29 +94,6 @@ export function WitnessesComponent({ form }: WitnessesComponentProps) {
                       <FormControl>
                         <Input 
                           placeholder={`${messages.form.sections.witnesses.fields.name}`}
-                          className={`text-sm ${invalid && isDirty ? 'border-rose-500' : ''}`} 
-                          {...field} 
-                        />
-                      </FormControl>
-                      {error && isDirty && (
-                        <FormMessage className="text-xs text-rose-500">
-                          {error.message}
-                        </FormMessage>
-                      )}
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name={`witnesses.${index}.date`}
-                  render={({ field, fieldState: { error, invalid, isDirty } }) => (
-                    <FormItem>
-                      <FormLabel className={`text-sm font-medium ${invalid && isDirty ? 'text-rose-500' : ''}`}>
-                        {messages.form.sections.witnesses.fields.date}
-                      </FormLabel>
-                      <FormControl>
-                        <Input 
-                          type="date"
                           className={`text-sm ${invalid && isDirty ? 'border-rose-500' : ''}`} 
                           {...field} 
                         />

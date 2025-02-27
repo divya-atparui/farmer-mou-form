@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react'
 import {
   FormControl,
@@ -29,12 +30,10 @@ export function LandOwnersComponent({ form }: LandOwnersComponentProps) {
   const addNewLandOwner = () => {
     append({
       landownerName: "",
-      signature: "",
       aadhaar: "",
       aadhaarFile: null,
       landDeedFile: null,
       address: "",
-      date: new Date().toISOString().split("T")[0],
       email: "",
       mobile: "",
     });
@@ -280,53 +279,6 @@ export function LandOwnersComponent({ form }: LandOwnersComponentProps) {
                   )}
                 />
 
-                <FormField
-                  control={form.control}
-                  name={`landOwners.${index}.signature`}
-                  render={({ field, fieldState: { error, invalid, isDirty } }) => (
-                    <FormItem>
-                      <FormLabel className={`text-sm font-medium ${invalid && isDirty ? 'text-rose-500' : ''}`}>
-                        {messages.form.sections.landowners.fields.signature}
-                      </FormLabel>
-                      <FormControl>
-                        <Input 
-                          placeholder={messages.form.sections.landowners.fields.signature}
-                          className={`text-sm ${invalid && isDirty ? 'border-rose-500' : ''}`} 
-                          {...field} 
-                        />
-                      </FormControl>
-                      {error && isDirty && (
-                        <FormMessage className="text-xs text-rose-500">
-                          {error.message}
-                        </FormMessage>
-                      )}
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name={`landOwners.${index}.date`}
-                  render={({ field, fieldState: { error, invalid, isDirty } }) => (
-                    <FormItem>
-                      <FormLabel className={`text-sm font-medium ${invalid && isDirty ? 'text-rose-500' : ''}`}>
-                        {messages.form.sections.landowners.fields.date}
-                      </FormLabel>
-                      <FormControl>
-                        <Input 
-                          type="date"
-                          className={`text-sm ${invalid && isDirty ? 'border-rose-500' : ''}`} 
-                          {...field} 
-                        />
-                      </FormControl>
-                      {error && isDirty && (
-                        <FormMessage className="text-xs text-rose-500">
-                          {error.message}
-                        </FormMessage>
-                      )}
-                    </FormItem>
-                  )}
-                />
               </div>
             </div>
           ))}
