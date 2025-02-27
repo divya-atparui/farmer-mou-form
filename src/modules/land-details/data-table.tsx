@@ -47,7 +47,6 @@ export function DataTable<TData, TValue>({
     ifscCode: false,
     swiftCode: false,
     aksmvbsMembershipNumber: false,
-    dateCreated: false,
   }))
 
 
@@ -71,20 +70,20 @@ export function DataTable<TData, TValue>({
   })
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-col sm:flex-row items-center gap-4">
+    <div className="w-full space-y-4">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pb-4">
+        <h2 className="text-lg font-semibold">Records</h2>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm" className="ml-auto">
-              View Columns
+            <Button variant="outline" size="sm" className="flex items-center gap-2">
+              <span>Columns</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3h18v18H3z"/><path d="M8 3v18"/><path d="M16 3v18"/></svg>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-[200px]">
+          <DropdownMenuContent align="end" className="w-[200px] max-h-[400px] overflow-y-auto">
             {table
               .getAllColumns()
-              .filter(
-                (column) => column.getCanHide()
-              )
+              .filter((column) => column.getCanHide())
               .map((column) => {
                 return (
                   <DropdownMenuCheckboxItem
@@ -93,23 +92,23 @@ export function DataTable<TData, TValue>({
                     checked={column.getIsVisible()}
                     onCheckedChange={(value) => column.toggleVisibility(!!value)}
                   >
-                    {column.id}
+                    {column.id.replace(/([A-Z])/g, ' $1').trim()}
                   </DropdownMenuCheckboxItem>
                 )
               })}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border ">
+      <div className="rounded-md border border-border/50 bg-background shadow-sm">
         <div className="relative rounded-md">
-          <div className="overflow-x-auto  ">
-            <Table >
+          <div className="overflow-x-auto">
+            <Table>
               <TableHeader>
                 {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow key={headerGroup.id}>
+                  <TableRow key={headerGroup.id} className="hover:bg-transparent">
                     {headerGroup.headers.map((header) => {
                       return (
-                        <TableHead key={header.id}>
+                        <TableHead key={header.id} className="bg-muted/50 font-semibold">
                           {header.isPlaceholder
                             ? null
                             : flexRender(
@@ -122,17 +121,16 @@ export function DataTable<TData, TValue>({
                   </TableRow>
                 ))}
               </TableHeader>
-              <TableBody >
+              <TableBody>
                 {table.getRowModel().rows?.length ? (
                   table.getRowModel().rows.map((row) => (
                     <TableRow
-                     className="overflow-x-scroll"
                       key={row.id}
                       data-state={row.getIsSelected() && "selected"}
+                      className="hover:bg-muted/50 transition-colors"
                     >
-                      
                       {row.getVisibleCells().map((cell) => (
-                        <TableCell key={cell.id}>
+                        <TableCell key={cell.id} className="py-3">
                           {flexRender(
                             cell.column.columnDef.cell,
                             cell.getContext()
@@ -144,10 +142,10 @@ export function DataTable<TData, TValue>({
                 ) : (
                   <TableRow>
                     <TableCell
-                      colSpan={columns.length + 1}
-                      className="h-24 text-center"
+                      colSpan={columns.length}
+                      className="h-24 text-center text-muted-foreground"
                     >
-                      No results.
+                      No records found.
                     </TableCell>
                   </TableRow>
                 )}
@@ -157,8 +155,12 @@ export function DataTable<TData, TValue>({
         </div>
       </div>
       <div className="flex items-center justify-between space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredRowModel().rows.length} record(s) found.
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <span>Showing</span>
+          <strong>{table.getFilteredRowModel().rows.length}</strong>
+          <span>of</span>
+          <strong>{table.getCoreRowModel().rows.length}</strong>
+          <span>records</span>
         </div>
         <div className="flex items-center space-x-2">
           <Button
@@ -166,14 +168,22 @@ export function DataTable<TData, TValue>({
             size="sm"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
+            className="hover:bg-muted"
           >
             Previous
           </Button>
+          <div className="flex items-center gap-1 text-sm font-medium">
+            <span>Page</span>
+            <span>{table.getState().pagination.pageIndex + 1}</span>
+            <span>of</span>
+            <span>{table.getPageCount()}</span>
+          </div>
           <Button
             variant="outline"
             size="sm"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
+            className="hover:bg-muted"
           >
             Next
           </Button>

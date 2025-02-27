@@ -2,12 +2,10 @@ import { z } from "zod";
 
 export const landOwnerSchema = z.object({
   landownerName: z.string().min(1, "Landowner name is required"),
-  signature: z.string().min(1, "Signature is required"),
   aadhaar: z.string().min(12, "Aadhaar must be 12 digits").max(12), // Changed from aadhar to aadhaar
   aadhaarFile: z.instanceof(File).nullable(), // New field
   landDeedFile: z.instanceof(File).nullable(), // New field
   address: z.string().min(1, "Address is required"),
-  date: z.string(),
   email: z.string().email("Invalid email address"),
   mobile: z.string().min(10, "Mobile number must be 10 digits").max(10),
 });
@@ -23,14 +21,12 @@ export const propertySchema = z.object({
 export const witnessSchema = z.object({
   name: z.string().min(1, "Witness name is required"),
   address: z.string().min(1, "Address is required"),
-  note: z.string().optional(),
-  date: z.string(),
+  note: z.string().optional()
 });
 
 export const formSchema = z.object({
   accountNumber: z.string().min(1, "Account number is required"),
   accountHolder: z.string().min(1, "Account holder name is required"),
-  dateCreated: z.string(),
   ifscCode: z.string().min(11, "IFSC code must be 11 characters").max(11),
   swiftCode: z.string().min(8, "SWIFT code must be 8-11 characters").max(11),
   bank: z.string().min(1, "Bank name is required"),

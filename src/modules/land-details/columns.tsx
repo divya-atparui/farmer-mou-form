@@ -1,11 +1,10 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { Eye, Edit } from "lucide-react";
 
 
 import { DataTableColumnHeader } from "./data-table-column-header";
-import Link from "next/link";
+
 
 export const columns: ColumnDef<LandDetails>[] = [
   {
@@ -79,24 +78,6 @@ export const columns: ColumnDef<LandDetails>[] = [
         dateStyle: "medium",
       }).format(date);
       return <div className="hidden xl:block font-medium">{formatted}</div>;
-    },
-  },
-  {
-    id: "actions",
-    cell: ({ row }) => {
-      const details = row.original;
-
-      const ifApprove = details.approved;
-
-      return (
-        <Link
-          href={`/land-details/${details.id}`}
-          className="inline-flex items-center justify-center hover:text-primary hover:scale-110 transition-all duration-200"
-          aria-label={`${ifApprove ? 'Edit' : 'View'} details for account ${details.accountNumber}`}
-        >
-          {ifApprove ? <Edit className="h-6 w-6" /> : <Eye className="h-6 w-6" />}
-        </Link>
-      );
     },
   },
 ];
