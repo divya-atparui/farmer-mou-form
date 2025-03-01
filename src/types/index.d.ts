@@ -40,6 +40,7 @@ declare interface ApiResponse<T> {
 
 
 declare interface LandOwner {
+  id: number;
   landownerName: string;
   signature: string;
   aadhar: string;
@@ -50,6 +51,7 @@ declare interface LandOwner {
 }
 
 declare interface Property {
+  id: number;
   itemName: string;
   cropDetails: string;
   totalArea: number;
@@ -57,6 +59,7 @@ declare interface Property {
   location: string;
 }
 declare interface Witness {
+  id: number;
   name: string;
   address: string;
   note?: string;
@@ -78,9 +81,9 @@ declare interface LandDetails {
   bank: string;
   branch: string;
   aksmvbsMembershipNumber: string;
-  landOwners: LandOwnerResponse[];
-  propertyDetails: PropertyResponse[];
-  witnesses: WitnessResponse[];
+  landOwners: LandOwner[];
+  propertyDetails: Property[];
+  witnesses: Witness[];
   userId: number;
   createdBy: string;
   approved: boolean;
@@ -92,7 +95,7 @@ declare interface LandDetails {
   bankDetailsPath: string;
 }
   
-declare interface LandOwnerResponse {
+declare interface LandOwner {
   id: number;
   landownerName: string;
   signature: string;
@@ -104,7 +107,7 @@ declare interface LandOwnerResponse {
   email: string;
   mobile: string;
 }
-declare interface PropertyResponse {
+declare interface Property {
   id: number;
   itemName: string;
   landDetailsId: number;
@@ -113,7 +116,7 @@ declare interface PropertyResponse {
   surveyNumbers: string;
   location: string;
 }
-declare interface WitnessResponse {
+declare interface Witness {
   id: number;
   landDetailsId: number;
   name: string;

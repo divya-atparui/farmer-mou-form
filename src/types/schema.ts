@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const landOwnerSchema = z.object({
+  id: z.string().min(1, "Landowner ID is required").optional().nullable(),
   landownerName: z.string().min(1, "Landowner name is required"),
   aadhaar: z.string().min(12, "Aadhaar must be 12 digits").max(12), // Changed from aadhar to aadhaar
   aadhaarFile: z.instanceof(File).nullable(), // New field
@@ -11,6 +12,7 @@ export const landOwnerSchema = z.object({
 });
 
 export const propertySchema = z.object({
+  id: z.string().min(1, "Property ID is required").optional().nullable(),
   itemName: z.string().min(1, "Item name is required"),
   cropDetails: z.string().min(1, "Crop details are required"),
   totalArea: z.number().min(0, "Area must be positive"),
@@ -19,12 +21,14 @@ export const propertySchema = z.object({
 });
 
 export const witnessSchema = z.object({
+  id: z.string().min(1, "Witness ID is required").optional().nullable(),
   name: z.string().min(1, "Witness name is required"),
   address: z.string().min(1, "Address is required"),
   note: z.string().optional()
 });
 
 export const formSchema = z.object({
+  id: z.string().nullable().optional(),
   accountNumber: z.string().min(1, "Account number is required"),
   accountHolder: z.string().min(1, "Account holder name is required"),
   ifscCode: z.string().min(11, "IFSC code must be 11 characters").max(11),

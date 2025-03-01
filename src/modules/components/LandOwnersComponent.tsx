@@ -29,6 +29,7 @@ export function LandOwnersComponent({ form }: LandOwnersComponentProps) {
 
   const addNewLandOwner = () => {
     append({
+      id: null,
       landownerName: "",
       aadhaar: "",
       aadhaarFile: null,

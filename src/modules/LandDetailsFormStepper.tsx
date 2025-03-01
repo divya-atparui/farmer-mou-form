@@ -18,14 +18,24 @@ import { usePostLandDetails } from "@/api/form/use-post-land-details";
 import { toast } from "sonner";
 import { useCreateLandProduct } from "@/api/ofbiz/use-create-land-product";
 import { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
+
 export function LandDetailsFormStepper() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isValidating, setIsValidating] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [formId, setFormId] = useState<string | null>(null);
+  const [landOwnerIds, setLandOwnerIds] = useState<Record<number, string>>({});
+  const [propertyIds, setPropertyIds] = useState<Record<number, string>>({});
+  const [witnessIds, setWitnessIds] = useState<Record<number, string>>({});
+  const router = useRouter();
+  const queryClient = useQueryClient();
   const [location, setLocation] = useState<{
     latitude: number;
     longitude: number;
   } | null>(null);
-  const [locationError, setLocationError] = useState<string>("");
+  const [locationError, setLocationError] = useState<string | null>(null);
 
   const getLocation = () => {
     if (typeof window === "undefined") {
@@ -138,7 +148,7 @@ export function LandDetailsFormStepper() {
       let fieldsToValidate: (keyof FormSchemaType)[] = [];
 
       switch (step) {
-        case 0: // Bank Details
+        case 0:
           fieldsToValidate = [
             "accountNumber",
             "accountHolder",
@@ -150,15 +160,15 @@ export function LandDetailsFormStepper() {
           ] as const;
           break;
 
-        case 1: // Land Owners
+        case 1:
           fieldsToValidate = ["landOwners"] as const;
           break;
 
-        case 2: // Property Details
+        case 2:
           fieldsToValidate = ["propertyDetails"] as const;
           break;
 
-        case 3: // Witnesses
+        case 3:
           fieldsToValidate = ["witnesses"] as const;
           break;
 
@@ -174,13 +184,215 @@ export function LandDetailsFormStepper() {
     }
   };
 
+  const saveCurrentStep = async () => {
+    setIsSaving(true);
+    try {
+      const data = form.getValues();
+      const formData = new FormData();
+
+      // Debug log for current IDs
+      console.log('Current formId before appending:', formId);
+      console.log('Current landOwnerIds:', landOwnerIds);
+      console.log('Current propertyIds:', propertyIds);
+      console.log('Current witnessIds:', witnessIds);
+
+      // Add form ID if it exists (for updates after step 2)
+      if (formId) {
+        console.log('Appending formId to request:', formId);
+        formData.append("id", formId);
+      }
+
+      // Add current step
+      formData.append("currentStep", currentStep.toString());
+
+      // Add location data if available
+      if (location?.latitude && location?.longitude) {
+        formData.append(
+          "geoCoordinates",
+          `${location.latitude},${location.longitude}`
+        );
+      }
+
+      // Add step-specific data
+      switch (currentStep) {
+        case 0:
+          // Bank details
+          formData.append("accountNumber", data.accountNumber);
+          formData.append("accountHolder", data.accountHolder);
+          formData.append("bank", data.bank);
+          formData.append("branch", data.branch);
+          formData.append("ifscCode", data.ifscCode);
+          formData.append("swiftCode", data.swiftCode);
+          if (data.bankDetailsUpload instanceof File) {
+            formData.append("bankDetailsUpload", data.bankDetailsUpload);
+          }
+          break;
+
+        case 1:
+          // Land owners
+          data.landOwners.forEach((owner, index) => {
+            // If we have an ID for this landowner, include it
+            if (landOwnerIds[index]) {
+              console.log(`Appending landowner ID for index ${index}:`, landOwnerIds[index]);
+              formData.append(`landOwners[${index}].id`, landOwnerIds[index]);
+            }
+
+            formData.append(
+              `landOwners[${index}].landownerName`,
+              owner.landownerName
+            );
+            formData.append(`landOwners[${index}].aadhaar`, owner.aadhaar);
+            formData.append(`landOwners[${index}].address`, owner.address);
+            formData.append(`landOwners[${index}].email`, owner.email);
+            formData.append(`landOwners[${index}].mobile`, owner.mobile);
+            if (owner.aadhaarFile instanceof File) {
+              formData.append(
+                `landOwners[${index}].aadhaarFile`,
+                owner.aadhaarFile
+              );
+            }
+            if (owner.landDeedFile instanceof File) {
+              formData.append(
+                `landOwners[${index}].landDeedFile`,
+                owner.landDeedFile
+              );
+            }
+          });
+          break;
+
+        case 2:
+          // Property details
+          data.propertyDetails.forEach((property, index) => {
+            // If we have an ID for this property, include it
+            if (propertyIds[index]) {
+              console.log(`Appending property ID for index ${index}:`, propertyIds[index]);
+              formData.append(`propertyDetails[${index}].id`, propertyIds[index]);
+            }
+
+            formData.append(
+              `propertyDetails[${index}].itemName`,
+              property.itemName
+            );
+            formData.append(
+              `propertyDetails[${index}].cropDetails`,
+              property.cropDetails
+            );
+            formData.append(
+              `propertyDetails[${index}].totalArea`,
+              property.totalArea.toString()
+            );
+            formData.append(
+              `propertyDetails[${index}].surveyNumbers`,
+              property.surveyNumbers
+            );
+            formData.append(
+              `propertyDetails[${index}].location`,
+              property.location
+            );
+          });
+          break;
+
+        case 3:
+          // Witnesses
+          data.witnesses.forEach((witness, index) => {
+            // If we have an ID for this witness, include it
+            if (witnessIds[index]) {
+              console.log(`Appending witness ID for index ${index}:`, witnessIds[index]);
+              formData.append(`witnesses[${index}].id`, witnessIds[index]);
+            }
+
+            formData.append(`witnesses[${index}].name`, witness.name);
+            formData.append(`witnesses[${index}].address`, witness.address);
+            formData.append(`witnesses[${index}].note`, witness.note || "");
+          });
+          break;
+      }
+
+      return new Promise<void>((resolve, reject) => {
+        postLandDetails(
+          { formData },
+          {
+            onSuccess: (response) => {
+              console.log('API Response:', response);
+              console.log('Response data:', response.data);
+              
+              // Store form ID if we don't have it yet
+              if (!formId && response.data?.[0]?.id) {
+                const newFormId = response.data[0].id.toString();
+                console.log('Setting new formId:', newFormId);
+                setFormId(newFormId);
+              }
+
+              // Store IDs based on current step
+              if (response.data?.[0]) {
+                // Store landowner IDs if we're on the landowner step
+                if (currentStep === 1 && response.data[0].landOwners) {
+                  const newLandOwnerIds = { ...landOwnerIds };
+                  response.data[0].landOwners.forEach((owner: { id: string | number }, index: number) => {
+                    if (owner.id) {
+                      console.log(`Setting landowner ID for index ${index}:`, owner.id);
+                      newLandOwnerIds[index] = owner.id.toString();
+                    }
+                  });
+                  setLandOwnerIds(newLandOwnerIds);
+                }
+                
+                // Store property IDs if we're on the property step
+                if (currentStep === 2 && response.data[0].propertyDetails) {
+                  const newPropertyIds = { ...propertyIds };
+                  response.data[0].propertyDetails.forEach((property: { id: string | number }, index: number) => {
+                    if (property.id) {
+                      console.log(`Setting property ID for index ${index}:`, property.id);
+                      newPropertyIds[index] = property.id.toString();
+                    }
+                  });
+                  setPropertyIds(newPropertyIds);
+                }
+                
+                // Store witness IDs if we're on the witness step
+                if (currentStep === 3 && response.data[0].witnesses) {
+                  const newWitnessIds = { ...witnessIds };
+                  response.data[0].witnesses.forEach((witness: { id: string | number }, index: number) => {
+                    if (witness.id) {
+                      console.log(`Setting witness ID for index ${index}:`, witness.id);
+                      newWitnessIds[index] = witness.id.toString();
+                    }
+                  });
+                  setWitnessIds(newWitnessIds);
+                }
+              }
+              
+              queryClient.invalidateQueries({
+                queryKey: ["userLandDetails"],
+              });
+              
+              resolve();
+            },
+            onError: (error: AxiosError) => {
+              console.error('API Error:', error);
+              console.error('Error response:', error.response?.data);
+              toast.error("Failed to save progress: " + error.message);
+              reject(error);
+            },
+          }
+        );
+      });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   const nextStep = async () => {
     const isValid = await validateStep(currentStep);
-    if (isValid && currentStep < steps.length - 1) {
+    if (!isValid) return false;
+
+    try {
+      await saveCurrentStep();
       setCurrentStep((prev) => prev + 1);
       return true;
+    } catch (error) {
+      return false;
     }
-    return false;
   };
 
   const prevStep = () => {
@@ -194,216 +406,74 @@ export function LandDetailsFormStepper() {
     if (!isValid) return;
 
     try {
-      const data = form.getValues();
-      console.log("Raw Form Data:", data);
+      await saveCurrentStep();
 
-      const formDataValues = new FormData();
-
-      // Append non-file fields first
-      Object.entries(data).forEach(([key, value]) => {
-        if (value !== null && value !== undefined && !(value instanceof File)) {
-          // Handle arrays with type checking
-          if (Array.isArray(value)) {
-            value.forEach((item, index) => {
-              // Type guard for landOwners
-              if (key === "landOwners" && "landownerName" in item) {
-                const landOwner = item as {
-                  landownerName: string;
-                  aadhaar: string;
-                  aadhaarFile: File | null;
-                  landDeedFile: File | null;
-                  address: string;
-                  email: string;
-                  mobile: string;
-                };
-
-                formDataValues.append(
-                  `landOwners[${index}].landownerName`,
-                  landOwner.landownerName
-                );
-                formDataValues.append(
-                  `landOwners[${index}].aadhaar`,
-                  landOwner.aadhaar
-                );
-                formDataValues.append(
-                  `landOwners[${index}].address`,
-                  landOwner.address
-                );
-                formDataValues.append(
-                  `landOwners[${index}].email`,
-                  landOwner.email
-                );
-                formDataValues.append(
-                  `landOwners[${index}].mobile`,
-                  landOwner.mobile
-                );
-              }
-
-              // Type guard for propertyDetails
-              else if (key === "propertyDetails" && "itemName" in item) {
-                const property = item as {
-                  itemName: string;
-                  cropDetails: string;
-                  totalArea: number;
-                  surveyNumbers: string;
-                  location: string;
-                };
-
-                formDataValues.append(
-                  `propertyDetails[${index}].itemName`,
-                  property.itemName
-                );
-                formDataValues.append(
-                  `propertyDetails[${index}].cropDetails`,
-                  property.cropDetails
-                );
-                formDataValues.append(
-                  `propertyDetails[${index}].totalArea`,
-                  String(property.totalArea)
-                );
-                formDataValues.append(
-                  `propertyDetails[${index}].surveyNumbers`,
-                  property.surveyNumbers
-                );
-                formDataValues.append(
-                  `propertyDetails[${index}].location`,
-                  property.location
-                );
-              }
-
-              // Type guard for witnesses
-              else if (key === "witnesses" && "name" in item) {
-                const witness = item as {
-                  name: string;
-                  address: string;
-                  note: string;
-                  date: string;
-                };
-
-                formDataValues.append(`witnesses[${index}].name`, witness.name);
-                formDataValues.append(
-                  `witnesses[${index}].address`,
-                  witness.address
-                );
-                formDataValues.append(`witnesses[${index}].note`, witness.note);
-                formDataValues.append(`witnesses[${index}].date`, witness.date);
-              }
-            });
-          } else {
-            // Handle simple fields
-            formDataValues.append(key, String(value));
+      // Create land product only on final submission
+      if (formId ) {
+        createLandProduct(
+          {
+            productId: `P_${new Date().toISOString()
+              .replace(/[-:]/g, "")
+              .replace("T", "_")
+              .slice(0, 15)}`,
+            internalName: `Land Record - ${form.getValues("accountNumber")}`,
+            longDescription: JSON.stringify({
+              accountNumber: form.getValues("accountNumber"),
+              landOwners: form.getValues("landOwners").map(
+                (owner) => owner.landownerName
+              ),
+              location: location
+                ? `${location.latitude},${location.longitude}`
+                : "Not specified",
+              created: new Date().toISOString().split(".")[0],
+            }),
+          },
+          {
+            onSuccess: () => {
+              toast.success("Form submitted successfully!");
+              router.push("/");
+            },
+            onError: (error: AxiosError) => {
+              toast.error("Failed to create land product: " + error.message);
+            },
           }
-        }
-      });
-
-      // Append files separately
-      if (data.bankDetailsUpload instanceof File) {
-        formDataValues.append("bankDetailsUpload", data.bankDetailsUpload);
-      }
-
-      if (!!location && location.latitude && location.longitude) {
-        formDataValues.append(
-          "geoCoordinates",
-          `${location.latitude},${location.longitude}`
         );
       }
-
-      // Land Owners files with type checking
-      if (Array.isArray(data.landOwners)) {
-        data.landOwners.forEach((owner, index) => {
-          if ("aadhaarFile" in owner && owner.aadhaarFile instanceof File) {
-            formDataValues.append(
-              `landOwners[${index}].aadhaarFile`,
-              owner.aadhaarFile
-            );
-          }
-          if ("landDeedFile" in owner && owner.landDeedFile instanceof File) {
-            formDataValues.append(
-              `landOwners[${index}].landDeedFile`,
-              owner.landDeedFile
-            );
-          }
-        });
-      }
-      // Log the FormData entries for verification
-      postLandDetails(
-        {
-          formData: formDataValues,
-        },
-        {
-          onSuccess: (data) => {
-            createLandProduct(
-              {
-                productId: `${data.data[0].id}_${new Date().toISOString()}`,
-                internalName: `Land Record - ${
-                  data.data[0].accountNumber
-                } (${data.data[0].landOwners
-                  .map((owner) => owner.landownerName)
-                  .join(", ")})`,
-                longDescription: `Land Details:
-            Account Number: ${data.data[0].accountNumber}
-            Land Owners: ${data.data[0].landOwners
-              .map((owner) => owner.landownerName)
-              .join(", ")}
-            Location: ${data.data[0].geoCoordinates || "Not specified"}
-            Created: ${new Date().toLocaleString()}`,
-              },
-              {
-                onSuccess: (data) => {
-                  toast.success("Land Product created successfully!");
-                  console.log(data);
-                },
-                onError: (error: AxiosError) => {
-                  console.log(error);
-                  toast.error("Please Try Again" + error.message);
-                },
-              }
-            );
-          },
-          onError: (error) => {
-            console.log(error);
-            toast.error("Please Try Again" + error.message);
-          },
-        }
-      );
     } catch (error) {
       console.error("Error in form submission:", error);
     }
   };
 
+  const renderStep = () => {
+    switch (currentStep) {
+      case 0:
+        return <BankDetailComponent form={form} />;
+      case 1:
+        return <LandOwnersComponent form={form} />;
+      case 2:
+        return <PropertyDetailsComponent form={form} />;
+      case 3:
+        return <WitnessesComponent form={form} />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <FormProvider {...form}>
-      <div className="h-full bg-gray-50">
-        <div className="max-w-[1600px] mx-auto px-2 sm:px-4">
-          <div className="h-full">
-            <div className="relative h-full">
-              <Card className="h-full flex flex-col overflow-hidden">
-                <StepperHeader steps={steps} currentStep={currentStep} />
-
-                <div className="flex-grow p-3 sm:p-4 min-h-0">
-                  <div className="h-[600px] border rounded-lg bg-white/50 overflow-auto">
-                    {currentStep === 0 && <BankDetailComponent form={form} />}
-                    {currentStep === 1 && <LandOwnersComponent form={form} />}
-                    {currentStep === 2 && (
-                      <PropertyDetailsComponent form={form} />
-                    )}
-                    {currentStep === 3 && <WitnessesComponent form={form} />}
-                  </div>
-                </div>
-
-                <StepperNavigation
-                  currentStep={currentStep}
-                  totalSteps={steps.length}
-                  onNext={nextStep}
-                  onPrev={prevStep}
-                  onSubmit={handleSubmit}
-                  isLoading={isValidating}
-                />
-              </Card>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Card className="flex flex-col h-[800px]">
+        <StepperHeader steps={steps} currentStep={currentStep} />
+        <div className="flex-1 overflow-auto">{renderStep()}</div>
+        <StepperNavigation
+          currentStep={currentStep}
+          totalSteps={steps.length}
+          onNext={nextStep}
+          onPrev={prevStep}
+          onSubmit={handleSubmit}
+          isLoading={isValidating}
+          isSaving={isSaving}
+        />
+      </Card>
     </FormProvider>
   );
 }

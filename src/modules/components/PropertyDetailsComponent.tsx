@@ -26,6 +26,7 @@ export function PropertyDetailsComponent({ form }: PropertyDetailsComponentProps
 
   const addNewProperty = () => {
     append({
+      id: null,
       itemName: "",
       cropDetails: "",
       totalArea: 0,

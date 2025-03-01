@@ -26,10 +26,10 @@ export function WitnessesComponent({ form }: WitnessesComponentProps) {
 
   const addNewWitness = () => {
     append({
+      id: null,
       name: "",
       address: "",
       note: "",
-
     });
   };
 

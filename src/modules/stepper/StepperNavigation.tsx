@@ -7,6 +7,7 @@ interface StepperNavigationProps {
   onPrev: () => void;
   onSubmit: () => Promise<void>;
   isLoading?: boolean;
+  isSaving?: boolean;
 }
 
 export function StepperNavigation({ 
@@ -15,7 +16,8 @@ export function StepperNavigation({
   onNext, 
   onPrev,
   onSubmit,
-  isLoading = false
+  isLoading = false,
+  isSaving = false
 }: StepperNavigationProps) {
   const handleNext = async () => {
     if (currentStep === totalSteps - 1) {
@@ -31,7 +33,7 @@ export function StepperNavigation({
         <Button
           variant="outline"
           onClick={onPrev}
-          disabled={currentStep === 0 || isLoading}
+          disabled={currentStep === 0 || isLoading || isSaving}
           className="w-[120px]"
         >
           Previous
@@ -39,11 +41,13 @@ export function StepperNavigation({
         
         <Button
           onClick={handleNext}
-          disabled={isLoading}
+          disabled={isLoading || isSaving}
           className="w-[120px]"
         >
           {isLoading 
             ? "Validating..." 
+            : isSaving
+            ? "Saving..."
             : currentStep === totalSteps - 1 
             ? 'Submit' 
             : 'Next'
