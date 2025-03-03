@@ -14,18 +14,30 @@ import { BankDetailComponent } from "./components/BankDetailComponent";
 import { LandOwnersComponent } from "./components/LandOwnersComponent";
 import PropertyDetailsComponent from "./components/PropertyDetailsComponent";
 import WitnessesComponent from "./components/WitnessesComponent";
-import { usePostLandDetails } from "@/api/form/use-post-land-details";
+import { useLandDetails } from "@/api/form/use-land-details";
 import { toast } from "sonner";
 import { useCreateLandProduct } from "@/api/ofbiz/use-create-land-product";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 
-export function LandDetailsFormStepper() {
-  const [currentStep, setCurrentStep] = useState(0);
+interface LandDetailsFormStepperProps {
+  isEditMode?: boolean;
+  initialData?: LandDetails;
+  onEditComplete?: () => void;
+  initialStep?: number;
+}
+
+export function LandDetailsFormStepper({ 
+  isEditMode = false, 
+  initialData,
+  onEditComplete,
+  initialStep = 0
+}: LandDetailsFormStepperProps) {
+  const [currentStep, setCurrentStep] = useState(initialStep);
   const [isValidating, setIsValidating] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const [formId, setFormId] = useState<string | null>(null);
+  const [formId, setFormId] = useState<string | null>(initialData?.id?.toString() || null);
   const [landOwnerIds, setLandOwnerIds] = useState<Record<number, string>>({});
   const [propertyIds, setPropertyIds] = useState<Record<number, string>>({});
   const [witnessIds, setWitnessIds] = useState<Record<number, string>>({});
@@ -36,6 +48,46 @@ export function LandDetailsFormStepper() {
     longitude: number;
   } | null>(null);
   const [locationError, setLocationError] = useState<string | null>(null);
+
+  // Initialize IDs from initialData if in edit mode
+  useEffect(() => {
+    if (isEditMode && initialData) {
+      console.log('Initializing form with data:', initialData);
+      
+      // Set landowner IDs
+      if (initialData.landOwners?.length) {
+        const newLandOwnerIds: Record<number, string> = {};
+        initialData.landOwners.forEach((owner, index) => {
+          if (owner.id) {
+            newLandOwnerIds[index] = owner.id.toString();
+          }
+        });
+        setLandOwnerIds(newLandOwnerIds);
+      }
+      
+      // Set property IDs
+      if (initialData.propertyDetails?.length) {
+        const newPropertyIds: Record<number, string> = {};
+        initialData.propertyDetails.forEach((property, index) => {
+          if (property.id) {
+            newPropertyIds[index] = property.id.toString();
+          }
+        });
+        setPropertyIds(newPropertyIds);
+      }
+      
+      // Set witness IDs
+      if (initialData.witnesses?.length) {
+        const newWitnessIds: Record<number, string> = {};
+        initialData.witnesses.forEach((witness, index) => {
+          if (witness.id) {
+            newWitnessIds[index] = witness.id.toString();
+          }
+        });
+        setWitnessIds(newWitnessIds);
+      }
+    }
+  }, [isEditMode, initialData]);
 
   const getLocation = () => {
     if (typeof window === "undefined") {
@@ -93,11 +145,60 @@ export function LandDetailsFormStepper() {
     getLocation();
   }, []);
 
-  const { mutate: postLandDetails } = usePostLandDetails();
-  const { mutate: createLandProduct } = useCreateLandProduct();
+  const { mutate: postLandDetails, isPending: isPostingLandDetails, isError: isPostingLandDetailsError } = useLandDetails();
+  const { mutate: createLandProduct, isPending: isCreatingLandProduct, isError: isCreatingLandProductError } = useCreateLandProduct();
+  
+  // Update isSaving state when API calls are in progress
+  useEffect(() => {
+    setIsSaving(isPostingLandDetails || isCreatingLandProduct);
+  }, [isPostingLandDetails, isCreatingLandProduct]);
+  
+  // Show error toast when API calls fail
+  useEffect(() => {
+    if (isPostingLandDetailsError) {
+      toast.error("Failed to save form data. Please try again.");
+    }
+    if (isCreatingLandProductError) {
+      toast.error("Failed to create land product. Please try again.");
+    }
+  }, [isPostingLandDetailsError, isCreatingLandProductError]);
+
+  // Initialize form with default values or edit data
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
+    defaultValues: isEditMode && initialData ? {
+      accountNumber: initialData.accountNumber || "",
+      accountHolder: initialData.accountHolder || "",
+      bank: initialData.bank || "",
+      branch: initialData.branch || "",
+      ifscCode: initialData.ifscCode || "",
+      swiftCode: initialData.swiftCode || "",
+      bankDetailsUpload: null,
+      landOwners: initialData.landOwners?.map(owner => ({
+        id: owner.id?.toString() || null,
+        landownerName: owner.landownerName || "",
+        aadhaar: owner.aadhaar || "",
+        aadhaarFile: null,
+        landDeedFile: null,
+        address: owner.address || "",
+        email: owner.email || "",
+        mobile: owner.mobile || "",
+      })) || [],
+      propertyDetails: initialData.propertyDetails?.map(property => ({
+        id: property.id?.toString() || null,
+        itemName: property.itemName || "",
+        cropDetails: property.cropDetails || "",
+        totalArea: property.totalArea || 0,
+        surveyNumbers: property.surveyNumbers || "",
+        location: property.location || "",
+      })) || [],
+      witnesses: initialData.witnesses?.map(witness => ({
+        id: witness.id?.toString() || null,
+        name: witness.name || "",
+        address: witness.address || "",
+        note: witness.note || "",
+      })) || [],
+    } : {
       accountNumber: "",
       accountHolder: "",
       bank: "",
@@ -185,7 +286,6 @@ export function LandDetailsFormStepper() {
   };
 
   const saveCurrentStep = async () => {
-    setIsSaving(true);
     try {
       const data = form.getValues();
       const formData = new FormData();
@@ -195,8 +295,9 @@ export function LandDetailsFormStepper() {
       console.log('Current landOwnerIds:', landOwnerIds);
       console.log('Current propertyIds:', propertyIds);
       console.log('Current witnessIds:', witnessIds);
+      console.log('Is edit mode:', isEditMode);
 
-      // Add form ID if it exists (for updates after step 2)
+      // Add form ID if it exists (for updates after step 2 or in edit mode)
       if (formId) {
         console.log('Appending formId to request:', formId);
         formData.append("id", formId);
@@ -204,6 +305,9 @@ export function LandDetailsFormStepper() {
 
       // Add current step
       formData.append("currentStep", currentStep.toString());
+      
+      // Add edit mode flag
+      formData.append("isEditMode", isEditMode.toString());
 
       // Add location data if available
       if (location?.latitude && location?.longitude) {
@@ -371,14 +475,14 @@ export function LandDetailsFormStepper() {
             onError: (error: AxiosError) => {
               console.error('API Error:', error);
               console.error('Error response:', error.response?.data);
-              toast.error("Failed to save progress: " + error.message);
               reject(error);
             },
           }
         );
       });
-    } finally {
-      setIsSaving(false);
+    } catch (error) {
+      console.error('Error preparing form data:', error);
+      throw error;
     }
   };
 
@@ -408,8 +512,15 @@ export function LandDetailsFormStepper() {
     try {
       await saveCurrentStep();
 
-      // Create land product only on final submission
-      if (formId ) {
+      // If in edit mode, just close the dialog
+      if (isEditMode && onEditComplete) {
+        toast.success("Form updated successfully!");
+        onEditComplete();
+        return;
+      }
+
+      // Create land product only on final submission in create mode
+      if (formId) {
         createLandProduct(
           {
             productId: `P_${new Date().toISOString()
@@ -432,10 +543,7 @@ export function LandDetailsFormStepper() {
             onSuccess: () => {
               toast.success("Form submitted successfully!");
               router.push("/");
-            },
-            onError: (error: AxiosError) => {
-              toast.error("Failed to create land product: " + error.message);
-            },
+            }
           }
         );
       }
@@ -445,23 +553,31 @@ export function LandDetailsFormStepper() {
   };
 
   const renderStep = () => {
-    switch (currentStep) {
-      case 0:
-        return <BankDetailComponent form={form} />;
-      case 1:
-        return <LandOwnersComponent form={form} />;
-      case 2:
-        return <PropertyDetailsComponent form={form} />;
-      case 3:
-        return <WitnessesComponent form={form} />;
-      default:
-        return null;
-    }
+    const stepContent = (() => {
+      switch (currentStep) {
+        case 0:
+          return <BankDetailComponent form={form} />;
+        case 1:
+          return <LandOwnersComponent form={form} />;
+        case 2:
+          return <PropertyDetailsComponent form={form} />;
+        case 3:
+          return <WitnessesComponent form={form} />;
+        default:
+          return null;
+      }
+    })();
+
+    return (
+      <div className={`${isEditMode ? 'p-4' : ''}`}>
+        {stepContent}
+      </div>
+    );
   };
 
   return (
     <FormProvider {...form}>
-      <Card className="flex flex-col h-[800px]">
+      <Card className={`flex flex-col ${isEditMode ? 'h-full border-0 shadow-none' : 'h-[calc(100vh-theme(spacing.16))]'}`}>
         <StepperHeader steps={steps} currentStep={currentStep} />
         <div className="flex-1 overflow-auto">{renderStep()}</div>
         <StepperNavigation

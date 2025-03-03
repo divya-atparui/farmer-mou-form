@@ -38,34 +38,6 @@ declare interface ApiResponse<T> {
 }
 
 
-
-declare interface LandOwner {
-  id: number;
-  landownerName: string;
-  signature: string;
-  aadhar: string;
-  address:string;
-  date: string;
-  email: string;
-  mobile: string;
-}
-
-declare interface Property {
-  id: number;
-  itemName: string;
-  cropDetails: string;
-  totalArea: number;
-  surveyNumbers: string;
-  location: string;
-}
-declare interface Witness {
-  id: number;
-  name: string;
-  address: string;
-  note?: string;
-  date: string;
-}
-
 declare interface LandDetailsResponse {
   status: number;
   message: string;
@@ -125,6 +97,12 @@ declare interface Witness {
   date: string;
 }
 
+
+declare interface DeleteResponse {
+  status: number;
+  message: string;
+  data: null;
+}
 
 
 declare interface UserDetailsResponse {

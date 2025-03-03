@@ -9,17 +9,6 @@ export const postLandDetails = async (formData: FormData) => {
   if (!token) {
     throw new Error("No authentication token found");
   }
-  // const data = await client({
-  //   url: "/land-details",
-  //   method: "POST",
-  //   data: {
-  //       ...variables
-  //   },
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //     Authorization: `Bearer ${token}`,
-  //   },
-  // }).then((response) => response.data);
 
   const response = await client.post("/land-details", formData, {
     headers: {
@@ -28,11 +17,64 @@ export const postLandDetails = async (formData: FormData) => {
     },
   });
   const data = response.data;
-
-  // Revalidate all land details pages since we've added new data
-  revalidatePath('/land-details', 'layout');
-  // Revalidate the root path to update any overview or dashboard data
-  revalidatePath('/', 'layout');
   
   return data;
+};
+
+
+export const deleteLandDetails = async (id: string) => {
+  const token = cookies().get("authToken")?.value;
+  if (!token) {
+    throw new Error("No authentication token found");
+  }
+  const response = await client.delete(`/land-details/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  
+  // Revalidate paths to update UI after deletion
+  revalidatePath('/land-details', 'layout');
+  revalidatePath('/', 'layout');
+  
+  return response.data;
+};
+
+export const deleteWitness = async (id: string) => {
+  const token = cookies().get("authToken")?.value;
+  if (!token) {
+    throw new Error("No authentication token found");
+  }
+  const response = await client.delete(`/witness/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
+export const deleteProperty = async (id: string) => {
+  const token = cookies().get("authToken")?.value;
+  if (!token) {
+    throw new Error("No authentication token found");
+  }
+  const response = await client.delete(`/property/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
+export const deleteLandOwner = async (id: string) => {
+  const token = cookies().get("authToken")?.value;
+  if (!token) {
+    throw new Error("No authentication token found");
+  }
+  const response = await client.delete(`/landowner/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
 };

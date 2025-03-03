@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 
 interface StepperNavigationProps {
   currentStep: number;
@@ -44,14 +45,14 @@ export function StepperNavigation({
           disabled={isLoading || isSaving}
           className="w-[120px]"
         >
-          {isLoading 
-            ? "Validating..." 
-            : isSaving
-            ? "Saving..."
-            : currentStep === totalSteps - 1 
-            ? 'Submit' 
-            : 'Next'
-          }
+          {isLoading || isSaving ? (
+            <span className="flex items-center gap-2">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              {isLoading ? "Validating..." : "Saving..."}
+            </span>
+          ) : (
+            currentStep === totalSteps - 1 ? 'Submit' : 'Next'
+          )}
         </Button>
       </div>
     </div>

@@ -4,6 +4,8 @@ import { ColumnDef } from "@tanstack/react-table";
 
 
 import { DataTableColumnHeader } from "./data-table-column-header";
+import { DataTableRowActions } from "./data-table-row-actions";
+
 
 
 export const columns: ColumnDef<LandDetails>[] = [
@@ -80,4 +82,8 @@ export const columns: ColumnDef<LandDetails>[] = [
       return <div className="hidden xl:block font-medium">{formatted}</div>;
     },
   },
+  {
+    id: "actions",
+    cell: ({ row }) => <DataTableRowActions row={row} />,
+  }
 ];
