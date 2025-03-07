@@ -7,22 +7,30 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Plus, Trash2, Building2 } from "lucide-react";
+import { Plus, Trash2, Building2, Loader2 } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { FormSchemaType } from "@/types/schema";
 import { useFieldArray } from "react-hook-form";
+import { useDeleteProperty } from "@/api/form/use-land-details";
+import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface PropertyDetailsComponentProps {
   form: UseFormReturn<FormSchemaType>;
+  propertyIds?: Record<number, string>; // Map of index to ID
 }
 
-export function PropertyDetailsComponent({ form }: PropertyDetailsComponentProps) {
+export function PropertyDetailsComponent({ form, propertyIds = {} }: PropertyDetailsComponentProps) {
   const { messages } = useLanguage();
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: "propertyDetails",
-  });
+  }); 
+  const queryClient = useQueryClient();
+
+  // Initialize the delete mutation
+  const { mutate: deleteProperty, isPending: isDeleting } = useDeleteProperty();
 
   const addNewProperty = () => {
     append({
@@ -33,6 +41,37 @@ export function PropertyDetailsComponent({ form }: PropertyDetailsComponentProps
       surveyNumbers: "",
       location: "",
     });
+  };
+
+  // Enhanced remove function that calls the API if an ID exists
+  const handleRemove = (index: number) => {
+    const id = propertyIds[index];
+    
+    // If we have an ID for this property, call the delete API
+    if (id) {
+      deleteProperty(
+        { id },
+        {
+          onSuccess: (data) => {
+            // Remove from the form after successful API call
+            remove(index);
+            if (data.status === 200) {
+              toast.success(messages.form.sections.property.deleteSuccess || "Property deleted successfully");
+              queryClient.invalidateQueries({ queryKey: ["userLandDetails"] });
+            } else {
+              toast.error(messages.form.sections.property.deleteError || "Failed to delete property");
+            }
+          },
+          onError: (error) => {
+            console.error("Error deleting property:", error);
+            toast.error(messages.form.sections.property.deleteError || "Failed to delete property");
+          }
+        }
+      );
+    } else {
+      // If no ID exists (new item not yet saved), just remove from the form
+      remove(index);
+    }
   };
 
   return (
@@ -77,9 +116,14 @@ export function PropertyDetailsComponent({ form }: PropertyDetailsComponentProps
                   variant="ghost"
                   size="sm"
                   className="h-8 w-8 p-0"
-                  onClick={() => remove(index)}
+                  onClick={() => handleRemove(index)}
+                  disabled={isDeleting}
                 >
-                  <Trash2 className="h-4 w-4 text-gray-500 hover:text-red-500" />
+                  {isDeleting && propertyIds[index] ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Trash2 className="h-4 w-4 text-gray-500 hover:text-red-500" />
+                  )}
                 </Button>
               </div>
 

@@ -9,23 +9,30 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Plus, Trash2, Users } from "lucide-react";
+import { Plus, Trash2, Users, Loader2 } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Textarea } from "@/components/ui/textarea";
 import { FormSchemaType } from "@/types/schema";
 import { useFieldArray } from "react-hook-form";
-
+import { useDeleteLandOwner } from "@/api/form/use-land-details";
+import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 interface LandOwnersComponentProps {
   form: UseFormReturn<FormSchemaType>;
+  landOwnerIds?: Record<number, string>; // Map of index to ID
 }
 
-export function LandOwnersComponent({ form }: LandOwnersComponentProps) {
+export function LandOwnersComponent({ form, landOwnerIds = {} }: LandOwnersComponentProps) {
   const { messages } = useLanguage();
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: "landOwners",
   });
+  const queryClient = useQueryClient();
+
+  // Initialize the delete mutation
+  const { mutate: deleteLandOwner, isPending: isDeleting } = useDeleteLandOwner();
 
   const addNewLandOwner = () => {
     append({
@@ -38,6 +45,38 @@ export function LandOwnersComponent({ form }: LandOwnersComponentProps) {
       email: "",
       mobile: "",
     });
+  };
+
+  // Enhanced remove function that calls the API if an ID exists
+  const handleRemove = (index: number) => {
+    const id = landOwnerIds[index];
+    
+    // If we have an ID for this landowner, call the delete API
+    if (id) {
+      deleteLandOwner(
+        { id },
+        {
+          onSuccess: (data) => {
+
+            // Remove from the form after successful API call
+            remove(index);
+            if (data.status === 200) {
+              toast.success(messages.form.sections.landowners.deleteSuccess || "Land owner deleted successfully");
+              queryClient.invalidateQueries({ queryKey: ["userLandDetails"] });
+            } else {
+              toast.error(messages.form.sections.landowners.deleteError || "Failed to delete land owner");
+            }
+          },
+          onError: (error) => {
+            console.error("Error deleting land owner:", error);
+            toast.error(messages.form.sections.landowners.deleteError || "Failed to delete land owner");
+          }
+        }
+      );
+    } else {
+      // If no ID exists (new item not yet saved), just remove from the form
+      remove(index);
+    }
   };
 
   return (
@@ -94,9 +133,14 @@ export function LandOwnersComponent({ form }: LandOwnersComponentProps) {
                 variant="destructive"
                 size="icon"
                 className="absolute -right-2 -top-2 h-8 w-8 rounded-full"
-                onClick={() => remove(index)}
+                onClick={() => handleRemove(index)}
+                disabled={isDeleting}
               >
-                <Trash2 className="h-4 w-4" />
+                {isDeleting && landOwnerIds[index] ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Trash2 className="h-4 w-4" />
+                )}
               </Button>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

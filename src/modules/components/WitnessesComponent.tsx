@@ -7,22 +7,30 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Plus, Trash2, UserCheck } from "lucide-react";
+import { Plus, Trash2, UserCheck, Loader2 } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { FormSchemaType } from "@/types/schema";
 import { useFieldArray } from "react-hook-form";
+import { useDeleteWitness } from "@/api/form/use-land-details";
+import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface WitnessesComponentProps {
   form: UseFormReturn<FormSchemaType>;
+  witnessIds?: Record<number, string>; // Map of index to ID
 }
 
-export function WitnessesComponent({ form }: WitnessesComponentProps) {
+export function WitnessesComponent({ form, witnessIds = {} }: WitnessesComponentProps) {
   const { messages } = useLanguage();
+  const queryClient = useQueryClient();
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: "witnesses",
   });
+
+  // Initialize the delete mutation
+  const { mutate: deleteWitness, isPending: isDeleting } = useDeleteWitness();
 
   const addNewWitness = () => {
     append({
@@ -31,6 +39,37 @@ export function WitnessesComponent({ form }: WitnessesComponentProps) {
       address: "",
       note: "",
     });
+  };
+
+  // Enhanced remove function that calls the API if an ID exists
+  const handleRemove = (index: number) => {
+    const id = witnessIds[index];
+    
+    // If we have an ID for this witness, call the delete API
+    if (id) {
+      deleteWitness(
+        { id },
+        {
+          onSuccess: (data) => {
+            // Remove from the form after successful API call
+            remove(index);
+            if (data.status === 200) {
+              toast.success(messages.form.sections.witnesses.deleteSuccess || "Witness deleted successfully");
+              queryClient.invalidateQueries({ queryKey: ["userLandDetails"] });
+            } else {
+              toast.error(messages.form.sections.witnesses.deleteError || "Failed to delete witness");
+            }
+          },
+          onError: (error) => {
+            console.error("Error deleting witness:", error);
+            toast.error(messages.form.sections.witnesses.deleteError || "Failed to delete witness");
+          }
+        }
+      );
+    } else {
+      // If no ID exists (new item not yet saved), just remove from the form
+      remove(index);
+    }
   };
 
   return (
@@ -75,9 +114,14 @@ export function WitnessesComponent({ form }: WitnessesComponentProps) {
                   variant="ghost"
                   size="sm"
                   className="h-8 w-8 p-0"
-                  onClick={() => remove(index)}
+                  onClick={() => handleRemove(index)}
+                  disabled={isDeleting}
                 >
-                  <Trash2 className="h-4 w-4 text-gray-500 hover:text-red-500" />
+                  {isDeleting && witnessIds[index] ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Trash2 className="h-4 w-4 text-gray-500 hover:text-red-500" />
+                  )}
                 </Button>
               </div>
 

@@ -3,13 +3,13 @@ import { Home, Inbox} from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
-
   SidebarGroup,
   SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 
 import { NavUser } from "./nav-user";
@@ -18,16 +18,17 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 // Navigation items - you can expand this as needed
-const items = [
+const getItems = (messages: { lang: string }) => [
   {
-    title: "Dashboard",
+    title: messages.lang === "en" ? "Dashboard" : "ಡ್ಯಾಶ್‌ಬೋರ್ಡ್",
     url: "/",
     icon: Home,
   },
   {
-    title: "Land Details Form",
+    title: messages.lang === "en" ? "Land Details Form" : "ಭೂಮಿ ವಿವರಗಳ ಫಾರ್ಮ್",
     url: "/land-details-form",
     icon: Inbox,
   },
@@ -35,7 +36,10 @@ const items = [
 
 export function AppSidebar() {
   const pathname = usePathname();
-
+  const { messages } = useLanguage();
+  const { state } = useSidebar(); // Get sidebar state
+  const isCollapsed = state === "collapsed";
+  const items = getItems(messages);
   
   // Refs for animations
   const sidebarRef = useRef(null);
@@ -92,9 +96,6 @@ export function AppSidebar() {
     });
   };
 
-  // Mock user data - replace with actual user data from your auth system
- 
-
   return (
     <Sidebar 
       ref={sidebarRef}
@@ -102,13 +103,13 @@ export function AppSidebar() {
       collapsible="icon"
     >
       <SidebarHeader ref={headerRef} className="p-5 border-b border-sidebar-border">
-   <NavUser />
+        <NavUser />
       </SidebarHeader>
 
       <SidebarContent>
         <SidebarGroup className="mt-4">
           <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground">
-            Main Menu
+            {messages.lang === "en" ? "Main Menu" : "ಮುಖ್ಯ ಮೆನು"}
           </SidebarGroupLabel>
           <SidebarMenu className="space-y-8 mt-5">
             {items.map((item, index) => (
@@ -128,13 +129,24 @@ export function AppSidebar() {
                     )}
                     onMouseEnter={(e) => handleMenuItemHover(e.currentTarget, true)}
                     onMouseLeave={(e) => handleMenuItemHover(e.currentTarget, false)}
+                    tooltip={item.title} // Add tooltip for collapsed state
                   >
                     <Link href={item.url}>
-                      <div className="relative flex items-center gap-8">
-                        <div className="flex items-center justify-center w-6 h-6">
-                          <item.icon className="h-10 w-10" />
+                      <div className={cn(
+                        "relative flex items-center",
+                        isCollapsed ? "justify-center" : "gap-8"
+                      )}>
+                        <div className={cn(
+                          "flex items-center justify-center",
+                          isCollapsed ? "w-full h-full" : "w-6 h-6"
+                        )}>
+                          <item.icon className={cn(
+                            isCollapsed ? "h-6 w-6" : "h-10 w-10"
+                          )} />
                         </div>
-                        <span className="text-base">{item.title}</span>
+                        {!isCollapsed && (
+                          <span className="text-base">{item.title}</span>
+                        )}
                       </div>
                     </Link>
                   </SidebarMenuButton>
