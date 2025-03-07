@@ -20,6 +20,7 @@ import { useCreateLandProduct } from "@/api/ofbiz/use-create-land-product";
 import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface LandDetailsFormStepperProps {
   isEditMode?: boolean;
@@ -43,6 +44,7 @@ export function LandDetailsFormStepper({
   const [witnessIds, setWitnessIds] = useState<Record<number, string>>({});
   const router = useRouter();
   const queryClient = useQueryClient();
+  const { messages } = useLanguage();
   const [location, setLocation] = useState<{
     latitude: number;
     longitude: number;
@@ -219,26 +221,26 @@ export function LandDetailsFormStepper({
   const steps: StepType[] = [
     {
       id: "bank",
-      title: "Bank Details",
-      description: "Enter bank account information",
+      title: messages.steps.bank.title,
+      description: messages.steps.bank.description,
       icon: Building2,
     },
     {
       id: "landowners",
-      title: "Land Owners",
-      description: "Add land owner details",
+      title: messages.steps.landowners.title,
+      description: messages.steps.landowners.description,
       icon: Users,
     },
     {
       id: "property",
-      title: "Property Details",
-      description: "Enter property information",
+      title: messages.steps.property.title,
+      description: messages.steps.property.description,
       icon: Home,
     },
     {
       id: "witnesses",
-      title: "Witnesses",
-      description: "Add witness information",
+      title: messages.steps.witnesses.title,
+      description: messages.steps.witnesses.description,
       icon: UserCheck,
     },
   ];
@@ -528,16 +530,7 @@ export function LandDetailsFormStepper({
               .replace("T", "_")
               .slice(0, 15)}`,
             internalName: `Land Record - ${form.getValues("accountNumber")}`,
-            longDescription: JSON.stringify({
-              accountNumber: form.getValues("accountNumber"),
-              landOwners: form.getValues("landOwners").map(
-                (owner) => owner.landownerName
-              ),
-              location: location
-                ? `${location.latitude},${location.longitude}`
-                : "Not specified",
-              created: new Date().toISOString().split(".")[0],
-            }),
+            longDescription: `Land Record for Account Number: ${form.getValues("accountNumber")} and Land Owner: ${form.getValues("landOwners").map(owner => owner.landownerName).join(", ")}`,
           },
           {
             onSuccess: () => {
@@ -558,11 +551,11 @@ export function LandDetailsFormStepper({
         case 0:
           return <BankDetailComponent form={form} />;
         case 1:
-          return <LandOwnersComponent form={form} />;
+          return <LandOwnersComponent form={form} landOwnerIds={landOwnerIds} />;
         case 2:
-          return <PropertyDetailsComponent form={form} />;
+          return <PropertyDetailsComponent form={form} propertyIds={propertyIds} />;
         case 3:
-          return <WitnessesComponent form={form} />;
+          return <WitnessesComponent form={form} witnessIds={witnessIds} />;
         default:
           return null;
       }

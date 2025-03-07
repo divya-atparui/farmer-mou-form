@@ -28,7 +28,8 @@ export function NavUser() {
   const [isPending, startTransition] = useTransition();
   const queryClient = useQueryClient();
   const { language, setLanguage } = useLanguage();
-  const { isMobile } = useSidebar();
+  const { isMobile, state } = useSidebar(); // Get sidebar state to check if collapsed
+  const isCollapsed = state === "collapsed";
   
   // Animation refs
   const userRef = useRef(null);
@@ -86,15 +87,19 @@ export function NavUser() {
     return (
       <div 
         ref={loadingRef}
-        className="flex items-center gap-3 px-2"
+        className={`flex items-center ${isCollapsed ? 'justify-center' : 'gap-3 px-2'}`}
       >
-        <div className="animate-pulse flex items-center gap-2 w-full">
-          <div className="h-9 w-9 bg-green-600/20 rounded-xl"></div>
-          <div className="flex-1">
-            <div className="h-4 bg-green-600/20 rounded w-24 mb-2"></div>
-            <div className="h-3 bg-green-600/20 rounded w-32"></div>
+        {isCollapsed ? (
+          <div className="animate-pulse h-9 w-9 bg-green-600/20 rounded-xl"></div>
+        ) : (
+          <div className="animate-pulse flex items-center gap-2 w-full">
+            <div className="h-9 w-9 bg-green-600/20 rounded-xl"></div>
+            <div className="flex-1">
+              <div className="h-4 bg-green-600/20 rounded w-24 mb-2"></div>
+              <div className="h-3 bg-green-600/20 rounded w-32"></div>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     );
   }
@@ -109,15 +114,17 @@ export function NavUser() {
     return (
       <div 
         ref={errorRef}
-        className="flex items-center gap-3 px-2"
+        className={`flex items-center ${isCollapsed ? 'justify-center' : 'gap-3 px-2'}`}
       >
         <Avatar className="h-9 w-9 rounded-xl bg-destructive/10">
           <AvatarFallback className="rounded-xl text-destructive">GU</AvatarFallback>
         </Avatar>
-        <div className="flex flex-col">
-          <span className="font-semibold text-lg tracking-tight">Guest User</span>
-          <span className="text-xs text-destructive">Error loading profile</span>
-        </div>
+        {!isCollapsed && (
+          <div className="flex flex-col">
+            <span className="font-semibold text-lg tracking-tight">Guest User</span>
+            <span className="text-xs text-destructive">Error loading profile</span>
+          </div>
+        )}
       </div>
     );
   }
@@ -125,28 +132,33 @@ export function NavUser() {
   const avatar = userData?.fullName.slice(0, 2).toUpperCase();
   
   return (
-    <div ref={userRef} className="flex items-center justify-between w-full">
+    <div ref={userRef} className={`flex items-center ${isCollapsed ? 'justify-center' : 'justify-between w-full'}`}>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <button 
-            className="flex items-center gap-3 px-2 w-full outline-none"
+            className={`flex items-center ${isCollapsed ? 'justify-center' : 'gap-3 px-2 w-full'} outline-none`}
             onMouseEnter={(e) => handleHover(e.currentTarget, true)}
             onMouseLeave={(e) => handleHover(e.currentTarget, false)}
+            title={userData?.fullName}
           >
             <Avatar className="h-9 w-9 rounded-xl border-2 border-green-600/10">
               <AvatarFallback className="rounded-xl bg-green-600/10 text-green-600">{avatar}</AvatarFallback>
             </Avatar>
-            <div className="flex flex-col text-left">
-              <span className="font-semibold text-sm tracking-tight truncate max-w-[120px]">
-                {userData?.fullName}
-              </span>
-              <span className="text-xs text-muted-foreground truncate max-w-[120px]">{userData?.email}</span>
-            </div>
-            <ChevronsUpDown className="ml-auto size-4 text-muted-foreground" />
+            {!isCollapsed && (
+              <>
+                <div className="flex flex-col text-left">
+                  <span className="font-semibold text-sm tracking-tight truncate max-w-[120px]">
+                    {userData?.fullName}
+                  </span>
+                  <span className="text-xs text-muted-foreground truncate max-w-[120px]">{userData?.email}</span>
+                </div>
+                <ChevronsUpDown className="ml-auto size-4 text-muted-foreground" />
+              </>
+            )}
           </button>
         </DropdownMenuTrigger>
         <DropdownMenuContent
-          className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
+          className="min-w-56 rounded-lg"
           side={isMobile ? "bottom" : "right"}
           align="start"
           sideOffset={4}

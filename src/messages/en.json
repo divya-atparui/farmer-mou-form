@@ -1,5 +1,35 @@
 {
   "lang": "en",
+  "row-actions" : {
+    "bank" : "Edit Bank Details",
+    "landowners": "Edit Land Owners",
+    "property": "Edit Property Details",
+    "witnesses": "Edit Witnesses",
+    "delete": "Delete Record",
+    "deleteConfirmTitle": "Are you sure?",
+    "deleteConfirmDescription": "This action cannot be undone. This will permanently delete the selected record and remove it from our servers.",
+    "cancel": "Cancel",
+    "deleting": "Deleting...",
+    "deleteButton": "Delete"
+  },
+  "steps": {
+    "bank": {
+      "title": "Bank Details",
+      "description": "Enter bank account information"
+    },
+    "landowners": {
+      "title": "Land Owners",
+      "description": "Add land owner details"
+    },
+    "property": {
+      "title": "Property Details",
+      "description": "Enter property information"
+    },
+    "witnesses": {
+      "title": "Witnesses",
+      "description": "Add witness information"
+    }
+  },
   "form": {
     "title": "Land Registration Form",
     "description": "Fill in the details to generate your MOU document",
@@ -27,6 +57,8 @@
         "noLandowners": "No Land Owners",
         "addLandownerDescription": "Add a land owner to get started",
         "landownerTitle": "Land Owner",
+        "deleteSuccess": "Landowner deleted successfully",
+        "deleteError": "Failed to delete landowner",
         "fields": {
           "name": "Name",
           "aadhar": "Aadhar",
@@ -44,6 +76,8 @@
         "description": "Add details about the properties",
         "addProperty": "Add Property",
         "propertyTitle": "Property",
+        "deleteSuccess": "Property deleted successfully",
+        "deleteError": "Failed to delete property",
         "fields": {
           "itemName": "Item Name",
           "cropDetails": "Crop Details",
@@ -59,6 +93,8 @@
         "description": "Add details of witnesses",
         "addWitness": "Add Witness",
         "witnessTitle": "Witness",
+        "deleteSuccess": "Witness deleted successfully",
+        "deleteError": "Failed to delete witness",
         "fields": {
           "name": "Name",
           "address": "Address",

@@ -24,6 +24,7 @@ import EditFormDialog from "../edit-form-dialog";
 import { useDeleteLandDetails } from "@/api/form/use-land-details";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -34,6 +35,9 @@ export function DataTableRowActions<TData>({ row }: DataTableRowActionsProps<TDa
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [initialStep, setInitialStep] = useState(0);
   const queryClient = useQueryClient();
+  const { messages } = useLanguage();
+  
+  const rowActions = messages["row-actions"];
   
   const { mutate: deleteLandDetails, isPending: isDeleting } = useDeleteLandDetails();
 
@@ -88,7 +92,7 @@ export function DataTableRowActions<TData>({ row }: DataTableRowActionsProps<TDa
               </Button>
             </TooltipTrigger>
             <TooltipContent side="top" sideOffset={5} className="text-xs">
-              <p>Edit Bank Details</p>
+              <p>{rowActions.bank}</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -107,7 +111,7 @@ export function DataTableRowActions<TData>({ row }: DataTableRowActionsProps<TDa
               </Button>
             </TooltipTrigger>
             <TooltipContent side="top" sideOffset={5} className="text-xs">
-              <p>Edit Land Owners</p>
+              <p>{rowActions.landowners}</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -126,7 +130,7 @@ export function DataTableRowActions<TData>({ row }: DataTableRowActionsProps<TDa
               </Button>
             </TooltipTrigger>
             <TooltipContent side="top" sideOffset={5} className="text-xs">
-              <p>Edit Property Details</p>
+              <p>{rowActions.property}</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -145,7 +149,7 @@ export function DataTableRowActions<TData>({ row }: DataTableRowActionsProps<TDa
               </Button>
             </TooltipTrigger>
             <TooltipContent side="top" sideOffset={5} className="text-xs">
-              <p>Edit Witnesses</p>
+              <p>{rowActions.witnesses}</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -168,7 +172,7 @@ export function DataTableRowActions<TData>({ row }: DataTableRowActionsProps<TDa
               </Button>
             </TooltipTrigger>
             <TooltipContent side="top" sideOffset={5} className="text-xs">
-              <p>Delete Record</p>
+              <p>{rowActions.delete}</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -178,14 +182,13 @@ export function DataTableRowActions<TData>({ row }: DataTableRowActionsProps<TDa
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogTitle>{rowActions.deleteConfirmTitle}</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the
-              selected record and remove it from our servers.
+              {rowActions.deleteConfirmDescription}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
+            <AlertDialogCancel disabled={isDeleting}>{rowActions.cancel}</AlertDialogCancel>
             <AlertDialogAction 
               onClick={handleDelete} 
               disabled={isDeleting}
@@ -194,10 +197,10 @@ export function DataTableRowActions<TData>({ row }: DataTableRowActionsProps<TDa
               {isDeleting ? (
                 <span className="flex items-center gap-2">
                   <Loader2 className="h-4 w-4 animate-spin" />
-                  Deleting...
+                  {rowActions.deleting}
                 </span>
               ) : (
-                "Delete"
+                rowActions.deleteButton
               )}
             </AlertDialogAction>
           </AlertDialogFooter>
