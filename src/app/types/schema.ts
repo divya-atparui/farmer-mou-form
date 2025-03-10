@@ -24,10 +24,7 @@ export const witnessSchema = z.object({
   date: z.string(),
 });
 
-export const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(4, "Password must be at least 8 characters"),
-});
+
 
 export const formSchema = z.object({
   accountNumber: z.string().min(1, "Account number is required"),

@@ -1,7 +1,7 @@
 import type { AxiosError } from "axios";
 import { createMutation } from "react-query-kit";
 
-import { getAuthToken } from "./auth";
+import { getAuthToken, otpLogin } from "./auth";
 import { cookieLogin } from "./cookie";
 
 type Variables = LoginVariables;
@@ -12,5 +12,13 @@ export const usePostLogin = createMutation<Response, Variables, AxiosError>({
    const data:LoginResponse = await getAuthToken(variables)
    await cookieLogin({id_token:data.token})
    return data
+  },
+});
+
+export const usePostOtpLogin = createMutation<Response, Variables, AxiosError>({
+  mutationFn: async (variables) => {
+    const data: LoginResponse = await otpLogin(variables);
+    await cookieLogin({ id_token: data.token });
+    return data;
   },
 });

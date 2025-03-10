@@ -31,13 +31,30 @@ export const CreateUser = async ({
   return data;
 };
 
-export const getAuthToken = async ({ email, password }: LoginVariables) => {
+export const getAuthToken = async ({ phoneNumber, password }: LoginVariables) => {
   const data = await client({
     url: "/auth/login",
     method: "POST",
     data: {
-      email,
+      phoneNumber,
       password,
+    },
+  }).then((response) => response.data);
+
+  // Revalidate paths after login
+  revalidatePath("/", "layout");
+  revalidatePath("/land-details", "layout");
+
+  return data;
+};
+
+export const otpLogin = async ({ phoneNumber, otp }: LoginVariables) => {
+  const data = await client({
+    url: "/auth/login-with-otp",
+    method: "POST",
+    data: { phoneNumber, otp },
+    headers: {
+      "Content-Type": "application/json",
     },
   }).then((response) => response.data);
 

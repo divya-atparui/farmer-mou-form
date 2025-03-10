@@ -24,8 +24,9 @@ declare interface RegisterVariables {
 }
 
 declare interface LoginVariables {
-  email: string;
-  password: string;
+  phoneNumber: string;
+  password?: string;
+  otp?: string;
 }
 
 declare interface LoginResponse {
