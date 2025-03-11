@@ -106,7 +106,7 @@ export function NavUser() {
 
   // If no user data is found, immediately clear cookies and let middleware handle redirect
   if (!userData) {
-    handleClearCookiesAndLogout();
+    // handleClearCookiesAndLogout();
     return null; // Return null while the logout process is happening
   }
 
