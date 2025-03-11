@@ -31,6 +31,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
@@ -49,9 +50,6 @@ export function DataTable<TData, TValue>({
     aksmvbsMembershipNumber: false,
   }))
 
-
-   
-
   const table = useReactTable({
     data,
     columns,
@@ -69,9 +67,53 @@ export function DataTable<TData, TValue>({
     },
   })
 
+  // Function to render card view for mobile/tablet
+  const renderCardView = () => {
+    return (
+      <div className="grid grid-cols-1 gap-4 lg:hidden">
+        {table.getRowModel().rows?.length ? (
+          table.getRowModel().rows.map((row) => (
+            <div
+              key={row.id}
+              className="rounded-lg border bg-card p-4 space-y-3 shadow-sm"
+            >
+              <div className="flex flex-col gap-2">
+                {row.getVisibleCells().map((cell) => {
+                  // Get column ID for display
+                  const columnName = cell.column.id
+                    .replace(/([A-Z])/g, ' $1')
+                    .replace(/^./, str => str.toUpperCase())
+                    .trim()
+                  
+                  return (
+                    <div key={cell.id} className="grid grid-cols-2 gap-1 items-start">
+                      <div className="text-sm font-medium text-muted-foreground">
+                        {columnName}
+                      </div>
+                      <div className="font-medium">
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="text-center text-muted-foreground py-10">
+            No records found.
+          </div>
+        )}
+      </div>
+    )
+  }
+
   return (
     <div className="w-full space-y-4">
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pb-4">
+      <div className="flex flex-row justify-between items-center  gap-4 p-4">
         <h2 className="text-lg font-semibold">Records</h2>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -99,7 +141,12 @@ export function DataTable<TData, TValue>({
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border border-border/50 bg-background shadow-sm">
+
+      {/* Card view for mobile/tablet */}
+      {renderCardView()}
+
+      {/* Table view for desktop */}
+      <div className="hidden lg:block rounded-md border border-border/50 bg-background shadow-sm">
         <div className="relative rounded-md">
           <div className="overflow-x-auto">
             <Table>
@@ -154,15 +201,17 @@ export function DataTable<TData, TValue>({
           </div>
         </div>
       </div>
-      <div className="flex items-center justify-between space-x-2 py-4">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+
+      {/* Pagination controls */}
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-4">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground order-2 sm:order-1">
           <span>Showing</span>
           <strong>{table.getFilteredRowModel().rows.length}</strong>
           <span>of</span>
           <strong>{table.getCoreRowModel().rows.length}</strong>
           <span>records</span>
         </div>
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center gap-2 order-1 sm:order-2">
           <Button
             variant="outline"
             size="sm"
@@ -173,10 +222,10 @@ export function DataTable<TData, TValue>({
             Previous
           </Button>
           <div className="flex items-center gap-1 text-sm font-medium">
-            <span>Page</span>
+            <span className="hidden sm:inline">Page</span>
             <span>{table.getState().pagination.pageIndex + 1}</span>
-            <span>of</span>
-            <span>{table.getPageCount()}</span>
+            <span className="hidden sm:inline">of</span>
+            <span className="hidden sm:inline">{table.getPageCount()}</span>
           </div>
           <Button
             variant="outline"

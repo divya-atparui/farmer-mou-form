@@ -22,12 +22,17 @@ import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import { useState } from "react";
 import { triggerOtp } from "@/api/auth/auth";
+import { Eye, EyeOff, User, Mail, Lock, Phone, CheckCircle2, AlertCircle } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
   email: z.string().email({
     message: "Please enter a valid email address.",
   }),
   password: z.string().min(8, {
+    message: "Password must be at least 8 characters.",
+  }),
+  confirmPassword: z.string().min(8, {
     message: "Password must be at least 8 characters.",
   }),
   fullName: z.string().min(2, {
@@ -39,6 +44,9 @@ const formSchema = z.object({
   otp: z.string().min(6, {
     message: "OTP must be at least 6 characters.",
   }),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ["confirmPassword"],
 });
 
 export default function RegisterForm() {
@@ -51,12 +59,16 @@ export default function RegisterForm() {
   const [isSendingOtp, setIsSendingOtp] = useState(false);
   // Add a countdown timer for resend OTP
   const [resendTimer, setResendTimer] = useState(0);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [formProgress, setFormProgress] = useState(0);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
       password: "",
+      confirmPassword: "",
       fullName: "",
       phoneNumber: "",
       otp: "",
@@ -131,6 +143,29 @@ export default function RegisterForm() {
     }
   };
 
+  // Password strength calculation
+  const calculatePasswordStrength = (password: string) => {
+    let strength = 0;
+    if (password.length >= 8) strength++;
+    if (/[A-Z]/.test(password)) strength++;
+    if (/[a-z]/.test(password)) strength++;
+    if (/[0-9]/.test(password)) strength++;
+    if (/[^A-Za-z0-9]/.test(password)) strength++;
+    return strength;
+  };
+
+  // Update form progress
+  const updateFormProgress = () => {
+    const values = form.getValues();
+    let progress = 0;
+    if (values.fullName) progress += 20;
+    if (values.email) progress += 20;
+    if (values.password) progress += 20;
+    if (values.confirmPassword) progress += 20;
+    if (values.phoneNumber) progress += 20;
+    setFormProgress(progress);
+  };
+
   // Handle form submission
   function onSubmit(values: z.infer<typeof formSchema>) {
     if (!otpSent) {
@@ -166,91 +201,234 @@ export default function RegisterForm() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <div className="w-full max-w-md space-y-6 rounded-lg border p-6 shadow-lg">
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 py-8">
+      <div className="w-full max-w-md space-y-6 rounded-lg border bg-white p-8 shadow-lg">
         <div className="space-y-2 text-center">
-          <h1 className="text-3xl font-bold text-blue-500">
-            Create an Account
-          </h1>
-          <p className="text-blue-500">Enter your details to register</p>
+          <h1 className="text-3xl font-bold text-blue-500">Create an Account</h1>
+          <p className="text-sm text-gray-500">Fill in your details to get started</p>
+          
+          {/* Progress bar */}
+          <div className="mt-4 h-2 w-full rounded-full bg-gray-200">
+            <div 
+              className="h-full rounded-full bg-blue-500 transition-all duration-300"
+              style={{ width: `${formProgress}%` }}
+            />
+          </div>
         </div>
+
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4" onChange={updateFormProgress}>
             <FormField
               control={form.control}
               name="fullName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Full Name</FormLabel>
+                  <FormLabel className="flex items-center gap-2">
+                    <User className="h-4 w-4" />
+                    Full Name
+                  </FormLabel>
                   <FormControl>
-                    <Input placeholder="John Doe" {...field} />
+                    <div className="relative">
+                      <Input 
+                        placeholder="John Doe" 
+                        {...field}
+                        className="pl-10"
+                      />
+                      <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel className="flex items-center gap-2">
+                    <Mail className="h-4 w-4" />
+                    Email
+                  </FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="john@example.com"
-                      type="email"
-                      {...field}
-                    />
+                    <div className="relative">
+                      <Input
+                        placeholder="john@example.com"
+                        type="email"
+                        {...field}
+                        className="pl-10"
+                      />
+                      <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel className="flex items-center gap-2">
+                    <Lock className="h-4 w-4" />
+                    Password
+                  </FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Enter your password"
-                      type="password"
-                      {...field}
-                    />
+                    <div className="relative">
+                      <Input
+                        placeholder="Enter your password"
+                        type={showPassword ? "text" : "password"}
+                        {...field}
+                        className="pl-10 pr-10"
+                      />
+                      <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                      >
+                        {showPassword ? (
+                          <EyeOff className="h-4 w-4" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
+                      </button>
+                    </div>
+                  </FormControl>
+                  {/* Password strength indicator */}
+                  {field.value && (
+                    <div className="mt-2 space-y-2">
+                      <div className="flex gap-1">
+                        {[...Array(5)].map((_, i) => (
+                          <div
+                            key={i}
+                            className={cn(
+                              "h-1 w-full rounded-full",
+                              i < calculatePasswordStrength(field.value)
+                                ? "bg-blue-500"
+                                : "bg-gray-200"
+                            )}
+                          />
+                        ))}
+                      </div>
+                      <ul className="text-xs text-gray-500 space-y-1">
+                        <li className="flex items-center gap-1">
+                          {field.value.length >= 8 ? (
+                            <CheckCircle2 className="h-3 w-3 text-green-500" />
+                          ) : (
+                            <AlertCircle className="h-3 w-3 text-gray-400" />
+                          )}
+                          At least 8 characters
+                        </li>
+                        <li className="flex items-center gap-1">
+                          {/[A-Z]/.test(field.value) ? (
+                            <CheckCircle2 className="h-3 w-3 text-green-500" />
+                          ) : (
+                            <AlertCircle className="h-3 w-3 text-gray-400" />
+                          )}
+                          One uppercase letter
+                        </li>
+                        <li className="flex items-center gap-1">
+                          {/[0-9]/.test(field.value) ? (
+                            <CheckCircle2 className="h-3 w-3 text-green-500" />
+                          ) : (
+                            <AlertCircle className="h-3 w-3 text-gray-400" />
+                          )}
+                          One number
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="confirmPassword"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="flex items-center gap-2">
+                    <Lock className="h-4 w-4" />
+                    Confirm Password
+                  </FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <Input
+                        placeholder="Confirm your password"
+                        type={showConfirmPassword ? "text" : "password"}
+                        {...field}
+                        className="pl-10 pr-10"
+                      />
+                      <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                      <button
+                        type="button"
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                      >
+                        {showConfirmPassword ? (
+                          <EyeOff className="h-4 w-4" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
+                      </button>
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="phoneNumber"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Phone Number</FormLabel> 
+                  <FormLabel className="flex items-center gap-2">
+                    <Phone className="h-4 w-4" />
+                    Phone Number
+                  </FormLabel> 
                   <div className="space-y-2">
                     <FormControl>
-                      <PhoneInput
-                        international
-                        defaultCountry="IN"
-                        placeholder="Enter phone number"
-                        value={field.value}
-                        onChange={field.onChange}
-                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2"
-                        disabled={otpSent}
-                      />
+                      <div className="relative">
+                        <PhoneInput
+                          international
+                          defaultCountry="IN"
+                          placeholder="Enter phone number"
+                          value={field.value}
+                          onChange={field.onChange}
+                          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 pl-10"
+                          disabled={otpSent}
+                        />
+                        <Phone className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                      </div>
                     </FormControl>
-                    {phoneError && <p className="text-sm text-red-500">{phoneError}</p>}
+                    {phoneError && (
+                      <p className="text-sm text-red-500 flex items-center gap-2">
+                        <AlertCircle className="h-4 w-4" />
+                        {phoneError}
+                      </p>
+                    )}
                     {!otpSent && (
                       <Button 
                         type="button" 
                         variant="outline" 
                         onClick={() => handleSendOtp(false)}
-                        disabled={isSendingOtp}
+                        disabled={isSendingOtp || !form.getValues('phoneNumber') || form.getValues('phoneNumber').length < 10}
                         className="w-full"
                       >
-                        {isSendingOtp ? "Sending OTP..." : "Send OTP"}
+                        {isSendingOtp ? (
+                          <>
+                            <span className="loading loading-spinner loading-sm mr-2"></span>
+                            Sending OTP...
+                          </>
+                        ) : (
+                          "Send OTP"
+                        )}
                       </Button>
                     )}
                   </div>
@@ -264,8 +442,11 @@ export default function RegisterForm() {
                 control={form.control}
                 name="otp"
                 render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>OTP Verification</FormLabel>
+                  <FormItem className="bg-gray-50 p-4 rounded-lg border">
+                    <FormLabel className="flex items-center gap-2">
+                      <CheckCircle2 className="h-4 w-4" />
+                      OTP Verification
+                    </FormLabel>
                     <div className="space-y-2">
                       <FormControl>
                         <Input 
@@ -275,9 +456,8 @@ export default function RegisterForm() {
                           maxLength={6}
                           inputMode="numeric"
                           type="text"
-                          className="text-center tracking-wider"
+                          className="text-center tracking-[1em] text-lg font-medium"
                           onChange={(e) => {
-                            // Only allow digits
                             const value = e.target.value.replace(/\D/g, '');
                             if (value.length <= 6) {
                               field.onChange(value);
@@ -301,7 +481,10 @@ export default function RegisterForm() {
                         </Button>
                       </div>
                       {otpVerified && (
-                        <p className="text-sm text-green-500">OTP verified successfully</p>
+                        <p className="text-sm text-green-500 flex items-center gap-2">
+                          <CheckCircle2 className="h-4 w-4" />
+                          OTP verified successfully
+                        </p>
                       )}
                     </div>
                     <FormMessage />
@@ -315,8 +498,16 @@ export default function RegisterForm() {
               className="w-full" 
               disabled={isRegistering || !otpSent || !form.getValues('otp')}
             >
-              {isRegistering ? "Processing..." : "Verify & Register"}
+              {isRegistering ? (
+                <>
+                  <span className="loading loading-spinner loading-sm mr-2"></span>
+                  Processing...
+                </>
+              ) : (
+                "Verify & Register"
+              )}
             </Button>
+
             <p className="text-center text-sm mt-4">
               Already have an account?{" "}
               <Link href="/login" className="text-blue-500 hover:underline">

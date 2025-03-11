@@ -27,6 +27,15 @@ const nextConfig = {
         },
       ],
     },
+    {
+      source: "/:path*",
+      headers: [
+        {
+          key: "x-forwarded-host",
+          value: process.env.ALLOWED_HOSTS || "",
+        },
+      ],
+    },
   ],
 };
 
