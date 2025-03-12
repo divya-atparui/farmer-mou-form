@@ -292,12 +292,7 @@ export function LandDetailsFormStepper({
       const data = form.getValues();
       const formData = new FormData();
 
-      // Debug log for current IDs
-      console.log('Current formId before appending:', formId);
-      console.log('Current landOwnerIds:', landOwnerIds);
-      console.log('Current propertyIds:', propertyIds);
-      console.log('Current witnessIds:', witnessIds);
-      console.log('Is edit mode:', isEditMode);
+      // Debug log for current ID
 
       // Add form ID if it exists (for updates after step 2 or in edit mode)
       if (formId) {
@@ -374,8 +369,7 @@ export function LandDetailsFormStepper({
               console.log(`Appending property ID for index ${index}:`, propertyIds[index]);
               formData.append(`propertyDetails[${index}].id`, propertyIds[index]);
             }
-
-            formData.append(
+             formData.append(
               `propertyDetails[${index}].itemName`,
               property.itemName
             );

@@ -22,6 +22,7 @@ import PhoneInput from 'react-phone-number-input';
 import "react-phone-number-input/style.css";
 import { Eye, EyeOff, Phone, Lock } from "lucide-react";
 import { useState } from "react";
+import Image from "next/image";
 
 const loginSchema = z.object({
   phoneNumber: z.string().min(1, "Phone number is required"),
@@ -66,6 +67,23 @@ export default function LoginForm() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50">
       <div className="w-full max-w-md space-y-6 rounded-lg border bg-white p-8 shadow-lg">
+        {/* Logo and Brand Name */}
+        <div className="flex flex-col items-center justify-center">
+          <div className="flex items-center gap-3 mb-4 p-3 bg-gradient-to-r from-blue-50 to-amber-50 rounded-lg shadow-sm">
+            <Image 
+              src="/aurex.jpeg" 
+              alt="Aurex Logo" 
+              width={50} 
+              height={50} 
+            />
+            <div className="flex flex-col">
+              <span className="text-2xl font-bold text-blue-600">Aurex</span>
+              <span className="text-xs text-blue-800 opacity-80">Powered by Aurigraph</span>
+            </div>
+          </div>
+          <div className="h-px w-full bg-gray-200 my-2"></div>
+        </div>
+        
         <div className="space-y-2 text-center">
           <h1 className="text-3xl font-bold text-blue-500">Welcome Back</h1>
           <p className="text-sm text-gray-500">Please sign in to continue</p>

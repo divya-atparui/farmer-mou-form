@@ -24,6 +24,7 @@ import { useState } from "react";
 import { triggerOtp } from "@/api/auth/auth";
 import { Eye, EyeOff, User, Mail, Lock, Phone, CheckCircle2, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -201,12 +202,30 @@ export default function RegisterForm() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 py-8">
-      <div className="w-full max-w-md space-y-6 rounded-lg border bg-white p-8 shadow-lg">
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 py-8 m-2">
+      <div className="w-full max-w-2xl space-y-6 rounded-lg border bg-white p-8 shadow-lg">
+        {/* Logo and Brand Name */}
+        <div className="flex flex-col items-center justify-center">
+          <div className="flex items-center gap-3 mb-4 p-3 bg-gradient-to-r from-blue-50 to-amber-50 rounded-lg shadow-sm">
+            <Image 
+              src="/aurex.jpeg" 
+              alt="Aurex Logo" 
+              width={50} 
+              height={50}
+            />
+            <div className="flex flex-col">
+              <span className="text-2xl font-bold text-blue-600">Aurex</span>
+              <span className="text-xs text-blue-800 opacity-80">Powered by Aurigraph</span>
+            </div>
+            
+          </div>
+          <h1 className="text-xl font-bold text-blue-500">Create an Account</h1>
+
+     
+        </div>
+        
         <div className="space-y-2 text-center">
-          <h1 className="text-3xl font-bold text-blue-500">Create an Account</h1>
-          <p className="text-sm text-gray-500">Fill in your details to get started</p>
-          
+         
           {/* Progress bar */}
           <div className="mt-4 h-2 w-full rounded-full bg-gray-200">
             <div 
@@ -214,10 +233,12 @@ export default function RegisterForm() {
               style={{ width: `${formProgress}%` }}
             />
           </div>
+         
         </div>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4" onChange={updateFormProgress}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5" onChange={updateFormProgress}>
+            {/* Full Name field */}
             <FormField
               control={form.control}
               name="fullName"
@@ -242,208 +263,235 @@ export default function RegisterForm() {
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="flex items-center gap-2">
-                    <Mail className="h-4 w-4" />
-                    Email
-                  </FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <Input
-                        placeholder="john@example.com"
-                        type="email"
-                        {...field}
-                        className="pl-10"
-                      />
-                      <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="flex items-center gap-2">
-                    <Lock className="h-4 w-4" />
-                    Password
-                  </FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <Input
-                        placeholder="Enter your password"
-                        type={showPassword ? "text" : "password"}
-                        {...field}
-                        className="pl-10 pr-10"
-                      />
-                      <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                      >
-                        {showPassword ? (
-                          <EyeOff className="h-4 w-4" />
-                        ) : (
-                          <Eye className="h-4 w-4" />
-                        )}
-                      </button>
-                    </div>
-                  </FormControl>
-                  {/* Password strength indicator */}
-                  {field.value && (
-                    <div className="mt-2 space-y-2">
-                      <div className="flex gap-1">
-                        {[...Array(5)].map((_, i) => (
-                          <div
-                            key={i}
-                            className={cn(
-                              "h-1 w-full rounded-full",
-                              i < calculatePasswordStrength(field.value)
-                                ? "bg-blue-500"
-                                : "bg-gray-200"
-                            )}
-                          />
-                        ))}
-                      </div>
-                      <ul className="text-xs text-gray-500 space-y-1">
-                        <li className="flex items-center gap-1">
-                          {field.value.length >= 8 ? (
-                            <CheckCircle2 className="h-3 w-3 text-green-500" />
-                          ) : (
-                            <AlertCircle className="h-3 w-3 text-gray-400" />
-                          )}
-                          At least 8 characters
-                        </li>
-                        <li className="flex items-center gap-1">
-                          {/[A-Z]/.test(field.value) ? (
-                            <CheckCircle2 className="h-3 w-3 text-green-500" />
-                          ) : (
-                            <AlertCircle className="h-3 w-3 text-gray-400" />
-                          )}
-                          One uppercase letter
-                        </li>
-                        <li className="flex items-center gap-1">
-                          {/[0-9]/.test(field.value) ? (
-                            <CheckCircle2 className="h-3 w-3 text-green-500" />
-                          ) : (
-                            <AlertCircle className="h-3 w-3 text-gray-400" />
-                          )}
-                          One number
-                        </li>
-                      </ul>
-                    </div>
-                  )}
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="confirmPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="flex items-center gap-2">
-                    <Lock className="h-4 w-4" />
-                    Confirm Password
-                  </FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <Input
-                        placeholder="Confirm your password"
-                        type={showConfirmPassword ? "text" : "password"}
-                        {...field}
-                        className="pl-10 pr-10"
-                      />
-                      <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-                      <button
-                        type="button"
-                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                      >
-                        {showConfirmPassword ? (
-                          <EyeOff className="h-4 w-4" />
-                        ) : (
-                          <Eye className="h-4 w-4" />
-                        )}
-                      </button>
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="phoneNumber"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="flex items-center gap-2">
-                    <Phone className="h-4 w-4" />
-                    Phone Number
-                  </FormLabel> 
-                  <div className="space-y-2">
+            {/* Email and Phone in a grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Email field */}
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-2">
+                      <Mail className="h-4 w-4" />
+                      Email
+                    </FormLabel>
                     <FormControl>
                       <div className="relative">
-                        <PhoneInput
-                          international
-                          defaultCountry="IN"
-                          placeholder="Enter phone number"
-                          value={field.value}
-                          onChange={field.onChange}
-                          className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 pl-10"
-                          disabled={otpSent}
+                        <Input
+                          placeholder="john@example.com"
+                          type="email"
+                          {...field}
+                          className="pl-10"
                         />
-                        <Phone className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                        <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                       </div>
                     </FormControl>
-                    {phoneError && (
-                      <p className="text-sm text-red-500 flex items-center gap-2">
-                        <AlertCircle className="h-4 w-4" />
-                        {phoneError}
-                      </p>
-                    )}
-                    {!otpSent && (
-                      <Button 
-                        type="button" 
-                        variant="outline" 
-                        onClick={() => handleSendOtp(false)}
-                        disabled={isSendingOtp || !form.getValues('phoneNumber') || form.getValues('phoneNumber').length < 10}
-                        className="w-full"
-                      >
-                        {isSendingOtp ? (
-                          <>
-                            <span className="loading loading-spinner loading-sm mr-2"></span>
-                            Sending OTP...
-                          </>
-                        ) : (
-                          "Send OTP"
-                        )}
-                      </Button>
-                    )}
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Phone Number field */}
+              <FormField
+                control={form.control}
+                name="phoneNumber"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-2">
+                      <Phone className="h-4 w-4" />
+                      Phone Number
+                    </FormLabel> 
+                    <div className="space-y-2">
+                      <FormControl>
+                        <div className="relative">
+                          <PhoneInput
+                            international
+                            defaultCountry="IN"
+                            placeholder="Enter phone number"
+                            value={field.value}
+                            onChange={field.onChange}
+                            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 pl-10"
+                            disabled={otpSent}
+                          />
+                          <Phone className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                        </div>
+                      </FormControl>
+                      {phoneError && (
+                        <p className="text-sm text-red-500 flex items-center gap-2">
+                          <AlertCircle className="h-4 w-4" />
+                          {phoneError}
+                        </p>
+                      )}
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            {/* Password fields in a grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Password field */}
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-2">
+                      <Lock className="h-4 w-4" />
+                      Password
+                    </FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Input
+                          placeholder="Enter your password"
+                          type={showPassword ? "text" : "password"}
+                          {...field}
+                          className="pl-10 pr-10"
+                        />
+                        <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                        >
+                          {showPassword ? (
+                            <EyeOff className="h-4 w-4" />
+                          ) : (
+                            <Eye className="h-4 w-4" />
+                          )}
+                        </button>
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* Confirm Password field */}
+              <FormField
+                control={form.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-2">
+                      <Lock className="h-4 w-4" />
+                      Confirm Password
+                    </FormLabel>
+                    <FormControl>
+                      <div className="relative">
+                        <Input
+                          placeholder="Confirm your password"
+                          type={showConfirmPassword ? "text" : "password"}
+                          {...field}
+                          className="pl-10 pr-10"
+                        />
+                        <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+                        <button
+                          type="button"
+                          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                        >
+                          {showConfirmPassword ? (
+                            <EyeOff className="h-4 w-4" />
+                          ) : (
+                            <Eye className="h-4 w-4" />
+                          )}
+                        </button>
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            {/* Password strength indicator */}
+            {form.watch('password') && (
+              <div className="space-y-2">
+                <div className="flex gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <div
+                      key={i}
+                      className={cn(
+                        "h-1 w-full rounded-full",
+                        i < calculatePasswordStrength(form.watch('password'))
+                          ? "bg-blue-500"
+                          : "bg-gray-200"
+                      )}
+                    />
+                  ))}
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="text-xs text-gray-500 space-y-1">
+                    <div className="flex items-center gap-1">
+                      {form.watch('password').length >= 8 ? (
+                        <CheckCircle2 className="h-3 w-3 text-green-500" />
+                      ) : (
+                        <AlertCircle className="h-3 w-3 text-gray-400" />
+                      )}
+                      <span>8+ characters</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      {/[A-Z]/.test(form.watch('password')) ? (
+                        <CheckCircle2 className="h-3 w-3 text-green-500" />
+                      ) : (
+                        <AlertCircle className="h-3 w-3 text-gray-400" />
+                      )}
+                      <span>Uppercase</span>
+                    </div>
                   </div>
-                  <FormMessage />
-                </FormItem>
+                  <div className="text-xs text-gray-500 space-y-1">
+                    <div className="flex items-center gap-1">
+                      {/[0-9]/.test(form.watch('password')) ? (
+                        <CheckCircle2 className="h-3 w-3 text-green-500" />
+                      ) : (
+                        <AlertCircle className="h-3 w-3 text-gray-400" />
+                      )}
+                      <span>Number</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      {/[^A-Za-z0-9]/.test(form.watch('password')) ? (
+                        <CheckCircle2 className="h-3 w-3 text-green-500" />
+                      ) : (
+                        <AlertCircle className="h-3 w-3 text-gray-400" />
+                      )}
+                      <span>Special character</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* OTP Section */}
+            <div className="flex justify-between items-center">
+              {!otpSent && (
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={() => handleSendOtp(false)}
+                  disabled={isSendingOtp || !form.getValues('phoneNumber') || form.getValues('phoneNumber').length < 10}
+                  className="w-full"
+                >
+                  {isSendingOtp ? (
+                    <>
+                      <span className="loading loading-spinner loading-sm mr-2"></span>
+                      Sending OTP...
+                    </>
+                  ) : (
+                    "Send OTP"
+                  )}
+                </Button>
               )}
-            />
+            </div>
             
             {showOtpInput && (
               <FormField
                 control={form.control}
                 name="otp"
                 render={({ field }) => (
-                  <FormItem className="bg-gray-50 p-4 rounded-lg border">
-                    <FormLabel className="flex items-center gap-2">
+                  <FormItem className="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                    <FormLabel className="flex items-center gap-2 text-blue-700">
                       <CheckCircle2 className="h-4 w-4" />
                       OTP Verification
                     </FormLabel>

@@ -10,6 +10,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
+  SidebarFooter,
 } from "@/components/ui/sidebar";
 
 import { NavUser } from "./nav-user";
@@ -19,6 +20,7 @@ import { cn } from "@/lib/utils";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { useLanguage } from "@/contexts/LanguageContext";
+import Image from "next/image";
 
 // Navigation items - you can expand this as needed
 const getItems = (messages: { lang: string }) => [
@@ -157,6 +159,26 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
+      <SidebarFooter ref={footerRef} className="mt-auto p-4 border-t border-sidebar-border">
+        <div className={cn(
+          "flex items-center",
+          isCollapsed ? "justify-center" : "gap-3"
+        )}>
+          <Image 
+            src="/aurex.jpeg" 
+            alt="Aurex Logo" 
+            width={isCollapsed ? 30 : 40} 
+            height={isCollapsed ? 30 : 40} 
+          
+          />
+          {!isCollapsed && (
+            <div className="flex flex-col">
+              <span className="text-sm font-bold text-blue-600">Aurex</span>
+              <span className="text-xs text-blue-800 opacity-80">Powered by Aurigraph</span>
+            </div>
+          )}
+        </div>
+      </SidebarFooter>
     </Sidebar>
   );
 }

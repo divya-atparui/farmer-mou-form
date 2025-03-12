@@ -8,6 +8,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useTransition } from "react";
 import { LogOut, Languages } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import Image from "next/image";
 
 export default function FormLayout({
   children,
@@ -32,7 +33,22 @@ export default function FormLayout({
         <AppSidebar />
         <main className="flex-1 p-4">
           <div className="flex justify-between items-center mb-4">
-            <SidebarTrigger className="bg-blue-100 p-6 rounded-full shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <div className="flex items-center gap-3">
+              <SidebarTrigger className="bg-blue-100 p-6 rounded-full shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              <div className="flex items-center gap-2 ml-4 p-2 bg-gradient-to-r from-blue-50 to-amber-50 rounded-lg shadow-sm">
+                <Image 
+                  src="/aurex.jpeg" 
+                  alt="Aurex Logo" 
+                  width={30} 
+                  height={30} 
+              
+                />
+                <div className="flex flex-col">
+                  <span className="text-lg font-bold text-blue-600">Aurex</span>
+                  <span className="text-xs text-blue-800 opacity-80">Powered by Aurigraph</span>
+                </div>
+              </div>
+            </div>
             <div className="flex gap-3">
               <button
                 onClick={() => setLanguage(language === "en" ? "kn" : "en")}
