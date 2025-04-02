@@ -42,3 +42,14 @@ export const formSchema = z.object({
 });
 
 export type FormSchemaType = z.infer<typeof formSchema>;
+
+
+
+
+export const updatedFormSchema = z.object({
+  id: z.string().nullable().optional(),
+  landOwners: z.array(landOwnerSchema).min(1, "At least one landowner is required"),
+  propertyDetails: z.array(propertySchema).min(1, "At least one property is required"),
+});
+
+export type UpdatedFormSchemaType = z.infer<typeof updatedFormSchema>;

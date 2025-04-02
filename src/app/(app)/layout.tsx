@@ -6,8 +6,8 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Toaster } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTransition } from "react";
-import { LogOut, Languages } from "lucide-react";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { LogOut,  } from "lucide-react";
+// import { useLanguage } from "@/contexts/LanguageContext";
 import Image from "next/image";
 
 export default function FormLayout({
@@ -17,7 +17,7 @@ export default function FormLayout({
 }>) {
   const queryClient = useQueryClient();
   const [isPending, startTransition] = useTransition();
-  const { language, setLanguage } = useLanguage();
+  // const { language, setLanguage } = useLanguage();
 
   const handleLogout = () => {
     startTransition(async () => {
@@ -50,7 +50,7 @@ export default function FormLayout({
               </div>
             </div>
             <div className="flex gap-3">
-              <button
+              {/* <button
                 onClick={() => setLanguage(language === "en" ? "kn" : "en")}
                 className="bg-blue-100 p-4 rounded-full shadow-md hover:shadow-lg hover:bg-blue-50 transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center gap-2"
                 title={language === "en" ? "Switch to ಕನ್ನಡ" : "Switch to English"}
@@ -59,7 +59,7 @@ export default function FormLayout({
                 <span className="text-sm font-medium text-blue-700">
                   {language === "en" ? "ಕನ್ನಡ" : "English"}
                 </span>
-              </button>
+              </button> */}
               <button
                 onClick={handleLogout}
                 disabled={isPending}

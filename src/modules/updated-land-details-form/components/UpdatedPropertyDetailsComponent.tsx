@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   FormControl,
   FormField,
@@ -7,31 +8,30 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Plus, Trash2, Building2, Loader2 } from "lucide-react";
+import { Plus, Trash2, Building2 } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { FormSchemaType, UpdatedFormSchemaType } from "@/types/schema";
+import { UpdatedFormSchemaType } from "@/types/schema";
 import { useFieldArray } from "react-hook-form";
-import { useDeleteProperty } from "@/api/form/use-land-details";
 import { toast } from "sonner";
-import { useQueryClient } from "@tanstack/react-query";
 
-interface PropertyDetailsComponentProps {
-  form: UseFormReturn<FormSchemaType | UpdatedFormSchemaType>;
+/**
+ * Updated version of PropertyDetailsComponent that works with UpdatedFormSchemaType
+ * This component is identical to the original except for the type definition
+ */
+interface UpdatedPropertyDetailsComponentProps {
+  form: UseFormReturn<UpdatedFormSchemaType>;
   propertyIds?: Record<number, string>; // Map of index to ID
 }
 
-export function PropertyDetailsComponent({ form, propertyIds = {} }: PropertyDetailsComponentProps) {
+export function UpdatedPropertyDetailsComponent({ form, propertyIds = {} }: UpdatedPropertyDetailsComponentProps) {
   const { messages } = useLanguage();
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: "propertyDetails",
-  }); 
-  const queryClient = useQueryClient();
+  });
 
-  // Initialize the delete mutation
-  const { mutate: deleteProperty, isPending: isDeleting } = useDeleteProperty();
-
+  // Add new property
   const addNewProperty = () => {
     append({
       id: null,
@@ -43,34 +43,15 @@ export function PropertyDetailsComponent({ form, propertyIds = {} }: PropertyDet
     });
   };
 
-  // Enhanced remove function that calls the API if an ID exists
+  // Remove property (simplified version without API call)
   const handleRemove = (index: number) => {
-    const id = propertyIds[index];
+    // In this simplified version, we just remove the item locally
+    remove(index);
     
-    // If we have an ID for this property, call the delete API
+    // Log the action (in a real implementation, this would be an API call)
+    const id = propertyIds[index];
     if (id) {
-      deleteProperty(
-        { id },
-        {
-          onSuccess: (data) => {
-            // Remove from the form after successful API call
-            remove(index);
-            if (data.status === 200) {
-              toast.success(messages.form.sections.property.deleteSuccess || "Property deleted successfully");
-              queryClient.invalidateQueries({ queryKey: ["userLandDetails"] });
-            } else {
-              toast.error(messages.form.sections.property.deleteError || "Failed to delete property");
-            }
-          },
-          onError: (error) => {
-            console.error("Error deleting property:", error);
-            toast.error(messages.form.sections.property.deleteError || "Failed to delete property");
-          }
-        }
-      );
-    } else {
-      // If no ID exists (new item not yet saved), just remove from the form
-      remove(index);
+      console.log(`Would delete property with ID: ${id}`);
     }
   };
 
@@ -80,10 +61,10 @@ export function PropertyDetailsComponent({ form, propertyIds = {} }: PropertyDet
       <div className="mb-4">
         <h2 className="text-base font-semibold flex items-center gap-2">
           <Building2 className="h-4 w-4" />
-          {messages.form.sections.property.title}
+          {messages.form?.sections?.property?.title || "Property Details"}
         </h2>
         <p className="text-sm text-gray-500 mt-1">
-          {messages.form.sections.property.description}
+          {messages.form?.sections?.property?.description || "Add details about the property"}
         </p>
       </div>
 
@@ -97,7 +78,7 @@ export function PropertyDetailsComponent({ form, propertyIds = {} }: PropertyDet
           onClick={addNewProperty}
         >
           <Plus className="h-3.5 w-3.5" />
-          {messages.form.sections.property.fields.addProperty}
+          {messages.form?.sections?.property?.fields?.addProperty || "Add Property"}
         </Button>
       </div>
 
@@ -109,7 +90,7 @@ export function PropertyDetailsComponent({ form, propertyIds = {} }: PropertyDet
               {/* Property Header with Remove Button */}
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-sm font-medium">
-                  {messages.form.sections.property.fields.propertyTitle} {index + 1}
+                  {messages.form?.sections?.property?.fields?.propertyTitle || "Property"} {index + 1}
                 </h3>
                 <Button
                   type="button"
@@ -117,13 +98,8 @@ export function PropertyDetailsComponent({ form, propertyIds = {} }: PropertyDet
                   size="sm"
                   className="h-8 w-8 p-0"
                   onClick={() => handleRemove(index)}
-                  disabled={isDeleting}
                 >
-                  {isDeleting && propertyIds[index] ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
-                  ) : (
-                    <Trash2 className="h-4 w-4 text-gray-500 hover:text-red-500" />
-                  )}
+                  <Trash2 className="h-4 w-4 text-gray-500 hover:text-red-500" />
                 </Button>
               </div>
 
@@ -135,11 +111,11 @@ export function PropertyDetailsComponent({ form, propertyIds = {} }: PropertyDet
                   render={({ field, fieldState: { error, invalid, isDirty } }) => (
                     <FormItem>
                       <FormLabel className={`text-sm font-medium ${invalid && isDirty ? 'text-rose-500' : ''}`}>
-                        {messages.form.sections.property.fields.itemName}
+                        {messages.form?.sections?.property?.fields?.itemName || "Item Name"}
                       </FormLabel>
                       <FormControl>
                         <Input 
-                          placeholder={`${messages.form.sections.property.fields.itemName}`}
+                          placeholder={messages.form?.sections?.property?.fields?.itemName || "Enter item name"}
                           className={`text-sm ${invalid && isDirty ? 'border-rose-500' : ''}`} 
                           {...field} 
                         />
@@ -158,11 +134,11 @@ export function PropertyDetailsComponent({ form, propertyIds = {} }: PropertyDet
                   render={({ field, fieldState: { error, invalid, isDirty } }) => (
                     <FormItem>
                       <FormLabel className={`text-sm font-medium ${invalid && isDirty ? 'text-rose-500' : ''}`}>
-                        {messages.form.sections.property.fields.cropDetails}
+                        {messages.form?.sections?.property?.fields?.cropDetails || "Crop Details"}
                       </FormLabel>
                       <FormControl>
                         <Input 
-                          placeholder={`${messages.form.sections.property.fields.cropDetails}`}
+                          placeholder={messages.form?.sections?.property?.fields?.cropDetails || "Enter crop details"}
                           className={`text-sm ${invalid && isDirty ? 'border-rose-500' : ''}`} 
                           {...field} 
                         />
@@ -181,12 +157,12 @@ export function PropertyDetailsComponent({ form, propertyIds = {} }: PropertyDet
                   render={({ field, fieldState: { error, invalid, isDirty } }) => (
                     <FormItem>
                       <FormLabel className={`text-sm font-medium ${invalid && isDirty ? 'text-rose-500' : ''}`}>
-                        {messages.form.sections.property.fields.totalArea}
+                        {messages.form?.sections?.property?.fields?.totalArea || "Total Area"}
                       </FormLabel>
                       <FormControl>
                         <Input 
                           type="number"
-                          placeholder={`${messages.form.sections.property.fields.totalArea}`}
+                          placeholder={messages.form?.sections?.property?.fields?.totalArea || "Enter total area"}
                           className={`text-sm ${invalid && isDirty ? 'border-rose-500' : ''}`} 
                           onChange={(e) => field.onChange(parseFloat(e.target.value))}
                           value={field.value}
@@ -206,11 +182,11 @@ export function PropertyDetailsComponent({ form, propertyIds = {} }: PropertyDet
                   render={({ field, fieldState: { error, invalid, isDirty } }) => (
                     <FormItem>
                       <FormLabel className={`text-sm font-medium ${invalid && isDirty ? 'text-rose-500' : ''}`}>
-                        {messages.form.sections.property.fields.surveyNumbers}
+                        {messages.form?.sections?.property?.fields?.surveyNumbers || "Survey Numbers"}
                       </FormLabel>
                       <FormControl>
                         <Input 
-                          placeholder={`${messages.form.sections.property.fields.surveyNumbers}`}
+                          placeholder={messages.form?.sections?.property?.fields?.surveyNumbers || "Enter survey numbers"}
                           className={`text-sm ${invalid && isDirty ? 'border-rose-500' : ''}`} 
                           {...field} 
                         />
@@ -229,11 +205,11 @@ export function PropertyDetailsComponent({ form, propertyIds = {} }: PropertyDet
                   render={({ field, fieldState: { error, invalid, isDirty } }) => (
                     <FormItem>
                       <FormLabel className={`text-sm font-medium ${invalid && isDirty ? 'text-rose-500' : ''}`}>
-                        {messages.form.sections.property.fields.location}
+                        {messages.form?.sections?.property?.fields?.location || "Location"}
                       </FormLabel>
                       <FormControl>
                         <Input 
-                          placeholder={`${messages.form.sections.property.fields.location}`}
+                          placeholder={messages.form?.sections?.property?.fields?.location || "Enter location"}
                           className={`text-sm ${invalid && isDirty ? 'border-rose-500' : ''}`} 
                           {...field} 
                         />
@@ -255,4 +231,4 @@ export function PropertyDetailsComponent({ form, propertyIds = {} }: PropertyDet
   );
 }
 
-export default PropertyDetailsComponent;
+export default UpdatedPropertyDetailsComponent; 

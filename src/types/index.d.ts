@@ -126,3 +126,54 @@ declare interface UserDetailsResponse {
 }
 
 
+// declare interface ApiSetuResponse {
+//   status: number;
+//   message: string;
+//   data: ApiSetuData;
+// }
+
+// {
+//   "issuedDocuments": [
+//     {
+//       "name": "string",
+//       "type": "string",
+//       "size": "string",
+//       "date": "string",
+//       "parent": "string",
+//       "mime": "string",
+//       "uri": "string",
+//       "doctype": "string",
+//       "description": "string",
+//       "issuer": "string",
+//       "issuerid": "string"
+//     }
+//   ]
+// 
+
+declare interface ApiSetuResponse {
+  issuedDocuments: IssuedDocument[];
+}
+
+declare interface IssuedDocument {
+  name: string;
+  type: string;
+  size: string;
+  date: string;
+  parent: string;
+  mime: string;
+  uri: string;
+  doctype: string;
+  description: string;
+  issuer: string;
+  issuerid: string;
+}
+
+declare interface ApiSetuVariables {
+  code: string;
+  state: string;
+  mobile: string;
+  codeVerifier: string;
+}
+
+
+
