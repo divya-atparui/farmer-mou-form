@@ -51,10 +51,10 @@ const DigilockerAuthTrigger = () => {
         const baseUrl = 'https://digilocker.meripehchaan.gov.in/public/oauth2/1/authorize';
         const params = new URLSearchParams({
           response_type: 'code',
-          // client_id: 'GY0D963725',
-          client_id: 'NGE9C9DA54',
+          client_id: 'GY0D963725',
+          // client_id: 'NGE9C9DA54',
           state: 'oidc_flow',
-          redirect_uri: 'http://acm.atparui.com/create',
+          redirect_uri: 'https://acm.atparui.com/create',
           // redirect_uri: 'http://aurigraphfarmers-api.atparui.com/apisetuauth',
           code_challenge: codeChallenge,
           code_challenge_method: 'S256',
