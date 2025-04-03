@@ -14,10 +14,12 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       new QueryClient({
         defaultOptions: {
           queries: {
-            // With SSR, we usually want to set some default staleTime
-            // above 0 to avoid refetching immediately on the client
-            staleTime: 4 * 100000,
-            refetchInterval: 4 * 100000,
+            staleTime: 5 * 60 * 1000, // Data stays fresh for 5 minutes
+            refetchOnMount: false, // Don't automatically refetch on mount
+            refetchOnWindowFocus: false, // Don't refetch on tab focus
+            refetchOnReconnect: false, // Don't refetch on reconnect
+            retry: 1,
+            // Custom behavior for specific queries can be set in the useQuery hook
           },
         },
       })

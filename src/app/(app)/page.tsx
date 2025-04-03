@@ -1,9 +1,12 @@
-import LandDetailsForm from "../components/LandDetailsForm";
+// import Dashboard from "@/modules/Dashboard";
+import UpdatedDashboard from "@/modules/updated-land-details-form/components/UpdatedDashboard";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gray-50">
-      <LandDetailsForm />
+    <main className=" bg-gray-50">
+      {/* <Dashboard />
+       */}
+       <UpdatedDashboard />
     </main>
   );
 }

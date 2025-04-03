@@ -1,36 +1,115 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Farmers MOUs Form Application
+
+## Overview
+A web application for managing and tracking carbon credits through land details registration. The application supports multilingual interfaces (English and Kannada) and provides a comprehensive form system for land owners, property details, and witness information.
+
+## Features
+- 🔐 User Authentication (Login/Register)
+- 🌍 Multilingual Support (English/Kannada)
+- 📝 Land Details Management
+  - Bank Account Information
+  - Land Owner Details
+  - Property Information
+  - Witness Records
+- 🎯 Form Validation using Zod
+- 🎨 Modern UI with Tailwind CSS
+- 🔄 Real-time Form Updates
+
+## Tech Stack
+- **Frontend Framework**: Next.js 14 with App Router
+- **Language**: TypeScript
+- **State Management**: 
+  - React Query (TanStack Query) for server state
+  - React Context for app state
+- **Styling**: 
+  - Tailwind CSS
+  - Shadcn UI Components
+- **Form Management**: 
+  - React Hook Form
+  - Zod for validation
+- **HTTP Client**: Axios
+- **UI Components**:
+  - Lucide React for icons
+  - Sonner for toast notifications
+
+## Recent Updates
+
+### Latest Updates (December 2023)
+- **Enhanced User Experience**
+  - Added loading and empty states for dashboard
+  - Improved authentication flow with redirect preservation
+  - Enhanced language toggle in user menu
+  - Unified table experience across devices
+  - Added address field to land owners form
+
+- **Data Management Improvements**
+  - Optimized data fetching with improved caching strategy
+  - Enhanced query invalidation for better data consistency
+  - Improved logout functionality with proper cache clearing
+  - Updated API configurations for better reliability
+
+- **Land Details Management Enhancement**
+  - **Individual Land Details Page**
+    - Dynamic routing with `/land-details/[id]` structure
+    - Detailed view for each land record
+    - Interactive data tables using @tanstack/react-table
+
+  - **Improved Navigation**
+    - Restructured navigation components in dedicated `/nav` directory
+    - New NavUser component with avatar and dropdown menu
+    - Enhanced AppSidebar with improved layout and user section
+
+  - **API & Data Management**
+    - Added cache revalidation for better data freshness
+    - Implemented individual land details API endpoints
+    - Improved error handling and removed debug logs
+    - Production API endpoint configuration
+
+  - **New Dependencies**
+    - @radix-ui/react-avatar: ^1.1.1 (User avatars)
+    - @tanstack/react-table: ^8.20.5 (Data tables)
 
 ## Getting Started
 
-First, run the development server:
+First, install the dependencies:
+```bash
+npm install
+# or
+yarn install
+```
 
+Then, run the development server:
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
+```
+src/
+├── api/          # API integration and hooks
+├── app/          # Next.js app router pages
+├── components/   # Reusable UI components
+├── contexts/     # React contexts (Language, etc.)
+├── lib/          # Utility functions
+├── messages/     # Internationalization files
+└── types/        # TypeScript type definitions
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Future Improvements
+- [ ] Add comprehensive error handling
+- [ ] Implement data caching strategy
+- [ ] Add unit and integration tests
+- [ ] Enhance form validation rules
+- [ ] Add data export functionality
+- [ ] Implement document upload feature
+- [ ] Add admin dashboard
+- [ ] Enhance security measures
 
-## Learn More
+## Deployment
+The application can be deployed using [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Check out [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

@@ -1,4 +1,35 @@
 {
+  "lang": "kn",
+  "row-actions" : {
+    "bank" : "ಬ್ಯಾಂಕ್ ವಿವರಗಳನ್ನು ಸಂಪಾದಿಸಿ",
+    "landowners": "ಭೂಮಿ ಮಾಲೀಕರನ್ನು ಸಂಪಾದಿಸಿ",
+    "property": "ಆಸ್ತಿ ವಿವರಗಳನ್ನು ಸಂಪಾದಿಸಿ",
+    "witnesses": "ಸಾಕ್ಷಿದಾರರನ್ನು ಸಂಪಾದಿಸಿ",
+    "delete": "ದಾಖಲೆಯನ್ನು ಅಳಿಸಿ",
+    "deleteConfirmTitle": "ನೀವು ಖಚಿತವಾಗಿದ್ದೀರಾ?",
+    "deleteConfirmDescription": "ಈ ಕ್ರಿಯೆಯನ್ನು ರದ್ದುಗೊಳಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ. ಇದು ಆಯ್ಕೆ ಮಾಡಿದ ದಾಖಲೆಯನ್ನು ಶಾಶ್ವತವಾಗಿ ಅಳಿಸುತ್ತದೆ ಮತ್ತು ನಮ್ಮ ಸರ್ವರ್‌ಗಳಿಂದ ತೆಗೆದುಹಾಕುತ್ತದೆ.",
+    "cancel": "ರದ್ದುಮಾಡಿ",
+    "deleting": "ಅಳಿಸಲಾಗುತ್ತಿದೆ...",
+    "deleteButton": "ಅಳಿಸಿ"
+  },
+  "steps": {
+    "bank": {
+      "title": "ಬ್ಯಾಂಕ್ ವಿವರಗಳು",
+      "description": "ಬ್ಯಾಂಕ್ ಖಾತೆ ಮಾಹಿತಿಯನ್ನು ನಮೂದಿಸಿ"
+    },
+    "landowners": {
+      "title": "ಭೂಮಿ ಮಾಲೀಕರು",
+      "description": "ಭೂಮಿ ಮಾಲೀಕರ ವಿವರಗಳನ್ನು ಸೇರಿಸಿ"
+    },
+    "property": {
+      "title": "ಆಸ್ತಿ ವಿವರಗಳು",
+      "description": "ಆಸ್ತಿ ಮಾಹಿತಿಯನ್ನು ನಮೂದಿಸಿ"
+    },
+    "witnesses": {
+      "title": "ಸಾಕ್ಷಿದಾರರು",
+      "description": "ಸಾಕ್ಷಿದಾರರ ಮಾಹಿತಿಯನ್ನು ಸೇರಿಸಿ"
+    }
+  },
   "form": {
     "title": "ಭೂಮಿ ನೋಂದಣಿ ಫಾರ್ಮ್",
     "description": "ನಿಮ್ಮ MOU ದಾಖಲೆಯನ್ನು ರಚಿಸಲು ವಿವರಗಳನ್ನು ಭರ್ತಿ ಮಾಡಿ",
@@ -15,33 +46,55 @@
           "dateCreated": "ರಚಿಸಿದ ದಿನಾಂಕ",
           "ifscCode": "IFSC ಕೋಡ್",
           "swiftCode": "SWIFT ಕೋಡ್",
-          "membershipNumber": "ಸದಸ್ಯತ್ವ ಸಂಖ್ಯೆ"
+          "membershipNumber": "ಸದಸ್ಯತ್ವ ಸಂಖ್ಯೆ",
+          "bankDetailsUpload": "ಬ್ಯಾಂಕ್ ವಿವರಗಳ ದಾಖಲೆ"
         }
       },
       "landowners": {
-        "title": "ಭೂ ಮಾಲೀಕರ ವಿವರಗಳು",
-        "description": "ಭೂ ಮಾಲೀಕರ ಬಗ್ಗೆ ಮಾಹಿತಿ ಸೇರಿಸಿ",
+        "title": "ಭೂಮಿ ಮಾಲೀಕರ ವಿವರಗಳು",
+        "description": "ಭೂಮಿ ಮಾಲೀಕರ ಬಗ್ಗೆ ಮಾಹಿತಿ ಸೇರಿಸಿ",
+        "addLandowner": "ಭೂಮಿ ಮಾಲೀಕರನ್ನು ಸೇರಿಸಿ", 
+        "noLandowners": "ಯಾವುದೇ ಭೂಮಿ ಮಾಲೀಕರಿಲ್ಲ",
+        "addLandownerDescription": "ಪ್ರಾರಂಭಿಸಲು ಭೂಮಿ ಮಾಲೀಕರನ್ನು ಸೇರಿಸಿ",
+        "landownerTitle": "ಭೂಮಿ ಮಾಲೀಕ",
+        "deleteSuccess": "ಭೂಮಿ ಮಾಲೀಕರು ತೆರೆದುಹೋಗಿದೆ",
+        "deleteError": "ಭೂಮಿ ಮಾಲೀಕರು ತೆರೆದುಹೋಗಲು ದಯವಿಟ್ಟು ಪ್ರಯತ್ನಿಸಿ",
         "fields": {
           "name": "ಹೆಸರು",
           "aadhar": "ಆಧಾರ್",
           "mobile": "ಮೊಬೈಲ್",
-          "email": "ಇಮೇಲ್"
+          "address": "ವಿಳಾಸ",
+          "email": "ಇಮೇಲ್",
+          "date": "ದಿನಾಂಕ",
+          "signature": "ಸಹಿ",
+          "aadhaarDocument": "ಆಧಾರ್ ದಾಖಲೆ",
+          "landDeedDocument": "ಭೂಮಿ ಪತ್ರದ ದಾಖಲೆ"
         }
       },
       "property": {
         "title": "ಆಸ್ತಿ ಮಾಹಿತಿ",
         "description": "ಆಸ್ತಿಗಳ ಬಗ್ಗೆ ವಿವರಗಳನ್ನು ಸೇರಿಸಿ",
+        "addProperty": "ಆಸ್ತಿ ಸೇರಿಸಿ",
+        "propertyTitle": "ಆಸ್ತಿ",
+        "deleteSuccess": "ಆಸ್ತಿ ತೆರೆದುಹೋಗಿದೆ",
+        "deleteError": "ಆಸ್ತಿ ತೆರೆದುಹೋಗಲು ದಯವಿಟ್ಟು ಪ್ರಯತ್ನಿಸಿ",
         "fields": {
           "itemName": "ವಸ್ತುವಿನ ಹೆಸರು",
           "cropDetails": "ಬೆಳೆ ವಿವರಗಳು",
-          "totalArea": "ಒಟ್ಟು ವಿಸ್ತೀರ್ಣ",
+          "totalArea": "ಒಟ್ಟು ವಿಸ್ತೀರ್ಣ (ಹೆಕ್ಟಾರ್ಸ್)",
           "surveyNumbers": "ಸರ್ವೆ ಸಂಖ್ಯೆಗಳು",
-          "location": "ಸ್ಥಳ"
+          "location": "ಪಿನ್‌ಕೋಡ್",
+          "addProperty": "ಆಸ್ತಿ ಸೇರಿಸಿ",
+          "propertyTitle": "ಆಸ್ತಿ"
         }
       },
       "witnesses": {
         "title": "ಸಾಕ್ಷಿದಾರರ ಮಾಹಿತಿ",
         "description": "ಸಾಕ್ಷಿದಾರರ ವಿವರಗಳನ್ನು ಸೇರಿಸಿ",
+        "addWitness": "ಸಾಕ್ಷಿದಾರರನ್ನು ಸೇರಿಸಿ",
+        "witnessTitle": "ಸಾಕ್ಷಿದಾರ",
+        "deleteSuccess": "ಸಾಕ್ಷಿದಾರರು ತೆರೆದುಹೋಗಿದೆ",
+        "deleteError": "ಸಾಕ್ಷಿದಾರರು ತೆರೆದುಹೋಗಲು ದಯವಿಟ್ಟು ಪ್ರಯತ್ನಿಸಿ",
         "fields": {
           "name": "ಹೆಸರು",
           "address": "ವಿಳಾಸ",
@@ -54,7 +107,8 @@
       "save": "ಉಳಿಸಿ",
       "addMore": "ಇನ್ನಷ್ಟು ಸೇರಿಸಿ",
       "generate": "MOU ದಾಖಲೆಯನ್ನು ರಚಿಸಿ",
-      "incomplete": "ದಯವಿಟ್ಟು ಎಲ್ಲಾ ವಿಭಾಗಗಳನ್ನು ಪೂರ್ಣಗೊಳಿಸಿ"
+      "incomplete": "ದಯವಿಟ್ಟು ಎಲ್ಲಾ ವಿಭಾಗಗಳನ್ನು ಪೂರ್ಣಗೊಳಿಸಿ",
+      "close": "ಬಂದಿಸಿ"
     }
   },
   "preview": {
@@ -69,6 +123,8 @@
       "date": "ದಿನಾಂಕ",
       "email": "ಇಮೇಲ್",
       "mobile": "ಮೊಬೈಲ್",
+      "landownerName": "ಭೂ ಮಾಲೀಕರ ಹೆಸರು",
+      "address": "ವಿಳಾಸ",
       "aadhar": "ಆಧಾರ್",
       "signature": "ಸಹಿ"
     },
@@ -80,7 +136,7 @@
       "cropDetails": "ಬೆಳೆ ವಿವರಗಳು",
       "totalArea": "ಒಟ್ಟು ವಿಸ್ತೀರ್ಣ",
       "surveyNumbers": "ಸರ್ವೆ ಸಂಖ್ಯೆಗಳು",
-      "location": "ಸ್ಥಳ"
+      "location": "ಪಿನ್‌ಕೋಡ್"
     },
     "bankDetails": {
       "title": "ಬ್ಯಾಂಕ್ ವಿವರಗಳು",
